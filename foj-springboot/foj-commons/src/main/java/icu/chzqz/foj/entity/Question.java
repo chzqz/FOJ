@@ -1,0 +1,27 @@
+package icu.chzqz.foj.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Question {
+    private Long id;
+    private String name;
+    private String description;
+    private LocalDateTime uploadTime;
+    private LocalDateTime modifyTime;
+    private Integer acCount;
+    private Integer subCount;
+    private String tip;
+    private Integer maxTime;
+    private Integer maxMemory;
+    private Integer maxStack;
+    private Long uid;
+    private Integer status;
+    private Integer level;
+}

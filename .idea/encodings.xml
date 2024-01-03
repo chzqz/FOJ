@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/foj-springboot/foj-commons/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/foj-springboot/foj-judgeServer/JudgeServer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/foj-springboot/foj-judgeServer/JudgeServer/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/foj-springboot/foj-judgeServer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/foj-springboot/foj-web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/foj-springboot/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/foj-springboot/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

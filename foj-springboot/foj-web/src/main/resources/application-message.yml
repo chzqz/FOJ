@@ -1,0 +1,11 @@
+foj:
+  message:
+    loginExpired: 登录信息已过期 #登录过期
+    notLogin: 用户未登录 #未登录
+    permissionDenied: 权限不足 #无权访问
+    loginFailed: 用户名或密码错误 #登录失败
+    submitFailed: 代码提交失败 #代码提交到judge服务器失败
+    argumentError: 请求参数错误 #请求参数错误
+    wrongAnswer: 案例未通过 #案例结果错误
+    cpuTimeExceeded: 运行超时 # 运行超时
+    memoryExceeded: 内存超限 # 内存超限

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="foj-commons" />
+        <module name="foj-web" />
+        <module name="foj-judgeServer" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="foj-commons" target="17" />
+      <module name="foj-judgeServer" target="17" />
+      <module name="foj-springboot" target="1.8" />
+      <module name="foj-web" target="17" />
+      <module name="hoj-judgeServer" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="foj-commons" options="-parameters" />
+      <module name="foj-judgeServer" options="-parameters" />
+      <module name="foj-springboot" options="" />
+      <module name="foj-web" options="-parameters" />
+    </option>
+  </component>
+</project>
