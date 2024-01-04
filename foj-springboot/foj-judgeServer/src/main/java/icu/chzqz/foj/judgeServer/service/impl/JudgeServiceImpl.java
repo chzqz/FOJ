@@ -18,10 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -90,6 +87,7 @@ public class JudgeServiceImpl implements JudgeService {
 
         String fileId = compileRes.getFileIds().get(runDTO.getFileOutName());
         //编译成功, 开始测试
+        ArrayList<String> results = new ArrayList<>();
 
         request = new Request();
 
@@ -108,10 +106,9 @@ public class JudgeServiceImpl implements JudgeService {
 
         Long maxTime = 0L;
         Long maxMem = 0L;
-        //TODO 填充测试用例
         for (String key : testcases.keySet()) {
             String value = testcases.get(key);
-            cmd.setFiles(new File[]{new LocalFile(key),new Collector("stdout", runDTO.getFileMax()),new Collector("stderr",runDTO.getFileMax())});
+            cmd.setFiles(new File[]{new MemoryFile(key),new Collector("stdout", runDTO.getFileMax()),new Collector("stderr",runDTO.getFileMax())});
             request.setCmd(new Cmd[]{cmd});
             QuestionResult result;
             try{
@@ -121,6 +118,8 @@ public class JudgeServiceImpl implements JudgeService {
                 log.info("提交案例失败: {}",runDTO);
                 runVO.setStatus(Status.STATUS_SUBMITTED_FAILED);
                 runVO.setErrMessage(messageProperty.submitFailed);
+                runVO.setResult(results);
+                deleteFile(fileId);
                 return runVO;
             }
 
@@ -139,6 +138,8 @@ public class JudgeServiceImpl implements JudgeService {
                     runVO.setStatus(Status.STATUS__RUNTIME_ERROR);
                     runVO.setErrMessage(compileRes.getError());
                 }
+                runVO.setResult(results);
+                deleteFile(fileId);
                 return runVO;
             }
 
@@ -146,31 +147,26 @@ public class JudgeServiceImpl implements JudgeService {
             maxTime = Math.max(result.getTime(),maxTime);
             maxMem  = Math.max(result.getMemory(),maxMem);
             String stdout = result.getFiles().get("stdout");
-            String fileContent;
-            try{
-                Path path = Paths.get(value);
-                List<String> fileLines = Files.readAllLines(path);
-                fileContent = String.join("\n", fileLines);
-            }catch (Exception e){
-                log.info("读取文件失败: {}",value);
-                runVO.setStatus(Status.STATUS__SYSTEM_ERROR);
-                runVO.setErrMessage(e.getMessage());
-                return runVO;
-            }
+            results.add(stdout);
 
-            log.info("结果验证: {} : {}",stdout,fileContent);
-            if(!fileContent.equals(stdout)){
+
+            log.info("结果验证: {} : {}",stdout, value);
+            if(value!=null&&!value.equals(stdout)){
                 log.info("结果错误: {}",stdout);
                 runVO.setStatus(Status.STATUS__WRONG_ANSWER);
                 runVO.setErrMessage(messageProperty.wrongAnswer);
+                runVO.setResult(results);
+                deleteFile(fileId);
                 return runVO;
             }
         }
+        deleteFile(fileId);
 
         //全部案例通过
         runVO.setStatus(Status.STATUS_ACCEPTED);
         runVO.setTime(maxTime);
         runVO.setMemory(maxMem);
+        runVO.setResult(results);
         return runVO;
     }
 }

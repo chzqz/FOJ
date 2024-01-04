@@ -1,6 +1,7 @@
 package icu.chzqz.foj.judgeServer.DTO;
 
 import icu.chzqz.foj.judgeServer.pojo.File;
+import icu.chzqz.foj.judgeServer.pojo.MemoryFile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

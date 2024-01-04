@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,4 +26,8 @@ public class RunVO {
      * 所耗内存
      */
     Long memory;
+    /**
+     * 测试结果
+     */
+    List<String> result;
 }
