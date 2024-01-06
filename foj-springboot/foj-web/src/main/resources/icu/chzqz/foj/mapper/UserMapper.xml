@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.chzqz.foj.mapper.UserMapper">
+
+    <update id="update">
+        update user
+        <set>
+            <if test="name!=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="email!=null and email!=''">
+                email = #{email},
+            </if>
+            <if test="picture!=null and picture!=null">
+                picture = #{picture},
+            </if>
+            <if test="accepted!=null">
+                accepted = #{accepted},
+            </if>
+            <if test="experiment!=null">
+                experiment = #{experiment},
+            </if>
+            <if test="lastLoginTime!=null">
+                last_login_time = #{lastLoginTime},
+            </if>
+            <if test="authority!=null">
+                authority = #{authority},
+            </if>
+            <if test="comment!=null and comment!=''">
+                comment = #{comment},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

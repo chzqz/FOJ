@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.chzqz.foj.mapper.QuestionMapper">
+    <update id="update">
+        update questions
+        <set>
+            <if test="name !=null and name!='' ">
+                name = #{name},
+            </if>
+            <if test="description !=null and description!='' ">
+                description = #{description},
+            </if>
+            <if test="uploadTime !=null">
+                upload_time = #{uploadTime},
+            </if>
+            <if test="modifyTime !=null">
+                modify_time = #{modifyTime},
+            </if>
+            <if test="acCount !=null">
+                ac_count = #{acCount},
+            </if>
+            <if test="subCount !=null">
+                sub_count = #{subCount},
+            </if>
+            <if test="tip !=null and tip != '' ">
+                tip = #{tip},
+            </if>
+            <if test="maxTime !=null">
+                max_time = #{maxTime},
+            </if>
+            <if test="maxMemory !=null">
+                max_memory = #{maxMemory},
+            </if>
+            <if test="maxProc !=null">
+                max_proc = #{maxProc},
+            </if>
+            <if test="uid !=null">
+                uid = #{uid},
+            </if>
+            <if test="status !=null">
+                status = #{status},
+            </if>
+            <if test="level !=null">
+                level = #{level},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="list" resultType="icu.chzqz.foj.entity.Question">
+        select distinct q.id as id, q.name as name, q.ac_count as ac_count, q.sub_count as sub_count from questions q, questions_tag t
+        <where>
+            q.id = t.q_id
+            <if test="id != null">
+                and q.id = #{id}
+            </if>
+            <if test="name !=null and name!=''">
+                and q.name like concat('%',#{name},"%")
+            </if>
+            <if test="tags!=null">
+                and <foreach collection="tags" item="tag" open="(" close=")" separator=" or ">
+                    t.t_id = #{tag}
+                </foreach>
+            </if>
+        </where>
+        order by q.id
+    </select>
+</mapper>

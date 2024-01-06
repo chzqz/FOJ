@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.chzqz.foj.mapper.JudgeMapper">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into judge (q_id, q_name, u_id, u_name, submit_time, status, error_message, time, memory, code, language)
+        VALUES(#{qId},#{qName},#{uId},#{uName},#{submitTime},#{status},#{errorMessage},#{time},#{memory},#{code},#{language})
+    </insert>
+</mapper>

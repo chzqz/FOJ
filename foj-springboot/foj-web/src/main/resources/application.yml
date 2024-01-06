@@ -17,8 +17,15 @@ spring:
       max-active: 20
       max-wait: 60000
 
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+
 foj:
   judge-server: 192.168.1.129:5050
+  resource-server: 192.168.1.129:80
   language:
     - C
     - C++
@@ -29,6 +36,8 @@ foj:
     max-stack: 2
     proc-limit: 50
     file-max: 10240
+    avatar-path: D://
+    testcase-path: D://testcases
   jwt:
     key: chzqzchzqzchzqzchzqzchzqzchzqzchzqzchzqzchzqzchzqz
     effective-time: 30758400000

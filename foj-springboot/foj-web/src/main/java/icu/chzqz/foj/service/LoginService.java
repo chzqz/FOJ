@@ -1,7 +1,8 @@
 package icu.chzqz.foj.service;
 
 import icu.chzqz.foj.dto.LoginDTO;
-import icu.chzqz.foj.exception.RequestFailException;
+import icu.chzqz.foj.dto.RegisterDTO;
+import icu.chzqz.foj.entity.exception.RequestFailException;
 import icu.chzqz.foj.vo.LoginVO;
 
 import java.io.UnsupportedEncodingException;
@@ -15,4 +16,10 @@ public interface LoginService {
      * @return 用户登录视图对象
      */
     LoginVO login(LoginDTO loginDTO) throws UnsupportedEncodingException, NoSuchAlgorithmException, RequestFailException;
+
+    /**
+     * 注册用户
+     * @param registerDTO
+     */
+    void register(RegisterDTO registerDTO) throws RequestFailException, UnsupportedEncodingException, NoSuchAlgorithmException;
 }

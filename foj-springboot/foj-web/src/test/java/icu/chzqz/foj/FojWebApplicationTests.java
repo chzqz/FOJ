@@ -2,11 +2,13 @@ package icu.chzqz.foj;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import icu.chzqz.foj.entity.User;
+import icu.chzqz.foj.mapper.UserMapper;
 import icu.chzqz.foj.properties.DefaultProperty;
-import icu.chzqz.foj.properties.JudgeServerProperty;
+import icu.chzqz.foj.properties.ServerProperty;
 import icu.chzqz.foj.properties.LanguageProperty;
 import icu.chzqz.foj.properties.MessageProperty;
 import icu.chzqz.foj.result.Result;
+import icu.chzqz.foj.util.FormatUtil;
 import icu.chzqz.foj.util.JWTUtil;
 import icu.chzqz.foj.util.MD5Util;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,7 +88,7 @@ class FojWebApplicationTests {
     }
 
     @Autowired
-    JudgeServerProperty judgeServerProperty;
+    ServerProperty judgeServerProperty;
     @Test
     void judgeServerPropertyTest(){
         System.out.println(judgeServerProperty.getJudgeServer());
@@ -111,6 +113,24 @@ class FojWebApplicationTests {
     @Test
     void MessageTest(){
         System.out.println(mp.loginExpired);
+    }
+
+    @Test
+    void checkEmailTest(){
+        System.out.println(FormatUtil.checkEmail("110@"));
+        System.out.println(FormatUtil.checkEmail("110"));
+        System.out.println(FormatUtil.checkEmail("110@123"));
+        System.out.println(FormatUtil.checkEmail("110@123.com"));
+    }
+
+    @Autowired
+    UserMapper userMapper;
+    @Test
+    void userMapperTest(){
+        User user = new User();
+        user.setLastLoginTime(LocalDateTime.now());
+        user.setId(1);
+        userMapper.update(user);
     }
 
 }

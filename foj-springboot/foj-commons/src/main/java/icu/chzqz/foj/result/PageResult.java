@@ -18,7 +18,7 @@ public class PageResult<T> {
     /**
      * 结果总数
      */
-    Integer total;
+    Long total;
     /**
      * 结果数据
      */

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LoginVO {
     private String token;
-    private Long id;
+    private Integer id;
     private String name;
     private Integer authority;
 }

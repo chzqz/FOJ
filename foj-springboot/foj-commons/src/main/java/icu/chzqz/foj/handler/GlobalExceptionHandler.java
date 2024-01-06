@@ -1,9 +1,9 @@
 package icu.chzqz.foj.handler;
 
-import icu.chzqz.foj.exception.AccessDeniedException;
-import icu.chzqz.foj.exception.NotFoundException;
-import icu.chzqz.foj.exception.RequestFailException;
-import icu.chzqz.foj.exception.SystemErrorException;
+import icu.chzqz.foj.entity.exception.AccessDeniedException;
+import icu.chzqz.foj.entity.exception.NotFoundException;
+import icu.chzqz.foj.entity.exception.RequestFailException;
+import icu.chzqz.foj.entity.exception.SystemErrorException;
 import icu.chzqz.foj.properties.MessageProperty;
 import icu.chzqz.foj.result.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Result exception(Exception e){
         log.info("Exception: {}",e.toString());
+        e.printStackTrace();
         return Result.error(520,e.getMessage());
     }
 }

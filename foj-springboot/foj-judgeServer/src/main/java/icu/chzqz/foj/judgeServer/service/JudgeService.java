@@ -1,6 +1,6 @@
 package icu.chzqz.foj.judgeServer.service;
 
-import icu.chzqz.foj.exception.RequestFailException;
+import icu.chzqz.foj.entity.exception.RequestFailException;
 import icu.chzqz.foj.judgeServer.DTO.RunDTO;
 import icu.chzqz.foj.judgeServer.VO.RunVO;
 

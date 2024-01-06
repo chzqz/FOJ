@@ -1,6 +1,6 @@
 package icu.chzqz.foj.interceptor;
 
-import icu.chzqz.foj.exception.AccessDeniedException;
+import icu.chzqz.foj.entity.exception.AccessDeniedException;
 import icu.chzqz.foj.properties.MessageProperty;
 import icu.chzqz.foj.util.BaseContextUtil;
 import icu.chzqz.foj.util.JWTUtil;

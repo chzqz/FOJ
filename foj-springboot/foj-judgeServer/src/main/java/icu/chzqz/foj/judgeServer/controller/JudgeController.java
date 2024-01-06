@@ -1,10 +1,10 @@
 package icu.chzqz.foj.judgeServer.controller;
 
-import icu.chzqz.foj.exception.RequestFailException;
+import icu.chzqz.foj.entity.exception.RequestFailException;
 import icu.chzqz.foj.judgeServer.DTO.RunDTO;
 import icu.chzqz.foj.judgeServer.pojo.*;
 import icu.chzqz.foj.judgeServer.service.JudgeService;
-import icu.chzqz.foj.properties.JudgeServerProperty;
+import icu.chzqz.foj.properties.ServerProperty;
 import icu.chzqz.foj.result.Result;
 import icu.chzqz.foj.judgeServer.VO.RunVO;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class JudgeController {
     @Autowired
     RestTemplate restTemplate;
     @Autowired
-    JudgeServerProperty judgeServerProperty;
+    ServerProperty judgeServerProperty;
     @Autowired
     JudgeService judgeService;
 

@@ -13,4 +13,6 @@ public class DefaultProperty {
     public Integer maxStack;
     public Integer procLimit;
     public Integer fileMax;
+    public String avatarPath;
+    public String testcasePath;
 }

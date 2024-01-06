@@ -51,4 +51,28 @@ public class MessageProperty {
      * 内存超限
      */
     public String memoryExceeded;
+    /**
+     * 邮箱格式错误
+     */
+    public String emailFormatError;
+    /**
+     * 密码格式不合格
+     */
+    public String unqualifiedPassword;
+    /**
+     * 邮箱已注册
+     */
+    public String emailExists;
+    /**
+     * 用户名已存在
+     */
+    public String usernameExists;
+    /**
+     * 密码错误
+     */
+    public String passwordError;
+    /**
+     * 不支持的语言
+     */
+    public String unsupportedLanguage;
 }

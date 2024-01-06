@@ -1,23 +1,19 @@
 package icu.chzqz.foj.judgeServer.service.impl;
 
 import icu.chzqz.foj.entity.Status;
-import icu.chzqz.foj.exception.RequestFailException;
+import icu.chzqz.foj.entity.exception.RequestFailException;
 import icu.chzqz.foj.judgeServer.DTO.RunDTO;
 import icu.chzqz.foj.judgeServer.pojo.*;
 import icu.chzqz.foj.judgeServer.service.JudgeService;
-import icu.chzqz.foj.properties.JudgeServerProperty;
+import icu.chzqz.foj.properties.ServerProperty;
 import icu.chzqz.foj.judgeServer.VO.RunVO;
 import icu.chzqz.foj.properties.MessageProperty;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.valves.ExtendedAccessLogValve;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @Service
@@ -26,7 +22,7 @@ public class JudgeServiceImpl implements JudgeService {
     @Autowired
     RestTemplate restTemplate;
     @Autowired
-    JudgeServerProperty judgeServerProperty;
+    ServerProperty judgeServerProperty;
     @Autowired
     MessageProperty messageProperty;
 

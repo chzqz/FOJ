@@ -18,9 +18,9 @@ public class Question {
     private Integer acCount;
     private Integer subCount;
     private String tip;
-    private Integer maxTime;
-    private Integer maxMemory;
-    private Integer maxStack;
+    private Long maxTime;
+    private Long maxMemory;
+    private Long maxProc;
     private Long uid;
     private Integer status;
     private Integer level;

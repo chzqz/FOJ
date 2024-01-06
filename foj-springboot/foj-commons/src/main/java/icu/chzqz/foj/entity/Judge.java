@@ -17,13 +17,13 @@ public class Judge {
     private Long id;
     private Long qId;
     private String qName;
-    private Long uId;
-    private String username;
+    private Integer uId;
+    private String uName;
     private LocalDateTime submitTime;
     private Integer status;
     private String errorMessage;
-    private Integer time;
-    private Integer memory;
+    private Long time;
+    private Long memory;
     private String code;
     private String language;
 }

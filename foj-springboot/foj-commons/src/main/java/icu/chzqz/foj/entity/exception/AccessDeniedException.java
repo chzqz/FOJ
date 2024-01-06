@@ -1,4 +1,4 @@
-package icu.chzqz.foj.exception;
+package icu.chzqz.foj.entity.exception;
 
 /**
  * 拒绝访问异常

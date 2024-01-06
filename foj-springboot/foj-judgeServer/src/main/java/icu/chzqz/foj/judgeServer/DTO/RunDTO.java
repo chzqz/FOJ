@@ -3,6 +3,7 @@ package icu.chzqz.foj.judgeServer.DTO;
 import icu.chzqz.foj.judgeServer.pojo.File;
 import icu.chzqz.foj.judgeServer.pojo.MemoryFile;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class RunDTO {
     /**
      * 编译参数
