@@ -2,6 +2,7 @@ package icu.chzqz.foj.controller;
 
 import icu.chzqz.foj.dto.JudgeDTO;
 import icu.chzqz.foj.dto.QuestionsPageDTO;
+import icu.chzqz.foj.dto.TestDTO;
 import icu.chzqz.foj.entity.exception.AccessDeniedException;
 import icu.chzqz.foj.entity.exception.RequestFailException;
 import icu.chzqz.foj.result.PageResult;
@@ -9,12 +10,10 @@ import icu.chzqz.foj.result.Result;
 import icu.chzqz.foj.service.QuestionService;
 import icu.chzqz.foj.vo.QuestionVO;
 import icu.chzqz.foj.vo.QuestionsPageVO;
+import icu.chzqz.foj.vo.TestResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -56,10 +55,24 @@ public class QuestionController {
      * @param judgeDTO
      * @return
      */
-    @PostMapping("/judge")
-    public Result<Long> judge(JudgeDTO judgeDTO) throws RequestFailException, IOException {
+    @PostMapping("/user/judge")
+    public Result<Long> judge(@RequestBody JudgeDTO judgeDTO) throws RequestFailException, IOException {
         log.info("提交代码: {}",judgeDTO);
         Long id = questionService.judge(judgeDTO);
         return Result.success(id);
     }
+
+    /**
+     * 运行测试案例
+     * @return
+     */
+    @PostMapping("/user/test")
+    public Result<TestResultVO> runExample(@RequestBody TestDTO testDTO) throws RequestFailException {
+        log.info("运行测试案例: {}", testDTO);
+        TestResultVO list = questionService.runExample(testDTO);
+        return Result.success(list);
+    }
+
+
+
 }

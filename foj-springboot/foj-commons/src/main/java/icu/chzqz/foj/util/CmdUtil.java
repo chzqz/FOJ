@@ -1,5 +1,7 @@
 package icu.chzqz.foj.util;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +12,8 @@ public class CmdUtil {
         compileMap = new HashMap<>();
         runMap = new HashMap<>();
         envMap = new HashMap<>();
+        fileName = new HashMap<>();
+        fileOutName = new HashMap<>();
 
         compileMap.put("C",new String[]{"gcc","temp.c","-o","temp"});
         compileMap.put("C++",new String[]{"g++","temp.cpp","-o","temp"});

@@ -18,10 +18,11 @@ public class QuestionVO {
     String name;
     String description;
     String tip;
-    Integer maxTime;
-    Integer maxMemory;
+    Long maxTime;
+    Long maxMemory;
     List<Testcase> testcases;
     Integer uid;
     Double passRate;
     List<Tag> tags;
+    Integer level;
 }

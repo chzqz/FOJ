@@ -15,6 +15,7 @@ public class QuestionsPageDTO {
     Long id;
     String name;
     List<Integer> tags;
+    Integer level;
     Integer page;
     Integer pageSize;
 }

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import icu.chzqz.foj.dto.JudgeDTO;
 import icu.chzqz.foj.dto.QuestionsPageDTO;
+import icu.chzqz.foj.dto.TestDTO;
 import icu.chzqz.foj.entity.*;
 import icu.chzqz.foj.entity.exception.AccessDeniedException;
 import icu.chzqz.foj.entity.exception.RequestFailException;
@@ -22,6 +23,7 @@ import icu.chzqz.foj.util.BaseContextUtil;
 import icu.chzqz.foj.util.CmdUtil;
 import icu.chzqz.foj.vo.QuestionVO;
 import icu.chzqz.foj.vo.QuestionsPageVO;
+import icu.chzqz.foj.vo.TestResultVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,7 +75,6 @@ public class QuestionServiceImpl implements QuestionService {
         ArrayList<QuestionsPageVO> questionsPageVOS = new ArrayList<>();
         for (Question question : list) {
             Long id = question.getId();
-            System.out.println(question.toString()+"---------------");
             Double passRate;
             if(question.getSubCount()==0) passRate = 0D;
             else passRate = 1.0*question.getAcCount()/question.getSubCount();
@@ -99,6 +100,7 @@ public class QuestionServiceImpl implements QuestionService {
                     .tags(tags)
                     .status(status)
                     .passRate(passRate)
+                    .level(question.getLevel())
                     .id(id)
                     .name(question.getName())
                     .build();
@@ -109,21 +111,15 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionVO getQuestion(Long id) {
-        QuestionVO questionVO = new QuestionVO();
         Question question = questionMapper.selectById(id);
-        BeanUtils.copyProperties(question,questionVO);
 
         Double passRate;
         if(question.getSubCount().equals(0)) passRate = 0D;
         else passRate = 1.0*question.getAcCount()/question.getSubCount();
-        questionVO.setPassRate(passRate);
-
-        List<Testcase> testcases = testcaseMapper.selectByQId(id);
-        questionVO.setTestcases(testcases);
-
+        List<Testcase> testcases = testcaseMapper.selectByQIdStatus(id,2);
         List<Tag> tags = tagMapper.selectByQId(id);
-        questionVO.setTags(tags);
 
+        QuestionVO questionVO = new QuestionVO(id,question.getName(),question.getDescription(),question.getTip(),question.getMaxTime(),question.getMaxMemory(),testcases,question.getUid(),passRate,tags,question.getLevel());
         return questionVO;
     }
 
@@ -160,17 +156,18 @@ public class QuestionServiceImpl implements QuestionService {
         //填充测试用例
         List<Testcase> list = testcaseMapper.selectByQId(judgeDTO.getQId());
         for (Testcase testcase : list) {
+            if(testcase.getStatus()!=1) continue;
             Path path = Path.of(defaultProperty.testcasePath + testcase.getInput());
             List<String> strings = Files.readAllLines(path);
             StringBuilder input = new StringBuilder("");
             for (String string : strings) {
-                input.append(string);
+                input.append(string).append("\n");
             }
             path = Path.of(defaultProperty.testcasePath + testcase.getOutput());
             strings = Files.readAllLines(path);
             StringBuilder output = new StringBuilder("");
             for (String string : strings) {
-                output.append(string);
+                output.append(string).append("\n");
             }
             testcases.put(input.toString(),output.toString());
         }
@@ -179,7 +176,7 @@ public class QuestionServiceImpl implements QuestionService {
         RunVO result = judgeController.run(runDTO).getData();
         //将结果添加到数据库
         Judge judge = new Judge(null, question.getId(), question.getName(), (Integer)BaseContextUtil.getBaseContext().get("id"),(String)BaseContextUtil.getBaseContext().get("name"), LocalDateTime.now(),result.getStatus(),result.getErrMessage(),result.getTime(),result.getMemory(), judgeDTO.getCode(), judgeDTO.getLanguage());
-        Long id = judgeMapper.insert(judge);
+        judgeMapper.insert(judge);
 
         //更新个人数据
         User user = userMapper.selectById((Integer) BaseContextUtil.getBaseContext().get("id"));
@@ -191,6 +188,43 @@ public class QuestionServiceImpl implements QuestionService {
         if(result.getStatus().equals(0)) question.setAcCount(question.getAcCount()+1);
         questionMapper.update(question);
 
-        return id;
+        return judge.getId();
+    }
+
+    @Override
+    public TestResultVO runExample(TestDTO testDTO) throws RequestFailException {
+        Question question = questionMapper.selectById(testDTO.getQid());
+
+        String[] compileArgs, runArgs, env;
+        Integer fileMax;
+        Long cpuLimit, memoryLimit,procLimit;
+        String fileName, fileOutName;
+        Map<String,String> testcases = new HashMap<>();
+
+        String language = testDTO.getLanguage();
+        compileArgs = CmdUtil.getCompileArgs(language);
+        runArgs = CmdUtil.getRunArgs(language);
+        env = CmdUtil.getEnv(language);
+        fileMax = defaultProperty.fileMax;
+        cpuLimit = question.getMaxTime();
+        memoryLimit = question.getMaxMemory();
+        procLimit = question.getMaxProc();
+        fileName = CmdUtil.getFileName(language);
+        fileOutName = CmdUtil.getFileOutName(language);
+        if(language==null || compileArgs==null || runArgs==null || env==null || fileName==null || fileOutName ==null){
+            throw new RequestFailException(messageProperty.unsupportedLanguage);
+        }
+        //填充测试用例
+        List<String> list = testDTO.getTestcases();
+        for (String testcase : list) {
+            testcases.put(testcase,null);
+        }
+
+        RunDTO runDTO = new RunDTO(compileArgs,runArgs,env,fileMax,cpuLimit,memoryLimit,procLimit,testDTO.getCode(),fileName,fileOutName,testcases);
+        RunVO result = judgeController.run(runDTO).getData();
+
+        TestResultVO testResultVO = new TestResultVO(result.getResult(),result.getErrMessage(),result.getStatus());
+
+        return testResultVO;
     }
 }

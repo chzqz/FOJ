@@ -10,4 +10,7 @@ import java.util.List;
 public interface TestcaseMapper {
     @Select("select * from testcases where q_id = #{qid}")
     List<Testcase> selectByQId(Long qid);
+
+    @Select("select * from testcases where q_id = #{qid} and status = #{status}")
+    List<Testcase> selectByQIdStatus(Long qid, Integer status);
 }

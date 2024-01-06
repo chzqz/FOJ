@@ -21,7 +21,7 @@ public class Question {
     private Long maxTime;
     private Long maxMemory;
     private Long maxProc;
-    private Long uid;
+    private Integer uid;
     private Integer status;
     private Integer level;
 }
