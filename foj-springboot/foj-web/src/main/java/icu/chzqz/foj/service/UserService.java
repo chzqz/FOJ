@@ -3,13 +3,16 @@ package icu.chzqz.foj.service;
 import icu.chzqz.foj.dto.JudgeDTO;
 import icu.chzqz.foj.dto.ModifyPasswdDTO;
 import icu.chzqz.foj.dto.ModifyUserInfoDTO;
+import icu.chzqz.foj.dto.UserPageDTO;
 import icu.chzqz.foj.entity.exception.RequestFailException;
 import icu.chzqz.foj.vo.InformationVO;
+import icu.chzqz.foj.vo.UserPageVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public interface UserService {
     /**
@@ -43,4 +46,10 @@ public interface UserService {
      */
     void modifyPasswd(ModifyPasswdDTO modifyPasswdDTO) throws UnsupportedEncodingException, NoSuchAlgorithmException, RequestFailException;
 
+    /**
+     * 列表查询
+     * @param userPageDTO
+     * @return
+     */
+    List<UserPageVO> list(UserPageDTO userPageDTO);
 }

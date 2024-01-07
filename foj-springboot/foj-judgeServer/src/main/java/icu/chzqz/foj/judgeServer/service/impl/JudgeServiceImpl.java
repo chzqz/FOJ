@@ -75,9 +75,9 @@ public class JudgeServiceImpl implements JudgeService {
         }
         // 编译出错
         if(!compileRes.getStatus().equals("Accepted")){
-            log.info("{}: {}",compileRes.getStatus(),runDTO);
+            log.info("[{}] {}: {}",compileRes.getStatus(),compileRes.getFiles().get("stderr"),runDTO);
             runVO.setStatus(Status.STATUS_COMPILE_ERROR);
-            runVO.setErrMessage(compileRes.getError());
+            runVO.setErrMessage("["+compileRes.getStatus()+"] "+compileRes.getFiles().get("stderr"));
             return runVO;
         }
 
@@ -124,15 +124,15 @@ public class JudgeServiceImpl implements JudgeService {
                 log.info("{}: {}",compileRes.getStatus(),runDTO);
                 if(result.getStatus().equals("Memory Limit Exceeded")){
                     runVO.setStatus(Status.STATUS__CPU_TIME_LIMIT_EXCEEDED);
-                    runVO.setErrMessage(messageProperty.cpuTimeExceeded);
+                    runVO.setErrMessage("["+result.getStatus()+"] "+compileRes.getFiles().get("stderr"));
                 }
                 else if(result.getStatus().equals("Time Limit Exceeded")){
                     runVO.setStatus(Status.STATUS__MEMORY_LIMIT_EXCEEDED );
-                    runVO.setErrMessage(messageProperty.memoryExceeded);
+                    runVO.setErrMessage("["+result.getStatus()+"] "+compileRes.getFiles().get("stderr"));
                 }
                 else{
                     runVO.setStatus(Status.STATUS__RUNTIME_ERROR);
-                    runVO.setErrMessage(compileRes.getError());
+                    runVO.setErrMessage("["+result.getStatus()+"] "+compileRes.getFiles().get("stderr"));
                 }
                 runVO.setResult(results);
                 deleteFile(fileId);

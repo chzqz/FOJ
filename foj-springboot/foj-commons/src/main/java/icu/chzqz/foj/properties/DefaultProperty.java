@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "foj.default")
 public class DefaultProperty {
-    public Integer maxTime;
-    public Integer maxMemory;
-    public Integer maxStack;
-    public Integer procLimit;
+    public Long maxTime;
+    public Long maxMemory;
+    public Long maxStack;
+    public Long procLimit;
     public Integer fileMax;
     public String avatarPath;
     public String testcasePath;

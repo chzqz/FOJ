@@ -75,4 +75,12 @@ public class MessageProperty {
      * 不支持的语言
      */
     public String unsupportedLanguage;
+    /**
+     * 文件上传失败
+     */
+    public String uploadFailed;
+    /**
+     * 数据未找到
+     */
+    public String dataNotFound;
 }

@@ -15,3 +15,5 @@ foj:
     usernameExists: 用户已存在 # 用户名已存在
     passwordError: 密码错误 # 密码错误
     unsupportedLanguage: 代码语言不受支持 # 不支持的语言
+    uploadFailed: 文件上传失败 # 文件上传失败
+    dataNotFound: 数据未找到 # 数据未找到

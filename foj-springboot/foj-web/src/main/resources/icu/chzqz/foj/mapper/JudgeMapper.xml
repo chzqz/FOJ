@@ -8,4 +8,36 @@
         insert into judge (q_id, q_name, u_id, u_name, submit_time, status, error_message, time, memory, code, language)
         VALUES(#{qId},#{qName},#{uId},#{uName},#{submitTime},#{status},#{errorMessage},#{time},#{memory},#{code},#{language})
     </insert>
+
+    <delete id="deleteByQids">
+        delete from judge where
+        <foreach collection="ids" item="id" separator=" or ">
+            q_id = #{id}
+        </foreach>
+    </delete>
+
+    <select id="list" resultType="icu.chzqz.foj.entity.Judge">
+        select * from judge
+        <where>
+            <if test="uid !=null">
+                and u_id = #{uid}
+            </if>
+            <if test="qid !=null">
+                and q_id = #{qid}
+            </if>
+            <if test="type!=null and type == 1">
+                and status = 0
+            </if>
+            <if test="type!=null and type == 0">
+                and status != 0
+            </if>
+            <if test="qName != null and qName!=''">
+                and q_name like concat('%',#{qName},'%')
+            </if>
+            <if test="language != null and language != ''">
+                and language = #{language}
+            </if>
+        </where>
+        order by submit_time desc
+    </select>
 </mapper>

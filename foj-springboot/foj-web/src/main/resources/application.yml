@@ -31,8 +31,8 @@ foj:
     - C++
     - Java
   default:
-    max-time: 1000
-    max-memory: 128
+    max-time: 10000000000
+    max-memory: 104857600
     max-stack: 2
     proc-limit: 50
     file-max: 10240

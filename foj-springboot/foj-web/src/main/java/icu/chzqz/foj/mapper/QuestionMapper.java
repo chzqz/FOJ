@@ -17,4 +17,10 @@ public interface QuestionMapper {
 
 
     void update(Question question);
+
+    void insert(Question question);
+
+    void deleteTagsByQids(List<Long> ids);
+
+    void deleteByIds(List<Long> ids);
 }

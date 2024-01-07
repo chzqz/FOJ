@@ -1,8 +1,11 @@
 package icu.chzqz.foj.controller;
 
+import icu.chzqz.foj.dto.ResultPageDTO;
+import icu.chzqz.foj.result.PageResult;
 import icu.chzqz.foj.result.Result;
 import icu.chzqz.foj.service.ResultService;
 import icu.chzqz.foj.vo.JudgeVO;
+import icu.chzqz.foj.vo.ResultPageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +26,11 @@ public class ResultController {
         return Result.success(judgeVO);
     }
 
-
+    @GetMapping("/user/judge/list")
+    public Result<PageResult<ResultPageVO>> list(ResultPageDTO resultPageDTO){
+        log.info("结果列表查询: {}", resultPageDTO);
+        PageResult<ResultPageVO> pageResult = resultService.list(resultPageDTO);
+        return Result.success(pageResult);
+    }
 
 }

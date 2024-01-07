@@ -1,15 +1,19 @@
 package icu.chzqz.foj.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import icu.chzqz.foj.dto.JudgeDTO;
+import icu.chzqz.foj.dto.QuestionDTO;
 import icu.chzqz.foj.dto.QuestionsPageDTO;
 import icu.chzqz.foj.dto.TestDTO;
 import icu.chzqz.foj.entity.*;
 import icu.chzqz.foj.entity.exception.AccessDeniedException;
 import icu.chzqz.foj.entity.exception.RequestFailException;
+import icu.chzqz.foj.entity.exception.SystemErrorException;
 import icu.chzqz.foj.judgeServer.DTO.RunDTO;
 import icu.chzqz.foj.judgeServer.VO.RunVO;
+import icu.chzqz.foj.judgeServer.VO.TestcaseVO;
 import icu.chzqz.foj.judgeServer.controller.JudgeController;
 import icu.chzqz.foj.judgeServer.pojo.Cmd;
 import icu.chzqz.foj.mapper.*;
@@ -28,16 +32,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -226,5 +228,135 @@ public class QuestionServiceImpl implements QuestionService {
         TestResultVO testResultVO = new TestResultVO(result.getResult(),result.getErrMessage(),result.getStatus());
 
         return testResultVO;
+    }
+
+    @Override
+    public Long createQuestion() {
+        Question question = new Question();
+        question.setUploadTime(LocalDateTime.now());
+        question.setAcCount(0);
+        question.setSubCount(0);
+        question.setLevel(0);
+        question.setMaxTime(defaultProperty.maxTime);
+        question.setMaxMemory(defaultProperty.maxMemory);
+        question.setMaxProc(defaultProperty.procLimit);
+        question.setUid((Integer) BaseContextUtil.getBaseContext().get("id"));
+        question.setStatus(0);
+        questionMapper.insert(question);
+        return question.getId();
+    }
+
+    @Override
+    @Transactional
+    public void deleteQuestion(List<Long> ids) {
+        if(ids==null || ids.isEmpty()) return;
+        //删除测试结果
+        judgeMapper.deleteByQids(ids);
+        //删除测试案例
+        testcaseMapper.deleteByQids(ids);
+        //删除标签关联表
+        questionMapper.deleteTagsByQids(ids);
+        //删除题目
+        questionMapper.deleteByIds(ids);
+    }
+
+    @Override
+    public void modifyQuestion(QuestionDTO questionDTO) {
+        Question question = new Question(questionDTO.getId(),questionDTO.getName(),questionDTO.getDescription(),null,LocalDateTime.now(),null,null,questionDTO.getTip(),questionDTO.getMaxTime(),questionDTO.getMaxMemory(),questionDTO.getMaxProc(),null,questionDTO.getStatus(),questionDTO.getLevel());
+        questionMapper.update(question);
+    }
+
+    @Override
+    @Transactional
+    public void addTestcase(MultipartFile[] files, Long qid) throws IOException, SystemErrorException {
+        HashMap<String, MultipartFile> inputFile = new HashMap<>();
+        HashMap<String, MultipartFile> outputFile = new HashMap<>();
+        for (MultipartFile file : files) {
+            String filename = file.getOriginalFilename();
+            int index = filename.lastIndexOf(".");
+            String name = filename.substring(0, index);
+            String extension = filename.substring(index+1);
+            if("in".equals(extension)){
+                inputFile.put(name,file);
+            }
+            else if("out".equals(extension)){
+                outputFile.put(name,file);
+            }
+        }
+
+        Set<String> keySet = inputFile.keySet();
+        for (String key : keySet) {
+            MultipartFile input = inputFile.getOrDefault(key, null);
+            MultipartFile output = outputFile.getOrDefault(key, null);
+            if(input==null || output==null) {
+                continue;
+            }
+            String inPath = "/"+qid+"/"+input.getOriginalFilename();
+            File in = new File(defaultProperty.testcasePath + inPath);
+            in.mkdirs();
+            in.createNewFile();
+            input.transferTo(in);
+            String outPath = "/"+qid+"/"+output.getOriginalFilename();
+            File out = new File(defaultProperty.testcasePath + outPath);
+            out.mkdirs();
+            out.createNewFile();
+            output.transferTo(out);
+            Testcase testcase = new Testcase(null,qid,inPath,outPath,1);
+            testcaseMapper.insert(testcase);
+        }
+
+    }
+
+    @Override
+    public void deleteTestcase(Long id) {
+        testcaseMapper.deleteById(id);
+    }
+
+    @Override
+    public TestcaseVO getTestcase(Long id) throws IOException, RequestFailException {
+        Testcase testcase = testcaseMapper.selectById(id);
+        if(testcase==null) throw new RequestFailException(messageProperty.dataNotFound);
+        Path inputPath = Path.of(defaultProperty.testcasePath + testcase.getInput());
+        String filename = inputPath.getFileName().toString();
+        String name = filename.substring(0,filename.lastIndexOf("."));
+        List<String> lines = Files.readAllLines(inputPath);
+        StringBuilder sb = new StringBuilder("");
+        for (String line : lines) {
+            sb.append(line).append("\n");
+        }
+        String input = sb.toString();
+        lines = Files.readAllLines(Path.of(defaultProperty.testcasePath+testcase.getOutput()));
+        sb = new StringBuilder("");
+        for (String line : lines) {
+            sb.append(line).append("\n");
+        }
+        String output = sb.toString();
+        return new TestcaseVO(testcase.getId(),testcase.getQId(),name,input,output,testcase.getStatus());
+    }
+
+    @Override
+    public List<TestcaseVO> list(Long qid) throws RequestFailException, IOException {
+        List<Testcase> list = testcaseMapper.list(qid);
+        List<TestcaseVO> result = new ArrayList<>();
+        for (Testcase testcase : list) {
+            if(testcase==null) throw new RequestFailException(messageProperty.dataNotFound);
+            Path inputPath = Path.of(defaultProperty.testcasePath + testcase.getInput());
+            String filename = inputPath.getFileName().toString();
+            String name = filename.substring(0,filename.lastIndexOf("."));
+            List<String> lines = Files.readAllLines(inputPath);
+            StringBuilder sb = new StringBuilder("");
+            for (String line : lines) {
+                sb.append(line).append("\n");
+            }
+            String input = sb.toString();
+            lines = Files.readAllLines(Path.of(defaultProperty.testcasePath+testcase.getOutput()));
+            sb = new StringBuilder("");
+            for (String line : lines) {
+                sb.append(line).append("\n");
+            }
+            String output = sb.toString();
+            result.add(new TestcaseVO(testcase.getId(),testcase.getQId(),name,input,output,testcase.getStatus()));
+        }
+        return result;
     }
 }

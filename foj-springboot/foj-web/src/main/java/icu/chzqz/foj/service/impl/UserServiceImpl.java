@@ -3,6 +3,7 @@ package icu.chzqz.foj.service.impl;
 import icu.chzqz.foj.dto.JudgeDTO;
 import icu.chzqz.foj.dto.ModifyPasswdDTO;
 import icu.chzqz.foj.dto.ModifyUserInfoDTO;
+import icu.chzqz.foj.dto.UserPageDTO;
 import icu.chzqz.foj.entity.User;
 import icu.chzqz.foj.entity.exception.RequestFailException;
 import icu.chzqz.foj.mapper.UserMapper;
@@ -14,6 +15,7 @@ import icu.chzqz.foj.util.BaseContextUtil;
 import icu.chzqz.foj.util.FormatUtil;
 import icu.chzqz.foj.util.MD5Util;
 import icu.chzqz.foj.vo.InformationVO;
+import icu.chzqz.foj.vo.UserPageVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -115,5 +119,14 @@ public class UserServiceImpl implements UserService {
         userMapper.updatePasswdById(id,MD5Util.getMD5ByString(modifyPasswdDTO.getNewPassword()));
     }
 
-
+    @Override
+    public List<UserPageVO> list(UserPageDTO userPageDTO) {
+        List<User> userList = userMapper.list(userPageDTO);
+        List<UserPageVO> result = new ArrayList<>();
+        for (User user : userList) {
+            UserPageVO userPageVO = new UserPageVO(user.getId(),user.getName(),user.getEmail(),user.getAccepted(),user.getExperiment(),user.getCreateDate(),user.getLastLoginTime(),user.getAuthority());
+            result.add(userPageVO);
+        }
+        return result;
+    }
 }

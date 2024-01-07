@@ -34,4 +34,22 @@
         </set>
         where id = #{id}
     </update>
+    <select id="list" resultType="icu.chzqz.foj.entity.User">
+        select * from user
+        <where>
+            <if test="authority!=null">
+                and authority = #{authority}
+            </if>
+            <if test="id!=null">
+                and id = #{id}
+            </if>
+            <if test="name!=null and name!=''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="email!=null and email!=''">
+                and email = #{email}
+            </if>
+        </where>
+        order by id desc
+    </select>
 </mapper>
