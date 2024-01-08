@@ -27,18 +27,18 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/login");
     }
 
-    /**
-     * 跨域支持
-     * @param registry
-     */
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("localhost:8081")
-                .allowCredentials(true)
-                .allowedMethods("GET", "POST", "DELETE", "PUT")
-                .allowedHeaders("*")
-                .maxAge(3600 * 24);
-    }
+//    /**
+//     * 跨域支持
+//     * @param registry
+//     */
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("localhost:8081")
+//                .allowCredentials(true)
+//                .allowedMethods("GET", "POST", "DELETE", "PUT")
+//                .allowedHeaders("*")
+//                .maxAge(3600 * 24);
+//    }
 
 }
