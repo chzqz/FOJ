@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="DH">
   <daohang></daohang>
   <router-view></router-view>
 </div>
@@ -21,5 +21,7 @@ export default {
 </script>
 
 <style>
-
+#DH{
+  margin-left: 11%;
+}
 </style>

@@ -1,5 +1,6 @@
 <template>
-  <div>
+  
+  <div class="WK">
     <div id="tx" class="flex-container">
       <el-col :span="12">
         <div class="demo-basic--circle"></div>
@@ -132,8 +133,8 @@ components: {
 <style scoped>
  
 #tx {
-  margin-left: 350px;
-  margin-top: 25px;
+  margin-left: 170px;
+  margin-top: 20px;
   display: flex;
   flex-direction: row;
 }
@@ -191,7 +192,7 @@ components: {
     background-color: #ffffff;
     color: #333;
 
-    margin-left: 340px;
+    margin-left: 160px;
   
   }
   
@@ -265,5 +266,9 @@ components: {
               width: auto;
 
 }
-  
+.WK{
+  width:1440px;
+ 
+}
+
 </style>

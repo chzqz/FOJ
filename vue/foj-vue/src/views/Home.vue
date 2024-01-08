@@ -1,12 +1,12 @@
 <template>
+<div id="ZT">
     <container>
       
-      <div id="dh">
-        
-      </div>
+     
       <el-main ><TiDan id="TD"></TiDan></el-main>
       
     </container>
+  </div>
   </template>
   
   <script>
@@ -45,16 +45,20 @@
   
   #dh {
     width: 100%;
-    margin-left: 0%;
+    margin-left: -10%;
     margin-top: 0%;
     background-color: rgb(255, 255, 255);
   }
   #TD{
     margin-top: 2%;
+
     border-radius: 20px;
   
   }
+  #ZT{
+     margin-left: -11%; 
   
+  }
   
   </style>
   

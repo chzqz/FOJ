@@ -1,5 +1,9 @@
  <template>
     <div id="BD">
+      <div style="width:1440px; 
+      display: flex;
+      justify-content: center;
+      align-items: center;">
       <div class="container">
         <div class="tit">登录</div>
         <input type="text" placeholder="账号" v-model="username">
@@ -7,6 +11,7 @@
         <button @click="login">登录</button>
         <span>没有账号？<router-link to="/register">去注册</router-link></span>
       </div>
+      <router-view></router-view>
       <div class="square">
         <ul>
           <li></li>
@@ -26,6 +31,7 @@
         </ul>
       </div>
     </div>
+  </div>
   </template>
   
   <script>
@@ -35,16 +41,55 @@
     data() {
       return {
         username: '',
-        password: ''
+        password: '',
+        msg:' '
       };
     },
     methods: {
       login() {
         // 在这里实现登录逻辑
         console.log('登录按钮被点击');
+        let url='http://localhost:8080/login';
+        const params = {
+        username:this.username,
+        password:this.password
+        };
+        console.log(params);
+     
+        axios.post(url,
+                params
+        ).then((response)=> {
+          console.log(response);
+          
+          var code=response.data.code
+         if(code!=200) this.wornning(response.data.msg)
+         else{
+          let date = new Date(); //获取当前时间
+          date.setTime(date.getTime() + 365 * 24 * 3600 * 1000); //格式化为cookie识别的时间
+          document.cookie = "token" + "=" + response.data.data.token + ";expires=" + date.toGMTString();  //设置cookie
+          document.cookie = "id" + "=" + response.data.data.id + ";expires=" + date.toGMTString();  //设置cookie
+          document.cookie = "name" + "=" + response.data.data.name + ";expires=" + date.toGMTString();  //设置cookie
+          document.cookie = "authority" + "=" + response.data.data.authority + ";expires=" + date.toGMTString();  //设置cookie
+          console.log(document.cookie);
+          this.$router.push({ name:'Home' });
+          // query:{ name:‘word’, age:‘11’ } 
+
+        }
+        }).catch(function(error) {
+          console.log("错误："+ error);
+        });
+      
+      },
+      wornning(msg){
+        this.$message({
+          message:msg,
+          type: 'warning'
+        })
       }
     }
-  };
+    
+  }
+
   </script>
   
 
