@@ -5,6 +5,7 @@ import icu.chzqz.foj.dto.ModifyPasswdDTO;
 import icu.chzqz.foj.dto.ModifyUserInfoDTO;
 import icu.chzqz.foj.dto.UserPageDTO;
 import icu.chzqz.foj.entity.exception.RequestFailException;
+import icu.chzqz.foj.result.PageResult;
 import icu.chzqz.foj.vo.InformationVO;
 import icu.chzqz.foj.vo.UserPageVO;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,5 +52,5 @@ public interface UserService {
      * @param userPageDTO
      * @return
      */
-    List<UserPageVO> list(UserPageDTO userPageDTO);
+    PageResult<UserPageVO> list(UserPageDTO userPageDTO);
 }

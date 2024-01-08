@@ -1,5 +1,6 @@
 package icu.chzqz.foj.mapper;
 
+import com.github.pagehelper.Page;
 import icu.chzqz.foj.dto.UserPageDTO;
 import icu.chzqz.foj.entity.User;
 import org.apache.ibatis.annotations.Insert;
@@ -42,5 +43,6 @@ public interface UserMapper {
     @Update("update user set password = #{passwd} where id = #{id}")
     void updatePasswdById(Integer id, String passwd);
 
-    List<User> list(UserPageDTO userPageDTO);
+
+    Page<User> list(UserPageDTO userPageDTO);
 }

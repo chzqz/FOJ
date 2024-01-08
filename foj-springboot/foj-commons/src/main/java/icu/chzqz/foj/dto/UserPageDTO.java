@@ -14,4 +14,6 @@ public class UserPageDTO {
     Integer id;
     String name;
     String email;
+    Integer page;
+    Integer pageSize;
 }

@@ -1,6 +1,7 @@
 package icu.chzqz.foj.controller;
 
 import icu.chzqz.foj.dto.UserPageDTO;
+import icu.chzqz.foj.result.PageResult;
 import icu.chzqz.foj.result.Result;
 import icu.chzqz.foj.service.UserService;
 import icu.chzqz.foj.vo.UserPageVO;
@@ -21,9 +22,9 @@ public class AdminController {
     UserService userService;
 
     @GetMapping("/user/list")
-    public Result<List<UserPageVO>> userList(UserPageDTO userPageDTO){
+    public Result<PageResult<UserPageVO>> userList(UserPageDTO userPageDTO){
         log.info("用户列表: {}", userPageDTO);
-        List<UserPageVO> list = userService.list(userPageDTO);
+        PageResult<UserPageVO> list = userService.list(userPageDTO);
         return Result.success(list);
     }
 }

@@ -1,5 +1,7 @@
 package icu.chzqz.foj.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import icu.chzqz.foj.dto.JudgeDTO;
 import icu.chzqz.foj.dto.ModifyPasswdDTO;
 import icu.chzqz.foj.dto.ModifyUserInfoDTO;
@@ -10,6 +12,7 @@ import icu.chzqz.foj.mapper.UserMapper;
 import icu.chzqz.foj.properties.DefaultProperty;
 import icu.chzqz.foj.properties.MessageProperty;
 import icu.chzqz.foj.properties.ServerProperty;
+import icu.chzqz.foj.result.PageResult;
 import icu.chzqz.foj.service.UserService;
 import icu.chzqz.foj.util.BaseContextUtil;
 import icu.chzqz.foj.util.FormatUtil;
@@ -120,13 +123,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserPageVO> list(UserPageDTO userPageDTO) {
-        List<User> userList = userMapper.list(userPageDTO);
+    public PageResult<UserPageVO> list(UserPageDTO userPageDTO) {
+        PageHelper.startPage(userPageDTO.getPage(),userPageDTO.getPageSize());
+        Page<User> page = userMapper.list(userPageDTO);
+        List<User> userList = page.getResult();
         List<UserPageVO> result = new ArrayList<>();
         for (User user : userList) {
             UserPageVO userPageVO = new UserPageVO(user.getId(),user.getName(),user.getEmail(),user.getAccepted(),user.getExperiment(),user.getCreateDate(),user.getLastLoginTime(),user.getAuthority());
             result.add(userPageVO);
         }
-        return result;
+        return new PageResult<>(page.getTotal(),result);
     }
 }
