@@ -67,9 +67,8 @@
     </delete>
 
     <select id="list" resultType="icu.chzqz.foj.entity.Question">
-        select distinct q.id as id, q.name as name, q.ac_count as ac_count, q.sub_count as sub_count from questions q, questions_tag t
+        select distinct q.id as id, q.name as name, q.ac_count as ac_count, q.sub_count as sub_count from questions q left join questions_tag t on q.id = t.q_id
         <where>
-            q.id = t.q_id
             <if test="id != null">
                 and q.id = #{id}
             </if>

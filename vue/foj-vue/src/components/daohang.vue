@@ -5,8 +5,9 @@
       <div id="ml" class="wide-ml">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           
-         <el-tab-pane label="题单" name="first"></el-tab-pane>
+         <el-tab-pane label="题单" name="first" ></el-tab-pane>
           <el-tab-pane label="个人主页" name="second"></el-tab-pane>
+          <el-tab-pane label="个人主页" name="three"></el-tab-pane>
    
           <template slot-scope="props">
             <div class="custom-tab" :class="{ 'is-active': props.isActive }">{{ props.label }}</div>
@@ -30,6 +31,11 @@
 .horizontal-container {
   display: flex;
   flex-direction: row;
+  
+}
+.dh{
+  border-bottom: 3px solid #E4E7ED; 
+  text-align: center;
 }
 
 #lg {
@@ -72,6 +78,38 @@
 .wide-ml {
   width: 70%; /* 根据需要调整宽度值 */
 }
+</style>
+
+<style scoped>
+  /deep/ .el-tabs__header{
+      margin: 0;
+  }
+  /deep/ .el-tabs__nav-scroll{
+    height: 100%;
+  }
+  /deep/ .el-tabs__item{
+    height: 100%;
+  }
+  /deep/ .el-tabs--top{
+    height: 100%;
+  }
+  /deep/ .el-tabs__header {
+    height: 100%;
+  }
+  /deep/ .el-tabs__nav-wrap{
+    height: 100%;
+  }
+  /deep/ .el-tabs__nav{
+    height: 100%;
+  }
+  /deep/ .el-tabs__active-bar{
+    height: 3px;
+  }
+  /deep/ .el-tabs__nav-wrap::after{
+    display: none;
+  }
+
+
 </style>
 
 <script>

@@ -70,10 +70,9 @@ public class QuestionServiceImpl implements QuestionService {
         }
         if(questionsPageDTO.getUid() ==null) questionsPageDTO.setUid((Integer) BaseContextUtil.getBaseContext().get("id"));
         PageHelper.startPage(questionsPageDTO.getPage(),questionsPageDTO.getPageSize());
-        List<Question> questionList = questionMapper.list(questionsPageDTO);
+        Page<Question> page = questionMapper.list(questionsPageDTO);
 
-        PageInfo<Question> pageInfo = new PageInfo<>(questionList);
-        List<Question> list = pageInfo.getList();
+        List<Question> list = page.getResult();
         ArrayList<QuestionsPageVO> questionsPageVOS = new ArrayList<>();
         for (Question question : list) {
             Long id = question.getId();
@@ -108,7 +107,7 @@ public class QuestionServiceImpl implements QuestionService {
                     .build();
             questionsPageVOS.add(questionsPageVO);
         }
-        return new PageResult(pageInfo.getTotal(),questionsPageVOS);
+        return new PageResult(page.getTotal(),questionsPageVOS);
     }
 
     @Override
