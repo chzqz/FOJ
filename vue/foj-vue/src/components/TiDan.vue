@@ -20,14 +20,11 @@
     </el-table>
     
     <div class="block">
-      <el-pagination  v-for="arry in arrys" :key="arry" 
+      <el-pagination  
         layout="prev, pager, next"
         :total="totalItems"
         @current-change="handleCurrentChange"
       >
-    
-      
-      
     </el-pagination> 
     </div>
   </div>

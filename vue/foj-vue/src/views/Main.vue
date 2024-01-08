@@ -26,10 +26,12 @@ export default {
 #BG{
   background: linear-gradient(200deg,#e0faf2, #b3d4f7); /* 修改这里的颜色值 */
   overflow: hidden;
+  height: 100%;
 }
 #DH{
   width:1440px;
   margin:auto;
+  
 
 }
 </style>
