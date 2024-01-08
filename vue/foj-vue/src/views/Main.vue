@@ -1,7 +1,9 @@
 <template>
-  <div id="DH">
+  <div id="BG">
+    <div id="DH">
   <daohang></daohang>
   <router-view></router-view>
+  </div>
 </div>
 </template>
 
@@ -21,5 +23,13 @@ export default {
 </script>
 
 <style>
+#BG{
+  background: linear-gradient(200deg,#e0faf2, #b3d4f7); /* 修改这里的颜色值 */
+  overflow: hidden;
+}
+#DH{
+  width:1440px;
+  margin:auto;
 
+}
 </style>

@@ -105,8 +105,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(200deg, #b3d4f7, #e0faf2); /* 修改这里的颜色值 */
-  overflow: hidden;
+
 }
 .container{
     /* margin-left: 38%;

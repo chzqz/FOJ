@@ -9,7 +9,7 @@ import Answer from '../views/Answer'
 Vue.use(VueRouter)
 const routes = [    
     {
-      path:'/main', 
+      path:'/', 
       component: Main,
       
       children: [
@@ -33,20 +33,20 @@ const routes = [
           path: 'Answer',
           component: Answer,
         },
-      
+        {
+          path: 'Login',
+          component: Login,
+        },
+        {
+          path: 'NewLogin',
+          component: NewLogin,
+        }
+       
         
       ],
      
     },
-    {
-      path: '/Login',
-      component: Login,
-    },
-    {
-      path: '/NewLogin',
-      component: NewLogin,
-    }
-   
+  
     
   ]
   const router = new VueRouter({
