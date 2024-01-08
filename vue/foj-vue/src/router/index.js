@@ -5,6 +5,7 @@ import Home from '../views/Home.vue'
 import User from '../views/User.vue'
 import Log from  '../views/Log'
 import NewLog from '../views/NewLog'
+import Answer from '../views/Answer'
 Vue.use(VueRouter)
 const routes = [    
     {
@@ -17,6 +18,7 @@ const routes = [
           // 当 /user/:id/posts 匹配成功
           // UserPosts 将被渲染到 User 的 <router-view> 内部
           path: 'Home',
+          name:'Home',
           component: Home,
         },
         {
@@ -24,6 +26,12 @@ const routes = [
           // UserPosts 将被渲染到 User 的 <router-view> 内部
           path: 'User',
           component: User,
+        },
+        {
+          // 当 /user/:id/posts 匹配成功
+          // UserPosts 将被渲染到 User 的 <router-view> 内部
+          path: 'Answer',
+          component: Answer,
         },
       
         
