@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS user(
 	`comment` TEXT COMMENT '用户介绍',
 );
 
+
 -- 创建题目表
 CREATE TABLE IF NOT EXISTS questions(
 	id BIGINT AUTO_INCREMENT PRIMARY KEY,
