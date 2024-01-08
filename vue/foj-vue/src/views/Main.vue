@@ -21,7 +21,5 @@ export default {
 </script>
 
 <style>
-#DH{
-  margin-left: 11%;
-}
+
 </style>

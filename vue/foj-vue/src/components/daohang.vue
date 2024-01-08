@@ -1,7 +1,7 @@
  <template>
   <div class="dh">
     <div class="horizontal-container">
-      <div id="lg"><Login></Login></div>
+      <div id="lg"><Logo></Logo></div>
       <div id="ml" class="wide-ml">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           
@@ -113,7 +113,7 @@
 </style>
 
 <script>
-import Login from './Login.vue';
+import Logo from './Logo.vue';
 import Avatar from './Avatar.vue';
 
 export default {
@@ -126,7 +126,7 @@ export default {
   },
 
   components: {
-    Login,
+    Logo,
     Avatar,
   },
   methods: {

@@ -12,19 +12,23 @@
       @sort-change="handleSortChange"
     >
     
-      <el-table-column prop="state" label="状态" width="100px" ></el-table-column>
+      <el-table-column prop="status" label="状态" width="100px" ></el-table-column>
       <el-table-column prop="name" label="题目" sortable  width="250px"></el-table-column>
-      <el-table-column prop="rate" label="通过率" sortable width="100px"></el-table-column>
+      <el-table-column prop="passRate" label="通过率" sortable width="100px"></el-table-column>
       <el-table-column prop="level" label="难度" sortable width="110px"></el-table-column>
       <el-table-column prop="tags" label="标签"></el-table-column>
     </el-table>
     
     <div class="block">
-      <el-pagination
+      <el-pagination  v-for="arry in arrys" :key="arry" 
         layout="prev, pager, next"
         :total="totalItems"
         @current-change="handleCurrentChange"
-      ></el-pagination>
+      >
+    
+      
+      
+    </el-pagination> 
     </div>
   </div>
   </div>
@@ -37,7 +41,10 @@ import Search from './Search.vue';
 export default {
   data() {
     return {
-      tableData: [], // 从后端获取的数据
+      tableData: [
+    
+
+      ], // 从后端获取的数据
       totalItems: 100, // 从后端获取的总条目数
       currentPage: 1, // 当前页码
       pageSize: 10, // 每页显示的条目数
@@ -45,6 +52,7 @@ export default {
         prop: '', // 当前排序的属性名
         order: '', // 当前排序的顺序，可选值为 'ascending' 或 'descending'
       },
+      arrys:[],
     };
   },
   components: {
@@ -85,10 +93,9 @@ export default {
       .then(response => {
         // 从响应中获取数据
         console.log(params);
-        const responseData = response.data;
+        this.tableData = response.data.data.data;
         
-        // 这里假设 responseData 是一个包含所有数据的数组
-        this.tableData = responseData.slice(start, end);
+        // 这里假设 responseData 是一个包含所有数据的数
 
         // 如果后端提供了总条目数，你可能需要更新总条目数
         // this.totalItems = responseData.length;

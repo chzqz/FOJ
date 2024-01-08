@@ -3,8 +3,8 @@ import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
 import Home from '../views/Home.vue'
 import User from '../views/User.vue'
-import Log from  '../views/Log'
-import NewLog from '../views/NewLog'
+import Login from  '../views/Login'
+import NewLogin from '../views/NewLogin'
 import Answer from '../views/Answer'
 Vue.use(VueRouter)
 const routes = [    
@@ -39,12 +39,12 @@ const routes = [
      
     },
     {
-      path: '/Log',
-      component: Log,
+      path: '/Login',
+      component: Login,
     },
     {
-      path: '/NewLog',
-      component: NewLog,
+      path: '/NewLogin',
+      component: NewLogin,
     }
    
     
