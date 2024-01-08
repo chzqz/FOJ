@@ -13,10 +13,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="foj-commons" target="17" />
-      <module name="foj-judgeServer" target="17" />
-      <module name="foj-springboot" target="1.8" />
-      <module name="foj-web" target="17" />
       <module name="hoj-judgeServer" target="1.8" />
     </bytecodeTargetLevel>
   </component>

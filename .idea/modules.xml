@@ -3,10 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/FOJ.iml" filepath="$PROJECT_DIR$/.idea/FOJ.iml" />
-      <module fileurl="file://$PROJECT_DIR$/foj-springboot/foj-commons/foj-commons.iml" filepath="$PROJECT_DIR$/foj-springboot/foj-commons/foj-commons.iml" />
-      <module fileurl="file://$PROJECT_DIR$/foj-springboot/foj-judgeServer/foj-judgeServer.iml" filepath="$PROJECT_DIR$/foj-springboot/foj-judgeServer/foj-judgeServer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/foj-springboot/foj-springboot.iml" filepath="$PROJECT_DIR$/foj-springboot/foj-springboot.iml" />
-      <module fileurl="file://$PROJECT_DIR$/foj-springboot/foj-web/foj-web.iml" filepath="$PROJECT_DIR$/foj-springboot/foj-web/foj-web.iml" />
     </modules>
   </component>
 </project>
