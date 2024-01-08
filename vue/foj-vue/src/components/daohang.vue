@@ -1,7 +1,7 @@
  <template>
   <div class="dh">
     <div class="horizontal-container">
-      <div id="lg"><Logo></Logo></div>
+      <div id="lg" style="margin: :left;"><Logo></Logo></div>
       <div id="ml" class="wide-ml">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           
@@ -31,16 +31,21 @@
 .horizontal-container {
   display: flex;
   flex-direction: row;
+  width: 1440px;
+  margin: auto;
+  
   
 }
 .dh{
   border-bottom: 3px solid #E4E7ED; 
   text-align: center;
+  background-color: #FFFFFF;
+  width: 100%;
 }
 
 #lg {
   margin-top: 1%;
-  margin-left: 13%;
+  margin-left: 5%;
 }
 
 #ml {
@@ -81,31 +86,31 @@
 </style>
 
 <style scoped>
-  /deep/ .el-tabs__header{
+  ::v-deep .el-tabs__header{
       margin: 0;
   }
-  /deep/ .el-tabs__nav-scroll{
+  ::v-deep .el-tabs__nav-scroll{
     height: 100%;
   }
-  /deep/ .el-tabs__item{
+  ::v-deep .el-tabs__item{
     height: 100%;
   }
-  /deep/ .el-tabs--top{
+  ::v-deep .el-tabs--top{
     height: 100%;
   }
-  /deep/ .el-tabs__header {
+  ::v-deep .el-tabs__header {
     height: 100%;
   }
-  /deep/ .el-tabs__nav-wrap{
+  ::v-deep .el-tabs__nav-wrap{
     height: 100%;
   }
-  /deep/ .el-tabs__nav{
+  ::v-deep .el-tabs__nav{
     height: 100%;
   }
-  /deep/ .el-tabs__active-bar{
+  ::v-deep .el-tabs__active-bar{
     height: 3px;
   }
-  /deep/ .el-tabs__nav-wrap::after{
+  ::v-deep .el-tabs__nav-wrap::after{
     display: none;
   }
 

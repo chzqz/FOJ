@@ -1,7 +1,9 @@
 <template>
+  
   <div id="BG">
+    <daohang></daohang>
     <div id="DH">
-  <daohang></daohang>
+
   <router-view></router-view>
   </div>
 </div>
