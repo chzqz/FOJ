@@ -3,10 +3,7 @@ package icu.chzqz.foj.mapper;
 import com.github.pagehelper.Page;
 import icu.chzqz.foj.dto.UserPageDTO;
 import icu.chzqz.foj.entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -45,4 +42,7 @@ public interface UserMapper {
 
 
     Page<User> list(UserPageDTO userPageDTO);
+
+    @Delete("delete from user where id =#{id}")
+    void delete(Integer id);
 }

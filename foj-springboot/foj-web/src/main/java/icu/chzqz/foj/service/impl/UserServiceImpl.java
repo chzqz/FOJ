@@ -2,10 +2,7 @@ package icu.chzqz.foj.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import icu.chzqz.foj.dto.JudgeDTO;
-import icu.chzqz.foj.dto.ModifyPasswdDTO;
-import icu.chzqz.foj.dto.ModifyUserInfoDTO;
-import icu.chzqz.foj.dto.UserPageDTO;
+import icu.chzqz.foj.dto.*;
 import icu.chzqz.foj.entity.User;
 import icu.chzqz.foj.entity.exception.RequestFailException;
 import icu.chzqz.foj.mapper.UserMapper;
@@ -133,5 +130,22 @@ public class UserServiceImpl implements UserService {
             result.add(userPageVO);
         }
         return new PageResult<>(page.getTotal(),result);
+    }
+
+    @Override
+    public void deleteUser(Integer id) {
+        userMapper.delete(id);
+    }
+
+    @Override
+    public void modifyUser(ModifyUserDTO modifyUserDTO) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        User user = User.builder()
+                .id(modifyUserDTO.getId())
+                .name(modifyUserDTO.getName())
+                .email(modifyUserDTO.getEmail())
+                .password(MD5Util.getMD5ByString(modifyUserDTO.getPassword()))
+                .authority(modifyUserDTO.getAuthority())
+                .build();
+        userMapper.update(user);
     }
 }

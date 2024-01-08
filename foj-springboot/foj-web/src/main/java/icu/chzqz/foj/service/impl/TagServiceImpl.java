@@ -23,4 +23,21 @@ public class TagServiceImpl implements TagService {
     public Tag getTag(Long id) {
         return tagMapper.selectById(id);
     }
+
+    @Override
+    public Long addTag(TagDTO tagDTO) {
+        Tag tag = new Tag(null,tagDTO.getName(),tagDTO.getColor());
+        tagMapper.insert(tag);
+        return tag.getId();
+    }
+
+    @Override
+    public void deleteTag(Long id) {
+        tagMapper.delete(id);
+    }
+
+    @Override
+    public void modifyTag(Tag tag) {
+        tagMapper.update(tag);
+    }
 }

@@ -1,9 +1,6 @@
 package icu.chzqz.foj.service;
 
-import icu.chzqz.foj.dto.JudgeDTO;
-import icu.chzqz.foj.dto.ModifyPasswdDTO;
-import icu.chzqz.foj.dto.ModifyUserInfoDTO;
-import icu.chzqz.foj.dto.UserPageDTO;
+import icu.chzqz.foj.dto.*;
 import icu.chzqz.foj.entity.exception.RequestFailException;
 import icu.chzqz.foj.result.PageResult;
 import icu.chzqz.foj.vo.InformationVO;
@@ -53,4 +50,16 @@ public interface UserService {
      * @return
      */
     PageResult<UserPageVO> list(UserPageDTO userPageDTO);
+
+    /**
+     * 删除用户
+     * @param id
+     */
+    void deleteUser(Integer id);
+
+    /**
+     * 修改用户信息
+     * @param modifyUserDTO
+     */
+    void modifyUser(ModifyUserDTO modifyUserDTO) throws UnsupportedEncodingException, NoSuchAlgorithmException;
 }

@@ -19,4 +19,22 @@ public interface TagService {
      * @return
      */
     Tag getTag(Long id);
+
+    /**
+     * @param tagDTO
+     * @return
+     */
+    Long addTag(TagDTO tagDTO);
+
+    /**
+     * 删除标签
+     * @param id
+     */
+    void deleteTag(Long id);
+
+    /**
+     * 修改标签
+     * @param tag
+     */
+    void modifyTag(Tag tag);
 }

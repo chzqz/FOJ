@@ -2,8 +2,7 @@ package icu.chzqz.foj.mapper;
 
 import icu.chzqz.foj.dto.TagDTO;
 import icu.chzqz.foj.entity.Tag;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -18,4 +17,12 @@ public interface TagMapper {
 
     @Select("select * from tag where id = #{id}")
     Tag selectById(Long id);
+
+    Long insert(Tag tag);
+
+    @Delete("delete from tag where id = #{id}")
+    void delete(Long id);
+
+
+    void update(Tag tag);
 }

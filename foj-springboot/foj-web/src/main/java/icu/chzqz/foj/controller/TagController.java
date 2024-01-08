@@ -5,10 +5,9 @@ import icu.chzqz.foj.entity.Tag;
 import icu.chzqz.foj.result.Result;
 import icu.chzqz.foj.service.TagService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,5 +37,26 @@ public class TagController {
         log.info("查询标签: {}", id);
         Tag tag = tagService.getTag(id);
         return Result.success(tag);
+    }
+
+    @PostMapping("/admin/tags")
+    public Result<Long> addTag(@RequestBody TagDTO tagDTO){
+        log.info("新增标签: {}", tagDTO);
+        Long id = tagService.addTag(tagDTO);
+        return Result.success(id);
+    }
+
+    @DeleteMapping("/admin/tags")
+    public Result deleteTag(@RequestBody Long id){
+        log.info("删除标签: {}", id);
+        tagService.deleteTag(id);
+        return Result.success();
+    }
+
+    @PutMapping("admin/tags")
+    public Result modifyTag(@RequestBody Tag tag){
+        log.info("修改标签: {}", tag);
+        tagService.modifyTag(tag);
+        return Result.success();
     }
 }
