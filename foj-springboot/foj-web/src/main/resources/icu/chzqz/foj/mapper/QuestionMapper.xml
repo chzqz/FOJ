@@ -75,6 +75,9 @@
             <if test="name !=null and name!=''">
                 and q.name like concat('%',#{name},"%")
             </if>
+            <if test="level!=null">
+                and q.level = #{level}
+            </if>
             <if test="tags!=null">
                 and <foreach collection="tags" item="tag" open="(" close=")" separator=" or ">
                     t.t_id = #{tag}

@@ -12,17 +12,20 @@
           <template slot-scope="props">
             <div class="custom-tab" :class="{ 'is-active': props.isActive }">{{ props.label }}</div>
           </template>
-         
         </el-tabs>
-
       </div>
-      <div id="WZ">
-      <el-button type="text">登录</el-button>
-      <el-button type="text">注册</el-button>
-    </div>
-      <div id="tx"><Avatar></Avatar></div>
 
-      <div id="name"><span v-if="username">{{ username }}</span></div>
+        <div id="WZ">
+          <el-button type="text">登录</el-button>
+          或
+          <el-button type="text">注册</el-button>
+        </div>
+        <div id="tx">
+          <Avatar></Avatar>
+        </div>
+        <div id="name">
+          <span v-if="username">{{ username }}</span>
+        </div>
     </div>
   </div>
 </template>
