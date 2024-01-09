@@ -1,6 +1,6 @@
 <template>
     <div id="BD">
-      <div :id="Loginpage_1" >
+      <div :id="Loginpage_1">
       <div style="width:1440px; 
       display: flex;
       justify-content: center;
@@ -11,7 +11,7 @@
         <input type="password" placeholder="密码" v-model="password">
         <button  class="loginbutton" @click="login">登录</button> 
         <span>没有账号？<el-button type="text"  native-type="button" @click="CreateLogin">去注册</el-button></span>
-       
+     
       </div>
       <div class="square">
         <ul>
@@ -121,7 +121,7 @@
 .container{
     /* margin-left: 38%;
     margin-top: 8%; */
-   
+
     z-index: 1;
     background-color: #fff;
     border-radius: 15px;
