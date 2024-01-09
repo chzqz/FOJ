@@ -55,10 +55,7 @@
     border-radius: 20px;
   
   }
-  #ZT{
-     margin-left: -11%; 
-  
-  }
+ 
   
   </style>
   

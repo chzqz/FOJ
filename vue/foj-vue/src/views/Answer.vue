@@ -171,6 +171,11 @@ margin-left: 5px;
 margin-top: -240px;
 border-radius: 20px; 
 }
+#card3{
+  width: 1090px;
+  margin-top:5px;
+  border-radius: 20px;
+}
 #Tabs{
   margin-left: -4%;
   margin-top:-4%;
