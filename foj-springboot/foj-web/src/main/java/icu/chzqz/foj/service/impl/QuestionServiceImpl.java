@@ -111,13 +111,29 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public QuestionVO getQuestion(Long id) {
+    public QuestionVO getQuestion(Long id) throws IOException {
         Question question = questionMapper.selectById(id);
 
         Double passRate;
         if(question.getSubCount().equals(0)) passRate = 0D;
         else passRate = 1.0*question.getAcCount()/question.getSubCount();
         List<Testcase> testcases = testcaseMapper.selectByQIdStatus(id,2);
+        for (Testcase testcase : testcases) {
+            Path path = Path.of(defaultProperty.testcasePath + testcase.getInput());
+            List<String> strings = Files.readAllLines(path);
+            StringBuilder input = new StringBuilder("");
+            for (String string : strings) {
+                input.append(string).append("\n");
+            }
+            path = Path.of(defaultProperty.testcasePath + testcase.getOutput());
+            strings = Files.readAllLines(path);
+            StringBuilder output = new StringBuilder("");
+            for (String string : strings) {
+                output.append(string).append("\n");
+            }
+            testcase.setInput(input.toString());
+            testcase.setOutput(output.toString());
+        }
         List<Tag> tags = tagMapper.selectByQId(id);
 
         QuestionVO questionVO = new QuestionVO(id,question.getName(),question.getDescription(),question.getTip(),question.getMaxTime(),question.getMaxMemory(),testcases,question.getUid(),passRate,tags,question.getLevel());

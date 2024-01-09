@@ -30,7 +30,7 @@ public interface QuestionService {
      * @param id
      * @return
      */
-    QuestionVO getQuestion(Long id);
+    QuestionVO getQuestion(Long id) throws IOException;
 
     /**
      * 查询语言列表

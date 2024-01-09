@@ -43,7 +43,7 @@ public class QuestionController {
     }
 
     @GetMapping("/user/question/{id}")
-    public Result<QuestionVO> getQuestion(@PathVariable Long id){
+    public Result<QuestionVO> getQuestion(@PathVariable Long id) throws IOException {
         log.info("获取题目信息: {}", id);
         QuestionVO question = questionService.getQuestion(id);
         return Result.success(question);
