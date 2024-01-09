@@ -3,34 +3,56 @@
   <div >
     <Search  @fromchild="handleSelectionChange" />  <!-- ref="Srch" -->
     <div id="TD">
-    <el-table
-      :data="tableData"
-      style="width: 100%; margin-bottom: 20px;;"
-      row-key="id"
-      stripe
-      default-expand-all
-      :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-      @sort-change="handleSortChange"
-    >
+      <el-table
+    :data="tableData"
+    style="width: 100%"  >
+    <el-table-column
+      label="状态"
+      width="180">
+      <template slot-scope="scope">
+      
+        <span style="margin-left: 10px">{{ scope.row.status }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="题目id"
+      width="180">
+      <template slot-scope="scope">
+      
+        <span style="margin-left: 10px">{{ scope.row.id }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="题目名"
+      width="200">
+      <template slot-scope="scope">
+        <!-- <el-popover trigger="hover" placement="top">
+          <p>姓名: {{ scope.row.name }}</p>
+          <p>住址: {{ scope.row.address }}</p>
+          <div slot="reference" class="name-wrapper"> -->
+            <!-- <el-tag size="medium">{{ scope.row.name }}</el-tag>
+          
+        </el-popover> -->
+        <span style="margin-left: -10px" @click="Searchname">
+          <el-button type="text" @click="Searchname(scope.row.id)"> {{ scope.row.name }}</el-button>
+        </span>
+      </template>
+    </el-table-column>
+    <el-table-column label="难度" width="180">
+    <template slot-scope="scope">
+      <span style="margin-left: 0px">{{ formatDifficulty(scope.row) }}</span>
+    </template>
+  </el-table-column>
+    <el-table-column
+      label="标签"
+      >
+      <template slot-scope="scope">
+      
     
-      <el-table-column prop="status" label="状态" width="100px" ></el-table-column>
-      <el-table-column prop="name" label="题目"   width="250px"></el-table-column>
-      <el-table-column
-          prop="passRate"
-          label="通过率"
-          sortable
-          width="100px"
-          :formatter="formatPassRate"
-          ></el-table-column>
-      <el-table-column 
-      prop="level" 
-      label="难度" 
-      sortable 
-      width="110px"
-      :formatter="formatDifficulty"
-      ></el-table-column>
-      <el-table-column prop="tags" label="标签"></el-table-column>
-    </el-table>
+        <span v-for="(item, index) in scope.row.tags.slice(0,2)" :key="index"> <el-tag :color="item.color" effect="dark">{{ item.name }}</el-tag> </span>
+      </template>
+    </el-table-column>
+  </el-table>
     
     <div class="block">
       <el-pagination    
@@ -44,7 +66,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+
 import Search from './Search.vue';
 
 export default {
@@ -63,6 +85,7 @@ export default {
         value2: [],
         // 添加其他需要的参数
       }
+      
     };
   },
   components: {
@@ -86,7 +109,7 @@ export default {
     fetchTableData() {
       const start = (this.currentPage - 1) * this.pageSize;
       const end = start + this.pageSize;
-      let url = 'http://localhost:8080/user/questions/list';
+      let url = '/user/questions/list';
       
       const params = {  
         uid:'',
@@ -100,7 +123,7 @@ export default {
       };
  
       // 发送HTTP GET请求
-      axios.get(url, { params })
+      this.$axios.get(url, { params })
         .then(response => {
           // 从响应中获取数据
           this.tableData = response.data.data.data;
@@ -129,17 +152,29 @@ export default {
       }
     },
     handleSelectionChange(res) {
-      console.log("gtygtygytygt"+this.selectionOptions)
+    
       this.selectionOptions = res;
       // 根据选择框的值更新排序条件
       // this.updateSortOptions();
       // 重新获取表格数据
       this.fetchTableData();
     },
+    Searchname(ID){
+      console.log("jkljdlakjl",ID);
+  
+      this.$router.push(
+        { 
+          path:'/answer',
+          query: {
+              questionData_id:ID ,
+                        }
+       });
+      
+    }
   },
   mounted() {
     // 组件挂载时初始化数据
-   
+    
     this.fetchTableData();
   },
 };

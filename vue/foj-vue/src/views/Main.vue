@@ -24,7 +24,7 @@ export default {
   };
 </script>
 
-<style>
+<style scoped>
 #BG{
   background: linear-gradient(200deg,#e0faf2, #b3d4f7); /* 修改这里的颜色值 */
   min-height: 100%;

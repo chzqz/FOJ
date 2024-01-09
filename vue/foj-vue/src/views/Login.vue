@@ -39,7 +39,6 @@
   </template>
   
   <script>
-  import axios from 'axios'
   
   export default {
     data() {
@@ -55,14 +54,14 @@
       login() {
         // 在这里实现登录逻辑
         console.log('登录按钮被点击');
-        let url='http://localhost:8080/login';
+        let url='/login';
         const params = {
         username:this.username,
         password:this.password
         };
         console.log(params);
      
-        axios.post(url,
+        this.$axios.post(url,
                 params
         ).then((response)=> {
           console.log(response);
@@ -77,7 +76,7 @@
           document.cookie = "name" + "=" + response.data.data.name + ";expires=" + date.toGMTString();  //设置cookie
           document.cookie = "authority" + "=" + response.data.data.authority + ";expires=" + date.toGMTString();  //设置cookie
           console.log(document.cookie);
-          this.$router.push({ name:'Home' });
+          this.$router.push({ name:'home' });
           // query:{ name:‘word’, age:‘11’ } 
 
         }

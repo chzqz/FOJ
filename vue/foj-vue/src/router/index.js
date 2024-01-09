@@ -4,8 +4,8 @@ import Main from '../views/Main.vue'
 import Home from '../views/Home.vue'
 import User from '../views/User.vue'
 import Login from  '../views/Login'
-import NewLogin from '../views/NewLogin'
 import Answer from '../views/Answer'
+import FullScreen from '../views/FullScreen'
 
 
 Vue.use(VueRouter)
@@ -19,35 +19,45 @@ const routes = [
         {
           // 当 /user/:id/posts 匹配成功
           // UserPosts 将被渲染到 User 的 <router-view> 内部
-          path: 'Home',
-          name:'Home',
+          path: 'home',
+          name:'home',
           component: Home,
         },
         {
           // 当 /user/:id/posts 匹配成功
           // UserPosts 将被渲染到 User 的 <router-view> 内部
-          path: 'User',
+          path: 'user',
           component: User,
         },
-        {
-          // 当 /user/:id/posts 匹配成功
-          // UserPosts 将被渲染到 User 的 <router-view> 内部
-          path: 'Answer',
-          component: Answer,
-        },
-          {
-            path: 'Login',
-            component: Login,
-          },
+      {
+        path:'login',
+        component:Login,
+
+      }
+       
          
-        
-      
+    
 
 
       ],
 
     },
+ 
+    {
+      path:'/',
+      component: FullScreen,
+      
+      children: [
+      
+        {
+          // 当 /user/:id/posts 匹配成功
+          // UserPosts 将被渲染到 User 的 <router-view> 内部
+          path: 'answer',
+          component: Answer,
+        },
+     ],
 
+    },
     
   ]
   const router = new VueRouter({
