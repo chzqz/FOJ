@@ -156,6 +156,7 @@
 import Logo from './Logo.vue';
 import Avatar from './Avatar.vue';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 export default {
   data() {
@@ -163,13 +164,15 @@ export default {
       avatarURL: "http://localhost:8080/src/avatar/Snake.jpg",
       path: '',
       authority: -2 ,
-      activeName: 'second',
+      activeName: 'first',
       username: '111111',
     
     };
   },
 
   
+
+
   components: {
     Logo,
     Avatar,
@@ -189,6 +192,19 @@ export default {
       }
 
     }
-  }
+  },
+  mounted() {
+    console.log();
+  this.$axios.get("/user/avatar/"+Cookies.get("id")).
+  then((response)=>{
+    console.log(response);
+  })
+  .catch((err)={
+
+  })
+  },
 };
+
+
+
 </script> 

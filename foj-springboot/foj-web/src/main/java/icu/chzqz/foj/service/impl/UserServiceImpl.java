@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String getAvatar(Integer id) {
-        return "http://"+serverProperty.getResourceServer()+"/avatar"+userMapper.selectAvatarById(id);
+        return "http://"+serverProperty.getResourceServer()+"/src/avatar"+userMapper.selectAvatarById(id);
     }
 
     @Override
