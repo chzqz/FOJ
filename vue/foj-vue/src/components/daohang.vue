@@ -30,7 +30,7 @@
             <span class="el-dropdown-link" style="cursor: pointer;">
               <div id="tx" style="display: flex; align-items: center; ">
                   <span style="margin-top: 10px;"><el-avatar :src="avatarURL"></el-avatar></span>
-                  <span style="font-size:17px; margin-left: 10px;">用户名</span>
+                  <span style="font-size:17px; margin-left: 10px;">{{username}}</span>
               </div>
 
             </span>
@@ -165,8 +165,8 @@ export default {
       path: '',
       authority: -2 ,
       activeName: 'first',
-      username: '111111',
-    
+      username: '',
+      
     };
   },
 
@@ -184,24 +184,26 @@ export default {
     selected(command) {
       console.log(Cookies.get());
       if(command="command"){
-        console.log("删除个人信息");
         Cookies.remove('token')
         Cookies.remove('id')
         Cookies.remove('name')
         Cookies.remove('authority')
+        this.$router.push('/login')
       }
 
     }
   },
   mounted() {
     console.log();
-  this.$axios.get("/user/avatar/"+Cookies.get("id")).
-  then((response)=>{
-    console.log(response);
-  })
-  .catch((err)={
+    //设置username
+    this.username = Cookies.get("name")
+    this.$axios.get("/user/avatar/"+Cookies.get("id")).
+    then((response)=>{
+      console.log(response);
+    })
+    .catch((err)={
 
-  })
+    })
   },
 };
 
