@@ -6,6 +6,8 @@ import User from '../views/User.vue'
 import Login from  '../views/Login'
 import NewLogin from '../views/NewLogin'
 import Answer from '../views/Answer'
+
+
 Vue.use(VueRouter)
 const routes = [    
     {
@@ -33,14 +35,13 @@ const routes = [
           path: 'Answer',
           component: Answer,
         },
-        {
-          path: 'Login',
-          component: Login,
-        },
-        {
-          path: 'NewLogin',
-          component: NewLogin,
-        }
+          {
+            path: 'Login',
+            component: Login,
+          },
+         
+        
+      
 
 
       ],

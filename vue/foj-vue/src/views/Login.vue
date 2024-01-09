@@ -1,5 +1,6 @@
- <template>
+<template>
     <div id="BD">
+      <div :id="Loginpage_1" >
       <div style="width:1440px; 
       display: flex;
       justify-content: center;
@@ -8,10 +9,10 @@
         <div class="tit">登录</div>
         <input type="text" placeholder="账号" v-model="username">
         <input type="password" placeholder="密码" v-model="password">
-        <button @click="login">登录</button>
-        <span>没有账号？<router-link to="/register">去注册</router-link></span>
+        <button  class="loginbutton" @click="login">登录</button> 
+        <span>没有账号？<el-button type="text"  native-type="button" @click="CreateLogin">去注册</el-button></span>
+       
       </div>
-      <router-view></router-view>
       <div class="square">
         <ul>
           <li></li>
@@ -21,7 +22,7 @@
           <li></li>
         </ul>
       </div>
-      <div class="circle">
+        <div class="circle">
         <ul>
           <li></li>
           <li></li>
@@ -29,7 +30,10 @@
           <li></li>
           <li></li>
         </ul>
+        </div>
       </div>
+    </div>
+    <div id="loginpage_2" :style="style_2">
     </div>
   </div>
   </template>
@@ -42,7 +46,9 @@
       return {
         username: '',
         password: '',
-        msg:' '
+        msg:' ',
+        Loginpage_1:'Non_Display',
+        Loginpage_2:'Display',
       };
     },
     methods: {
@@ -85,9 +91,14 @@
           message:msg,
           type: 'warning'
         })
-      }
+      },
+    CreateLogin()
+    {
+      console.log(111);
+      this.Loginpage_1='Display';
+      this.Loginpage_2='Non_Display';
     }
-    
+  },
   }
 
   </script>
@@ -137,7 +148,7 @@
     outline: none;
     margin: 12px auto;
 }
-.container button{
+.loginbutton{
     width: 280px;
     height: 40px;
     margin: 35px auto 40px auto;
@@ -152,7 +163,7 @@
     transition: 0.5s;
 }
 
-.container button:hover{
+.loginbutton:hover{
     background: linear-gradient(-200deg,#aac2ee,#e6e6e6);
     background-position-x: -280px;
 }
@@ -253,6 +264,11 @@ ul li{
     }
 
 }
-
+#Non_Display{
+  
+}
+#Display{
+  display:none;
+}
 
 </style> 

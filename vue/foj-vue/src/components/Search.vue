@@ -1,7 +1,7 @@
 <template>
   <div id="srh">
     <div id="nd1">
-      <el-select v-model="value1" placeholder="请选择"  @change="dfhange1">
+      <el-select v-model="selectionOptions.value1" placeholder="请选择"  @change="dfhange1">
         <el-option
           v-for="item in options"
           :key="item.value1"
@@ -14,7 +14,7 @@
       </el-select>
     </div>
     <div id="nd2">
-      <el-select v-model="value2" multiple placeholder="请选择" @change="dfhange2">
+      <el-select v-model="selectionOptions.value2" multiple placeholder="请选择" @change="dfhange2">
         <el-option
           v-for="item in options2"
           :key="item.value2"
@@ -36,25 +36,35 @@ export default {
   data() {
     return {
       options: [
-        { value1: '选项1', label1: '简单' },
-        { value1: '选项2', label1: '中等' },
-        { value1: '选项3', label1: '困难' },
+        { value1: '0', label1: '简单' },
+        { value1: '1', label1: '中等' },
+        { value1: '2', label1: '困难' },
       ],
       options2: [
-        { value2: '选项1', label2: '困难' },
-        { value2: '选项2', label2: '困难' },
-        { value2: '选项3', label2: '困难1' },
-        { value2: '选项4', label2: '困难' },
+        { value2: '0', label2: '困难' },
+        { value2: '1', label2: '困难' },
+        { value2: '2', label2: '困难1' },
+        { value2: '3', label2: '困难' },
       ],
       value1: '',
       value2: [],
       input: '',
+      selectionOptions:{
+        value1: '',
+        value2: [],
+        // 添加其他需要的参数
+      }
     };
   },
   methods: {
     dfhange1(){
-
-    }
+       console.log("gtygtygytygt"+this.selectionOptions)
+      this.$emit("fromchild",this.selectionOptions);
+    },
+    toFather(){
+       
+      },
+    
 
   }
 };

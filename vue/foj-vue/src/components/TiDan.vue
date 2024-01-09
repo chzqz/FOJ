@@ -1,6 +1,7 @@
+
 <template>
   <div >
-    <Search ref="Srch" />
+    <Search  @fromchild="handleSelectionChange" />  <!-- ref="Srch" -->
     <div id="TD">
     <el-table
       :data="tableData"
@@ -13,14 +14,26 @@
     >
     
       <el-table-column prop="status" label="状态" width="100px" ></el-table-column>
-      <el-table-column prop="name" label="题目" sortable  width="250px"></el-table-column>
-      <el-table-column prop="passRate" label="通过率" sortable width="100px"></el-table-column>
-      <el-table-column prop="level" label="难度" sortable width="110px"></el-table-column>
+      <el-table-column prop="name" label="题目"   width="250px"></el-table-column>
+      <el-table-column
+          prop="passRate"
+          label="通过率"
+          sortable
+          width="100px"
+          :formatter="formatPassRate"
+          ></el-table-column>
+      <el-table-column 
+      prop="level" 
+      label="难度" 
+      sortable 
+      width="110px"
+      :formatter="formatDifficulty"
+      ></el-table-column>
       <el-table-column prop="tags" label="标签"></el-table-column>
     </el-table>
     
     <div class="block">
-      <el-pagination  
+      <el-pagination    
         layout="prev, pager, next"
         :total="totalItems"
         @current-change="handleCurrentChange"
@@ -30,7 +43,6 @@
   </div>
   </div>
 </template>
-
 <script>
 import axios from 'axios';
 import Search from './Search.vue';
@@ -38,10 +50,7 @@ import Search from './Search.vue';
 export default {
   data() {
     return {
-      tableData: [
-    
-
-      ], // 从后端获取的数据
+      tableData: [], // 从后端获取的数据
       totalItems: 100, // 从后端获取的总条目数
       currentPage: 1, // 当前页码
       pageSize: 10, // 每页显示的条目数
@@ -49,7 +58,11 @@ export default {
         prop: '', // 当前排序的属性名
         order: '', // 当前排序的顺序，可选值为 'ascending' 或 'descending'
       },
-      arrys:[],
+      selectionOptions: {
+        value1: '',
+        value2: [],
+        // 添加其他需要的参数
+      }
     };
   },
   components: {
@@ -74,43 +87,66 @@ export default {
       const start = (this.currentPage - 1) * this.pageSize;
       const end = start + this.pageSize;
       let url = 'http://localhost:8080/user/questions/list';
-
+      
       const params = {  
+        uid:'',
         id: '', // 题目id，根据你的需求传递
         name: '', // 题目名，根据你的需求传递
-        level: '', // 难度 (0:简单, 1:中等, 2:困难)，根据你的需求传递
-        tags: [], // 标签id集合，根据你的需求传递
-        page: 0,
-        pageSize:10,
-      
+        level: this.selectionOptions.value1, // 使用选择框的值作为搜索条件
+   
+        tags: this.selectionOptions.value2, // 使用选择框的值作为搜索条件
+        page: this.currentPage,
+        pageSize: this.pageSize,
       };
-
+ 
       // 发送HTTP GET请求
-      axios.get(url, {params} )
-      .then(response => {
-        // 从响应中获取数据
-        console.log(params);
-        this.tableData = response.data.data.data;
-        
-        // 这里假设 responseData 是一个包含所有数据的数
-
-        // 如果后端提供了总条目数，你可能需要更新总条目数
-        // this.totalItems = responseData.length;
-      })
-      .catch(error => {
-        console.error('Error fetching table data:', error);
-      });
+      axios.get(url, { params })
+        .then(response => {
+          // 从响应中获取数据
+          this.tableData = response.data.data.data;
+  
+          // 如果后端提供了总条目数，你可能需要更新总条目数
+          // this.totalItems = response.data.data.total;
+        })
+        .catch(error => {
+          console.error('Error fetching table data:', error);
+        });
+    },
+    formatPassRate(row) {
+      // 自定义渲染函数，保留两位小数
+      return row.passRate.toFixed(2);
+    },
+    formatDifficulty(row) {
+      switch (row.level) {
+        case 0:
+          return '简单';
+        case 1:
+          return '普通';
+        case 2:
+          return '困难';
+        default:
+          return '';
+      }
+    },
+    handleSelectionChange(res) {
+      console.log("gtygtygytygt"+this.selectionOptions)
+      this.selectionOptions = res;
+      // 根据选择框的值更新排序条件
+      // this.updateSortOptions();
+      // 重新获取表格数据
+      this.fetchTableData();
     },
   },
   mounted() {
     // 组件挂载时初始化数据
+   
     this.fetchTableData();
   },
 };
 </script>
 
 
-<style>
+<style> 
 #TD{
   margin-top: 2%;
 }
