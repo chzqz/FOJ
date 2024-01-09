@@ -27,7 +27,8 @@
     "less": "^4.2.0",
     "less-loader": "^11.1.4",
     "mockjs": "^1.1.0",
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.6.14",
+    "vue2-ace-editor": "^0.0.15"
   },
   "eslintConfig": {
     "root": true,

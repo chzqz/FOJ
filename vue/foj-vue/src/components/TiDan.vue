@@ -8,7 +8,7 @@
     style="width: 100%"  >
     <el-table-column
       label="状态"
-      width="180">
+      width="80">
       <template slot-scope="scope">
       
         <span style="margin-left: 10px">{{ scope.row.status }}</span>
@@ -16,7 +16,7 @@
     </el-table-column>
     <el-table-column
       label="题目id"
-      width="180">
+      width="100">
       <template slot-scope="scope">
       
         <span style="margin-left: 10px">{{ scope.row.id }}</span>
@@ -38,9 +38,14 @@
         </span>
       </template>
     </el-table-column>
-    <el-table-column label="难度" width="180">
+    <el-table-column label="难度" width="150">
     <template slot-scope="scope">
       <span style="margin-left: 0px">{{ formatDifficulty(scope.row) }}</span>
+    </template>
+  </el-table-column>
+  <el-table-column label="通过率" width="180">
+    <template slot-scope="scope">
+      <span style="margin-left: 0px">{{scope.row.passRate.toFixed(2) }}</span>
     </template>
   </el-table-column>
     <el-table-column
@@ -160,7 +165,6 @@ export default {
       this.fetchTableData();
     },
     Searchname(ID){
-      console.log("jkljdlakjl",ID);
   
       this.$router.push(
         { 

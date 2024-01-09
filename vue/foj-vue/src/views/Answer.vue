@@ -9,7 +9,7 @@
     </el-card>
   <div id="Card" >
 
-  <el-card id="card1" class="box-card" >
+  <el-card style="overflow: auto" id="card1" class="box-card" >
     <div>
     <span id="Title">{{ questionData.data.name }}</span>
 
@@ -17,17 +17,42 @@
     <div id="Tag">
     <span v-for="(item, index) in questionData.data.tags" :key="index"> <el-tag :color="item.color" effect="dark">{{ item.name }}</el-tag> </span>
     </div>
-    <div id="Text">
-     
-      <span>{{ questionData.data.description }}</span>
-    </div>
+      <div id="Text">{{ questionData.data.description }}</div>
     <div id="Tip">
       <div id="TipTitle">提示:</div>
-      <span id="TipText">{{ questionData.data.tip }}</span>
+      <span id="TipText">{{ questionData.data.tip }}</span> 
+    
+  
+  
+    </div>
+
+    <div id="Example">
+      
+      <span v-for="(item, index) in questionData.data.testcases" :key="index"> 
+        <div id="ExampleTitile">案例{{ index + 1 }}</div>
+        <div><span id="inputTitile">输入：</span>{{ item.input }}</div>
+        <div><span id="outputTitile">输出：</span>{{ item.output }}</div><br/> 
+      </span>
+    </div>
+
+    <div id="Max">
+      <span>
+    <span class="MaxTitile">最大运行时间：</span>
+  {{ (questionData.data.maxTime / 1000000).toFixed(2) }}
+  <span>ms</span>
+      </span>
+
+      <span id="set"> <span class="MaxTitile">最大运行空间：</span>
+  {{ (questionData.data.maxMemory / 1000000).toFixed(2) }}
+  <span>MB</span>
+      </span>
     </div>
   </el-card>
   <div>
   <el-card id="card2" class="box-card">
+    
+    <!-- <p>{{type[0]}}</p> -->
+      <AceJavascripttest id="Acepage"  :height=500 :value=value :theme=theme :readOnly=false></AceJavascripttest>
   </el-card>
   <el-card id="card3" class="box-card">
   </el-card>
@@ -43,18 +68,31 @@
 </template>
 
 <script>
+import AceJavascripttest from '../components/AceJavascripttest.vue'
 
 export default {
+  components:{
+    AceJavascripttest,
+  },
   data() {
   return{
     questionData:[],
     questionData_id:'',
+
+    type: [
+      ],
+      value:'',
+      theme:'xcode'
+
+     
     
   };
 },
   methods: {
       goBack() {
         console.log('go back');
+        
+this.$router.go(-1)
       },
       
       getParams() {
@@ -106,6 +144,8 @@ export default {
         })
       
       }
+    
+       
     },
     mounted() {
     // 组件挂载时初始化数据
@@ -168,12 +208,15 @@ border-radius: 20px;
 width: 1090px;
 height: 550px;
 margin-left: 5px;
-margin-top: -240px;
+margin-top: 5px;
 border-radius: 20px; 
+overflow: auto;
 }
 #card3{
   width: 1090px;
+  height: 242px;
   margin-top:5px;
+  margin-left: 5px;
   border-radius: 20px;
 }
 #Tabs{
@@ -199,6 +242,9 @@ border-radius: 20px;
 }
 #Text{
 margin-top:30px;
+width:100%;
+height: 100%;
+
 }
 #Tip{
   margin-top:50px;
@@ -208,8 +254,33 @@ margin-top:30px;
   font-weight: 550;
 
 }
+el-card{
+  overflow: auto;
+}
+
+#Example{
+  margin-top:30px;
+
+}
+#ExampleTitile{
+  font-size: 15px;
+  font-weight: 560;
 
 
-
+}
+#set{
+  margin-left: 90px;
+}
+.MaxTitile{
+  font-size: 15px;
+  font-weight: 560;
+}
+#Acepage{
+  margin-top:20px;
+  margin-left:-20px
+}
+v-deep .ace_gutter{
+  background: #000000;
+}
   
 </style>
