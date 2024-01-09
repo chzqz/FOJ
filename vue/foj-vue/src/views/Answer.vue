@@ -50,7 +50,16 @@
   </el-card>
   <div>
   <el-card id="card2" class="box-card">
-    
+    <div>
+      <el-select v-model="id" placeholder="请选择">
+    <el-option
+      v-for="item in options"
+      :key="item.id"
+      :label="item.label"
+      :value="item.id">
+    </el-option>
+  </el-select>
+    </div>
     <!-- <p>{{type[0]}}</p> -->
       <AceJavascripttest id="Acepage"  :height=500 :value=value :theme=theme :readOnly=false></AceJavascripttest>
   </el-card>
@@ -82,9 +91,9 @@ export default {
     type: [
       ],
       value:'',
-      theme:'xcode'
+      theme:'xcode',
 
-     
+      options: [],
     
   };
 },
