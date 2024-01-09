@@ -40,8 +40,8 @@ foj:
     max-stack: 2
     proc-limit: 50
     file-max: 10240
-    avatar-path: D://
-    testcase-path: D://testcases
+    avatar-path: D:/avatar/
+    testcase-path: D:/testcases/
   jwt:
     key: chzqzchzqzchzqzchzqzchzqzchzqzchzqzchzqzchzqzchzqz
     effective-time: 30758400000
