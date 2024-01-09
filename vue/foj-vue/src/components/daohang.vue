@@ -184,11 +184,11 @@ export default {
     selected(command) {
       console.log(Cookies.get());
       if(command="command"){
-        console.log("删除个人信息");
         Cookies.remove('token')
         Cookies.remove('id')
         Cookies.remove('name')
         Cookies.remove('authority')
+        this.$router.push('/login')
       }
 
     }
