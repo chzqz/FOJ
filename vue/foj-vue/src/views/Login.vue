@@ -1,57 +1,66 @@
 <template>
     <div id="BD">
-      <div :id="Loginpage_1">
-      <div style="width:1440px; 
-      display: flex;
-      justify-content: center;
-      align-items: center;">
-      <div class="container">
-        <div class="tit">登录</div>
-        <input type="text" placeholder="账号" v-model="username">
-        <input type="password" placeholder="密码" v-model="password">
-        <button  class="loginbutton" @click="login">登录</button> 
-        <span>没有账号？<el-button type="text"  native-type="button" @click="CreateLogin">去注册</el-button></span>
-     
-      </div>
-      <div class="square">
-        <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div>
-        <div class="circle">
-        <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
+      <div :id="reverseId" style="margin: auto;transition: 1s; width: 350px ;  transform-style: preserve-3d;">
+        <!-- 登录页面 -->
+        <div  class="login">
+          <div class="container">
+            <div class="logo"><logo width="100px" height="100px"></logo></div>
+            <!-- <input type="text" placeholder="账号" v-model="username">
+            <input type="password" placeholder="密码" v-model="password"> -->
+            <div style="width: 250px; ">
+              <el-input
+                placeholder="请输入内容"
+                v-model="username"
+                clearable>
+              </el-input>
+            </div>
+            <div style="margin-top: 20px; width: 250px;">
+              <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
+            </div>
+            <button  class="loginbutton" @click="login">登录</button> 
+            <span>没有账号？<el-button type="text"  native-type="button" @click="reverseCard">去注册</el-button></span>
+          </div>
+        </div>
+        <!-- 注册页面 -->
+        <div   class="register">
+          <div class="container">
+            <div class="logo"><logo width="100px" height="100px"></logo></div>
+            <!-- <input type="text" placeholder="账号" v-model="username">
+            <input type="password" placeholder="密码" v-model="password"> -->
+            <div style="width: 250px; ">
+              <el-input
+                placeholder="请输入内容"
+                v-model="username"
+                clearable>
+              </el-input>
+            </div>
+            <div style="margin-top: 20px; width: 250px;">
+              <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
+            </div>
+            <button  class="loginbutton" @click="login">注册</button> 
+            <span>已有账号？<el-button type="text"  native-type="button" @click="reverseCard">去登录</el-button></span>
+          </div>
         </div>
       </div>
     </div>
-    <div id="loginpage_2" :style="style_2">
-    </div>
-  </div>
-  </template>
+</template>
   
-  <script>
-  
+<script>
+import Logo from '@/components/Logo.vue';
+
   export default {
+  components: { Logo },
     data() {
       return {
         username: '',
         password: '',
         msg:' ',
-        Loginpage_1:'Non_Display',
-        Loginpage_2:'Display',
+        status: 'login',
+        reverseId: '',
       };
     },
     methods: {
-      login() {
+      async login() {
         // 在这里实现登录逻辑
         console.log('登录按钮被点击');
         let url='/login';
@@ -59,48 +68,56 @@
         username:this.username,
         password:this.password
         };
-        console.log(params);
-     
-        this.$axios.post(url,
+      
+        await this.$axios.post(url,
                 params
         ).then((response)=> {
-          console.log(response);
-          
           var code=response.data.code
-         if(code!=200) this.wornning(response.data.msg)
-         else{
+          if(code===200) {
           let date = new Date(); //获取当前时间
           date.setTime(date.getTime() + 365 * 24 * 3600 * 1000); //格式化为cookie识别的时间
           document.cookie = "token" + "=" + response.data.data.token + ";expires=" + date.toGMTString();  //设置cookie
           document.cookie = "id" + "=" + response.data.data.id + ";expires=" + date.toGMTString();  //设置cookie
           document.cookie = "name" + "=" + response.data.data.name + ";expires=" + date.toGMTString();  //设置cookie
           document.cookie = "authority" + "=" + response.data.data.authority + ";expires=" + date.toGMTString();  //设置cookie
-          console.log(document.cookie);
+
           this.$router.push({ name:'home' });
           // query:{ name:‘word’, age:‘11’ } 
+          this.$router.go(0)
 
         }
         }).catch(function(error) {
           console.log("错误："+ error);
         });
+        this.$dispatch('reload');
+      },
       
+      changeMode()
+      {
+        console.log(this.status);
+        if(this.status=='register'){
+          this.status = 'login';
+        }
+        else {
+          this.status = 'register';
+        }
       },
-      wornning(msg){
-        this.$message({
-          message:msg,
-          type: 'warning'
-        })
+      reverseCard() {
+        if(this.reverseId=='reverse'){
+          this.reverseId=''
+        }
+        else{
+          this.reverseId='reverse'
+        }
       },
-    CreateLogin()
-    {
-      console.log(111);
-      this.Loginpage_1='Display';
-      this.Loginpage_2='Non_Display';
+    },
+
+    mounted(){
+      this.status = this.$route.query.status;
     }
-  },
   }
 
-  </script>
+</script>
   
 
 
@@ -111,16 +128,16 @@
     padding: 0;
 }
 #BD {
-  height: 100vh;
-  display: flex;
+  height: 100%;
+  display: relative;
   justify-content: center;
   align-items: center;
-
+  margin-top: 50px;
 }
 .container{
     /* margin-left: 38%;
     margin-top: 8%; */
-
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     z-index: 1;
     background-color: #fff;
     border-radius: 15px;
@@ -130,14 +147,16 @@
     justify-content: center;
     align-items: center;
     width: 350px;
-    height: 500px;
+    height: 470px;
     /*阴影*/
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
-.container .tit{
-    font-size: 26px;
-    margin: 65px auto 70px auto;
+
+.logo{
+  height: 20%;
+  width: auto;
+  padding-bottom: 40px;
 }
+
 .container input{
     width: 280px;
     height: 30px;
@@ -148,93 +167,54 @@
     margin: 12px auto;
 }
 .loginbutton{
-    width: 280px;
+    width: 250px;
     height: 40px;
     margin: 35px auto 40px auto;
     border: none;
-    background: linear-gradient(-200deg,#e6e6e6,#aac2ee);
-    color: #fff;
+    /* background: linear-gradient(-200deg,#e6e6e6,#aac2ee); */
+    background: linear-gradient(90deg,#d5dfec,#7fb3fb,#d5dfec);
+    color: #273378;
     font-weight: bold;
+    font-size: 18px;
     letter-spacing: 8px;
     border-radius: 10px;
     cursor: pointer;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     /*动画过渡*/
     transition: 0.5s;
 }
 
 .loginbutton:hover{
-    background: linear-gradient(-200deg,#aac2ee,#e6e6e6);
-    background-position-x: -280px;
-}
-.container span{
-    font-size: 14px;
-}
-.container a{
-    color: rgb(228, 224, 228);
-    text-decoration: none;
+    /* background: linear-gradient(-200deg,#aac2ee,#e6e6e6);
+    background-position-x: -250px; */
+    background: linear-gradient(90deg,#d5dfec,#7fb3fb,#d5dfec);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    background-position-x: -250px;
+    
 }
 
-ul li{
-    position: absolute;
-    border: 1px solid #fff;
-    background-color: #ffffff;
-    width: 30px;
-    height: 30px;
-    list-style: none;
-    opacity: 0;
-}
-.square li{
-    top: 40vh;
-    left: 60vw;
-    animation: square 10s linear infinite;
-}
-.square li:nth-child(2){
-    top: 80vh;
-    left: 10vm;
-    /*动画延时时间*/
-    animation-delay: 2s;
-}
-.square li:nth-child(3){
-    top: 80vh;
-    left: 85vm;
-    /*动画延时时间*/
-    animation-delay: 4s;
+::v-deep .el-input__inner{
+  border-radius: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  transition: 0.5s;
 }
 
-.square li:nth-child(4){
-    top: 10vh;
-    left: 70vm;
-    /*动画延时时间*/
-    animation-delay: 6s;
+::v-deep .el-input__inner:focus {
+  transform: translateY(-3px)
 }
 
-.square li:nth-child(5){
-    top: 10vh;
-    left: 10vm;
-    /*动画延时时间*/
-    animation-delay: 8s;
+.login{
+  position: absolute;
 }
 
-.circle li{
-    bottom: 0;
-    left: 15vw;
-    animation: circle 10s linear infinite;
+.register{
+  position: absolute;
+  transform: rotateY(180deg);
+  backface-visibility: hidden
 }
-.circle li:nth-child(2){
-    left: 35vw;
-    animation-delay: 2s;
-}
-.circle li:nth-child(3){
-    left: 55vw;
-    animation-delay: 4s;
-}
-.circle li:nth-child(4){
-    left: 75vw;
-    animation-delay: 6s;
-}
-.circle li:nth-child(5){
-    left: 90vw;
-    animation-delay: 8s;
+
+#reverse {
+  transform: perspective(500px) rotateY(180deg);     
 }
 
 @keyframes square {
@@ -262,12 +242,6 @@ ul li{
         border-radius: 50%;
     }
 
-}
-#Non_Display{
-  
-}
-#Display{
-  display:none;
 }
 
 </style> 

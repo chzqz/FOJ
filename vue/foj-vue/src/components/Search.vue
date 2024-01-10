@@ -14,7 +14,7 @@
       </el-select>
     </div>
     <div id="nd2">
-      <el-select v-model="selectionOptions.value2" multiple placeholder="请选择" @change="dfhange2">
+      <el-select v-model="selectionOptions.value2" multiple placeholder="请选择" >
         <el-option
           v-for="item in options2"
           :key="item.value2"

@@ -2,8 +2,7 @@
   
   <div id="BG">
     <daohang></daohang>
-    <div id="DH">
-
+  <div id="DH">
   <router-view></router-view>
   </div>
 </div>
@@ -16,11 +15,14 @@ export default {
       return {};
     },
     components: {
-      
       daohang,
-   
-    
     },
+    events: {
+      'reload': function () {
+        console.log(daohang);
+      }
+    }
+    
   };
 </script>
 

@@ -1,13 +1,8 @@
 <template>
-<div id="ZT">
-    <container>
-      
-     
-      <el-main ><TiDan id="TD"></TiDan></el-main>
-      
-    </container>
+  <div id="ZT">
+    <el-main ><TiDan id="TD"></TiDan></el-main>
   </div>
-  </template>
+</template>
   
   <script>
   import CommonAside from '../components/CommonAside.vue'

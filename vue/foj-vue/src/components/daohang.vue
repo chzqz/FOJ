@@ -1,7 +1,7 @@
  <template>
   <div class="dh">
     <div class="horizontal-container">
-      <div id="lg" style="margin: :left;"><Logo></Logo></div>
+      <div class="logo_div" style="margin-top:7px; width: 150px; padding-left: 24px;" @click="gotoHome()" ><Logo></Logo></div>
       <el-divider direction="vertical"></el-divider>
       <div id="ml" class="wide-ml">
         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -16,29 +16,32 @@
         </el-tabs>
       </div >
       
-      <div v-if="$route.path!='/login'" style="width: auto; display: inline-block;height: 100%;" >
-        <div id="WZ" v-if="false">
-          <el-button type="text">登录</el-button>
-          
-          <el-button type="text">注册</el-button>
-        </div>
-        <div v-if="true">
+      <el-divider direction="vertical"></el-divider>
 
-
-
-          <el-dropdown @command="selected"  trigger="click">
-            <span class="el-dropdown-link" style="cursor: pointer;">
-              <div id="tx" style="display: flex; align-items: center; ">
-                  <span style="margin-top: 10px;"><el-avatar :src="avatarURL"></el-avatar></span>
-                  <span style="font-size:17px; margin-left: 10px;">{{username}}</span>
-              </div>
-
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="a">个人中心</el-dropdown-item>
-              <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+      <div style="width: 200px;">
+        <div v-if="$route.path!='/login'" onselectstart="return false" style="width: auto; display: inline-block;height: 100%; margin-left: 30px;" >
+            <!-- 登录注册 -->
+          <div id="WZ" v-if="authority==-2">
+            <el-row style="margin-top: 11px;">
+              <el-button type="primary" plain size="small" @click="gotoLogin('register')">注册</el-button>
+              或
+              <el-button type="text"  size="small" @click="gotoLogin('login')">登录</el-button>
+            </el-row>
+          </div>
+          <div v-else>
+            <el-dropdown @command="selected"  trigger="click">
+              <span class="el-dropdown-link" style="cursor: pointer;">
+                <div id="tx" style="display: flex; align-items: center; ">
+                    <span style="margin-top: 10px;"><el-avatar :src="avatarURL"></el-avatar></span>
+                    <span style="font-size:17px; margin-left: 10px;">{{username}}</span>
+                </div>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="a">个人中心</el-dropdown-item>
+                <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
         </div>
       </div>
 
@@ -55,6 +58,9 @@
   
   
 }
+.logo_div:hover{
+    cursor: pointer;
+  }
 .dh{
   border-bottom: 3px solid #E4E7ED; 
   text-align: center;
@@ -68,6 +74,7 @@
   margin-top: 3px;
 }
 
+
 #ml {
   margin-top: 4px;
   margin-left: 3%;
@@ -75,10 +82,11 @@
 
 }
 #WZ{
- margin-left: 150px;
+ margin-left: 0px;
+ height: 100%;
 }
 #tx {
-  margin-left: 60px;
+  margin: auto;
   width: auto;
 
 
@@ -147,6 +155,7 @@
     margin-right: 20px;
     margin-left: 20px;
     margin-top: 13px;
+    width: 1px;
   }
 
 
@@ -156,22 +165,18 @@
 import Logo from './Logo.vue';
 import Avatar from './Avatar.vue';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 
 export default {
   data() {
     return {
-      avatarURL: "http://localhost:8080/src/avatar/Snake.jpg",
+      avatarURL: "",
       path: '',
       authority: -2 ,
       activeName: 'first',
-      username: '',
-      
+      username: '', 
+      flag : true
     };
   },
-
-  
-
 
   components: {
     Logo,
@@ -182,29 +187,53 @@ export default {
       console.log(tab);
     },
     selected(command) {
-      console.log(Cookies.get());
       if(command="command"){
         Cookies.remove('token')
         Cookies.remove('id')
         Cookies.remove('name')
-        Cookies.remove('authority')
-        this.$router.push('/login')
+        Cookies.remove('authority') 
+        this.$router.go(0)
+      }
+    },
+
+    // 跳转到login页面
+    gotoLogin(status) {
+      this.$router.push({
+        path: '/login',
+        query: {status:status}
+      })
+    },
+    gotoHome() {
+        this.$router.push('/home', ()=>{})
+    },
+  },
+
+  mounted(){
+      //设置username
+      this.username = Cookies.get("name")
+      var authority = Cookies.get("authority");
+      if(authority){
+        this.authority =  authority
+      }
+      //获取头像
+      var id = Cookies.get("id");
+      if(id =='undefined' || id ==null){
+        this.avatarURL = '';
+      }
+      else {
+        this.$axios.get("/user/avatar/"+id).
+        then((response)=>{
+          this.avatarURL = response.data.data
+        })
+        .catch((err)=>{
+          console.log("头像请求错误",err);
+        })
       }
 
-    }
-  },
-  mounted() {
-    console.log();
-    //设置username
-    this.username = Cookies.get("name")
-    this.$axios.get("/user/avatar/"+Cookies.get("id")).
-    then((response)=>{
-      console.log(response);
-    })
-    .catch((err)={
+      //end
 
-    })
-  },
+  }
+
 };
 
 

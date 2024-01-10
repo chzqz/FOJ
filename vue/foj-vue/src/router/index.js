@@ -15,7 +15,6 @@ const routes = [
       component: Main,
       
       children: [
-      
         {
           // 当 /user/:id/posts 匹配成功
           // UserPosts 将被渲染到 User 的 <router-view> 内部
@@ -29,16 +28,10 @@ const routes = [
           path: 'user',
           component: User,
         },
-      {
-        path:'login',
-        component:Login,
-
-      }
-       
-         
-    
-
-
+        {
+          path:'login',
+          component:Login,
+        }
       ],
 
     },
