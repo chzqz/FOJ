@@ -17,11 +17,11 @@ public class CmdUtil {
 
         compileMap.put("C",new String[]{"gcc","temp.c","-o","temp"});
         compileMap.put("C++",new String[]{"g++","temp.cpp","-o","temp"});
-        compileMap.put("Java",new String[]{"javac","temp.java"});
+        compileMap.put("Java",new String[]{"javac","Temp.java"});
 
         runMap.put("C",new String[]{"temp"});
         runMap.put("C++",new String[]{"temp"});
-        runMap.put("Java",new String[]{"java","temp"});
+        runMap.put("Java",new String[]{"java","Temp"});
 
         envMap.put("C",new String[]{"PATH=/usr/bin:/bin"});
         envMap.put("C++",new String[]{"PATH=/usr/bin:/bin"});
@@ -29,11 +29,11 @@ public class CmdUtil {
 
         fileName.put("C","temp.c");
         fileName.put("C++","temp.cpp");
-        fileName.put("Java","temp.java");
+        fileName.put("Java","Temp.java");
 
         fileOutName.put("C","temp");
         fileOutName.put("C++","temp");
-        fileOutName.put("Java","temp.class");
+        fileOutName.put("Java","Temp.class");
     }
 
     public static String[] getCompileArgs(String lang){
