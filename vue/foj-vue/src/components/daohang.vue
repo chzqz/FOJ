@@ -7,8 +7,8 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
           
           <el-tab-pane label="题单" name="first" ></el-tab-pane>
-          <el-tab-pane label="个人主页" name="second"></el-tab-pane>
-          <el-tab-pane label="个人主页" name="three"></el-tab-pane>
+          <el-tab-pane label="题目管理" name="second" v-if="authority>0"></el-tab-pane>
+          <el-tab-pane label="后台管理" name="three" v-if="authority>1"></el-tab-pane>
    
           <template slot-scope="props">
             <div class="custom-tab" :class="{ 'is-active': props.isActive }">{{ props.label }}</div>

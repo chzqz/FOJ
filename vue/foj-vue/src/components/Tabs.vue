@@ -51,42 +51,43 @@
       }
     },
     methods: {
-  handleTabsEdit(targetName, action) {
-    console.log(1111,this.editableTabsValue);
-    if (action === 'add') {
-      let newTabName = ++this.tabIndex + '';
-      let newInput = ''; // 初始化输入值
-      this.editableTabs.push({
-        title: 'New Tab',
-        name: newTabName,
-        input: newInput,
-        output: '1'
-      });
-      this.editableTabsValue = newTabName;
-    }
-    console.log(999,this.tabIndex)
-    if (action === 'remove') {
-      let tabs = this.editableTabs;
-      let activeName = this.editableTabsValue;
-      if (activeName === targetName) {
-        tabs.forEach((tab, index) => {
-          if (tab.name === targetName) {
-            let nextTab = tabs[index + 1] || tabs[index - 1];
-            if (nextTab) {
-              activeName = nextTab.name;
-            }
+      handleTabsEdit(targetid, action) {
+        if (action === 'add') {
+          let newInput = '';
+          let newTabid = ++this.tabIndex ;
+          this.editableTabs.push({
+            title: 'New Tab',
+            id: newTabid,
+            input: newInput,
+            output: '1'
+          });
+          this.editableTabsValue = newTabid-1+'';
+        }
+        if (action === 'remove') {
+          let tabs = this.editableTabs;
+          let activeid = this.editableTabsValue;
+          if (activeid === targetid) {
+            tabs.forEach((tab, index) => {
+              if (tab.id === targetid) {
+                let nextTab = tabs[index + 1] || tabs[index - 1];
+                if (nextTab) {
+                  activeid = nextTab.id;
+                }
+              }
+            });
           }
-        });
+          
+          this.editableTabsValue = activeid;
+          this.editableTabs = tabs.filter(tab => tab.id !== targetid);
+        }
       }
+    },
+    Output(){
 
-      this.editableTabsValue = activeName;
-      this.editableTabs = tabs.filter(tab => tab.name !== targetName);
     }
-    console.log(888,this.tabIndex)
   }
-}
-}
   </script>
   
   <style>
+  
   </style>

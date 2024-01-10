@@ -24,10 +24,10 @@
         <!-- 注册页面 -->
         <div   class="register">
           <div class="container">
-            <div class="logo"><logo width="100px" height="100px"></logo></div>
+            
             <!-- <input type="text" placeholder="账号" v-model="username">
             <input type="password" placeholder="密码" v-model="password"> -->
-            <div style="width: 250px; ">
+            <!-- <div style="width: 250px; ">
               <el-input
                 placeholder="请输入内容"
                 v-model="username"
@@ -36,7 +36,23 @@
             </div>
             <div style="margin-top: 20px; width: 250px;">
               <el-input placeholder="请输入密码" v-model="password" show-password></el-input>
-            </div>
+            </div> -->
+            
+              <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item  prop="username" style="margin: auto;"> 
+                  <el-input type="username" v-model="ruleForm.username" placeholder="用户名" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item  prop="email" style="margin: auto;"> 
+                  <el-input type="email" v-model="ruleForm.email" placeholder="电子邮箱" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item  prop="pass" style="margin: auto;"> 
+                  <el-input type="password" v-model="ruleForm.pass" placeholder="密码" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item  prop="checkPass">
+                  <el-input type="password" v-model="ruleForm.checkPass" placeholder="确认密码" autocomplete="off"></el-input>
+                </el-form-item>
+              </el-form>
+            
             <button  class="loginbutton" @click="login">注册</button> 
             <span>已有账号？<el-button type="text"  native-type="button" @click="reverseCard">去登录</el-button></span>
           </div>
@@ -51,12 +67,92 @@ import Logo from '@/components/Logo.vue';
   export default {
   components: { Logo },
     data() {
+      // var checkAge = (rule, value, callback) => {
+      //   if (!value) {
+      //     return callback(new Error('年龄不能为空'));
+      //   }
+      //   setTimeout(() => {
+      //     if (!Number.isInteger(value)) {
+      //       callback(new Error('请输入数字值'));
+      //     } else {
+      //       if (value < 18) {
+      //         callback(new Error('必须年满18岁'));
+      //       } else {
+      //         callback();
+      //       }
+      //     }
+      //   }, 1000);
+      // };
+      var checkEmail = (rule, value, callback) =>{
+        const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+        if (!value) {
+          return callback(new Error('邮箱不能为空'))
+        }
+        if (mailReg.test(value)) {
+            callback()
+          } else {
+            callback(new Error('请输入正确的邮箱格式'))
+          }
+        callback();
+      }
+
+      var checkName = (rule, value, callback) =>{
+        if (!value) {
+          return callback(new Error('用户名不能为空'))
+        }
+        callback();
+      }
+
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.ruleForm.checkPass !== '') {
+            this.$refs.ruleForm.validateField('checkPass');
+          }
+          callback();
+        }
+      };
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.ruleForm.pass) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
+
       return {
         username: '',
         password: '',
         msg:' ',
         status: 'login',
         reverseId: '',
+        
+        // 注册表单
+        ruleForm: {
+          pass: '',
+          checkPass: '',
+          age: ''
+        },
+        rules: {
+          pass: [
+            { validator: validatePass, trigger: 'blur' }
+          ],
+          checkPass: [
+            { validator: validatePass2, trigger: 'blur' }
+          ],
+          // age: [
+          //   { validator: checkAge, trigger: 'blur' }
+          // ]
+          email: [
+            {validator: checkEmail, trigger: 'blur'},
+          ],
+          username: [
+            {validator: checkName, trigger: 'blur'},
+          ]
+        }
       };
     },
     methods: {
@@ -92,28 +188,38 @@ import Logo from '@/components/Logo.vue';
         this.$dispatch('reload');
       },
       
-      changeMode()
-      {
-        console.log(this.status);
-        if(this.status=='register'){
-          this.status = 'login';
-        }
-        else {
-          this.status = 'register';
-        }
-      },
+
       reverseCard() {
+
         if(this.reverseId=='reverse'){
           this.reverseId=''
+            this.$router.push({
+              path: '/login',
+              query: {
+                status: 'login'
+              }
+            }, ()=>{})
         }
         else{
           this.reverseId='reverse'
+          this.$router.push({
+              path: '/login',
+              query: {
+                status: 'register'
+              }
+            }, ()=>{})
         }
       },
     },
 
     mounted(){
-      this.status = this.$route.query.status;
+      console.log(this.$route.query.status);
+      if(this.$route.query.status=='register'){
+        this.reverseId='reverse'
+      }
+      else this.reverseId=''
+      
+      console.log(this.reverseId);
     }
   }
 
@@ -172,7 +278,7 @@ import Logo from '@/components/Logo.vue';
     margin: 35px auto 40px auto;
     border: none;
     /* background: linear-gradient(-200deg,#e6e6e6,#aac2ee); */
-    background: linear-gradient(90deg,#d5dfec,#7fb3fb,#d5dfec);
+    background: linear-gradient(90deg,#e0faf2,#7fb3fb,#e0faf2);
     color: #273378;
     font-weight: bold;
     font-size: 18px;
@@ -181,15 +287,15 @@ import Logo from '@/components/Logo.vue';
     cursor: pointer;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     /*动画过渡*/
-    transition: 0.5s;
+    transition: 1s;
 }
 
 .loginbutton:hover{
     /* background: linear-gradient(-200deg,#aac2ee,#e6e6e6);
     background-position-x: -250px; */
-    background: linear-gradient(90deg,#d5dfec,#7fb3fb,#d5dfec);
+    background: linear-gradient(90deg,#e0faf2,#7fb3fb,#e0faf2);
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-    background-position-x: -250px;
+    background-position-x: -500px;
     
 }
 
@@ -215,6 +321,11 @@ import Logo from '@/components/Logo.vue';
 
 #reverse {
   transform: perspective(500px) rotateY(180deg);     
+}
+
+::v-deep .el-form-item__content{
+  margin: 0 !important;
+  margin-top: 24px !important ;
 }
 
 @keyframes square {

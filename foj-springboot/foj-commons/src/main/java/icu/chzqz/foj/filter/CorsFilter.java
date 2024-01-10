@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @Component
 @Slf4j
-@WebFilter(urlPatterns = {"/**", "/"})
+@WebFilter(urlPatterns = {"/**"})
 public class CorsFilter implements Filter {
 
     //销毁时候调用的方法
