@@ -5,7 +5,15 @@
   <div class="PageHeader">
     <el-card id="card0" class="box-card" >
   <el-page-header @back="goBack" content="题目描述">
+   
       </el-page-header>
+      <div id="Buttons">
+    <el-row>
+  <el-button id="button_1">测试</el-button>
+  <el-button id="button_2">提交</el-button>
+
+    </el-row>
+  </div>
     </el-card>
   <div id="Card" >
 
@@ -50,7 +58,7 @@
   </el-card>
   <div>
   <el-card id="card2" class="box-card">
-    <div>
+    <div id="LanguageChoose">
       <el-select v-model="id" placeholder="请选择">
     <el-option
       v-for="item in options"
@@ -64,6 +72,16 @@
       <AceJavascripttest id="Acepage"  :height=500 :value=value :theme=theme :readOnly=false></AceJavascripttest>
   </el-card>
   <el-card id="card3" class="box-card">
+    <el-tabs type="border-card">
+    
+  <el-tab-pane label="测试用例">  <Tabs :editableTabs="testArray" :tabIndex="tabIndex"></Tabs></el-tab-pane>
+  <el-tab-pane label="测试结果"></el-tab-pane>
+ 
+</el-tabs>
+
+   
+  
+  <div></div>
   </el-card>
 </div>
 </div>
@@ -78,42 +96,50 @@
 
 <script>
 import AceJavascripttest from '../components/AceJavascripttest.vue'
+import Tabs from '../components/Tabs.vue'
 
 export default {
   components:{
     AceJavascripttest,
+    Tabs,
   },
   data() {
   return{
-    questionData:[],
+    testArray:[],
+
+    editableTabsValue:3,
+
+    questionData:'',
     questionData_id:'',
 
-    type: [
-      ],
-      value:'',
-      theme:'xcode',
+    type: [],
+    value:'',
+    theme:'xcode',
 
-      options: [],
+    options: [],
+  
+    tabIndex:0,
+   
     
   };
 },
   methods: {
       goBack() {
-        console.log('go back');
-        
+        console.log('go back');   
 this.$router.go(-1)
       },
       
       getParams() {
            
             this.questionData_id = this.$route.query.questionData_id;
-            console.log(2222, this.questionData_id);
+            // console.log(2222, this.questionData_id);
       },
       Pagecreate()
       {
         this.getParams();
         console.log(3333, this.questionData_id);
         let url = '/user/question/'+this.questionData_id;
+         
 
       //   const params = {  
       //     code:'',
@@ -146,6 +172,13 @@ this.$router.go(-1)
           // 从响应中获取数据
           console.log(response.data);
           this.questionData = response.data;
+          var arr =response.data.data.testcases;
+          for(const i in arr){
+            this.testArray.push({id:arr[i].id,input:arr[i].input,output:'2'})
+          }
+          this.tabIndex=arr.length;
+          console.log(this.tabIndex);
+         
   
         })
         .catch(error => {
@@ -161,15 +194,18 @@ this.$router.go(-1)
     this.Pagecreate()
  
   },
+
+ 
+    
   
 }
 </script>
 
 <style scoped>
 /* 使用深度作用选择器，限制样式仅作用于 .PageHeader 组件内部 */
-.a /deep/ .PageHeader {
+/* .a /deep/ .PageHeader {
   /* background-color:rgb(253, 253, 253); */
-}
+ 
 .a{
     /* width:1440px; */
     width:100%;
@@ -200,6 +236,7 @@ this.$router.go(-1)
   align-items: center; 
 }
 #card0{
+  display: flex;
   width: 99%;
 height: 60px;
 margin-left: 12px;
@@ -215,15 +252,16 @@ border-radius: 20px;
 }
 #card2{
 width: 1090px;
-height: 550px;
+height: 465px;
 margin-left: 5px;
 margin-top: 5px;
 border-radius: 20px; 
-overflow: auto;
+overflow: hidden;
+padding:3px;
 }
 #card3{
   width: 1090px;
-  height: 242px;
+  height: 320px;
   margin-top:5px;
   margin-left: 5px;
   border-radius: 20px;
@@ -285,11 +323,105 @@ el-card{
   font-weight: 560;
 }
 #Acepage{
-  margin-top:20px;
-  margin-left:-20px
+  margin-top:10px;
+  margin-left:-20px;
+
 }
-v-deep .ace_gutter{
-  background: #000000;
+.a /deep/ .ace_gutter {
+  background-color: #ffffff;
 }
+#LanguageChoose{
+  margin-top:-20px;
+  border: none;
+
+}
+.a /deep/.el-input__inner {
+  border: none;
+}
+#button_1 {
+  align-items: center;
+              background-color: #eeeeee;
+            
+              box-shadow: transparent 0 0 0 3px,rgba(18, 18, 18, .1) 0 6px 20px;
+              box-sizing: border-box;
+              color: #121212;
+              cursor: pointer;
+              display: inline-flex;
+              flex: 1 1 auto;
+              font-family: Inter,sans-serif;
+              font-size: 0.87rem;
+              font-weight: 500;
+              justify-content: center;
+              line-height: 1;
+              margin: 0;
+              outline: none;
+              padding: 1rem 1.2rem;
+              text-align: center;
+              text-decoration: none;
+              transition: box-shadow .2s,-webkit-box-shadow .2s;
+              white-space: nowrap;
+              border: 0;
+              user-select: none;
+              -webkit-user-select: none;
+              touch-action: manipulation;
+
+
+            }
   
+            #button_1:hover {
+              box-shadow: #d8d8d8 0 0 0 3px, transparent 0 0 0 0;
+            }
+            #button_2 {
+              align-items: center;
+              background-color: #eeeeee;
+           
+              box-shadow: transparent 0 0 0 3px,rgba(18, 18, 18, .1) 0 6px 20px;
+              box-sizing: border-box;
+              color: #121212;
+              cursor: pointer;
+              display: inline-flex;
+              flex: 1 1 auto;
+              font-family: Inter,sans-serif;
+              font-size: 0.87rem;
+              font-weight: 500;
+              justify-content: center;
+              line-height: 1;
+              margin: 0;
+              outline: none;
+              padding: 1rem 1.2rem;
+              text-align: center;
+              text-decoration: none;
+              transition: box-shadow .2s,-webkit-box-shadow .2s;
+              white-space: nowrap;
+              border: 0;
+              user-select: none;
+              -webkit-user-select: none;
+              touch-action: manipulation;
+
+            }
+  
+            #button_2:hover {
+              box-shadow: #d8d8d8 0 0 0 3px, transparent 0 0 0 0;
+            }
+            #Buttons{
+              margin-top:-37px;
+              margin-left:790px;
+            }
+            /* 去掉tabs标签栏下的下划线 */
+      /* 去掉tabs标签栏下的下划线 */
+      /* #ChangePageButton{
+        margin-top:-22px;
+        margin-left:-20px ;
+        height: 35px;
+          width:1440px;
+          background-color: #f7f4f4;
+      }
+      .ChangeButtons{
+        height: 35px;
+        text-align: center;
+        background-color: #f7f4f4;
+        border: none;
+
+      } */
+
 </style>
