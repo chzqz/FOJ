@@ -4,11 +4,11 @@
       <div class="logo_div" style="margin-top:7px; width: 150px; padding-left: 24px;" @click="gotoHome()" ><Logo></Logo></div>
       <el-divider direction="vertical"></el-divider>
       <div id="ml" class="wide-ml">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" @tab-click="selectTab">
           
-          <el-tab-pane label="题单" name="first" ></el-tab-pane>
-          <el-tab-pane label="题目管理" name="second" v-if="authority>0"></el-tab-pane>
-          <el-tab-pane label="后台管理" name="three" v-if="authority>1"></el-tab-pane>
+          <el-tab-pane label="题单" name="list" ></el-tab-pane>
+          <el-tab-pane label="题目管理" name="questionsManager" v-if="authority>0"></el-tab-pane>
+          <el-tab-pane label="后台管理" name="AdminManager" v-if="authority>1"></el-tab-pane>
    
           <template slot-scope="props">
             <div class="custom-tab" :class="{ 'is-active': props.isActive }">{{ props.label }}</div>
@@ -172,7 +172,7 @@ export default {
       avatarURL: "",
       path: '',
       authority: -2 ,
-      activeName: 'first',
+      activeName: 'list',
       username: '', 
       flag : true
     };
@@ -183,8 +183,16 @@ export default {
     Avatar,
   },
   methods: {
-    handleClick(tab) {
-      console.log(tab);
+    selectTab(tab, event) {
+      
+      console.log('123');
+      if(this.activeName=='AdminManager'){
+
+      } else if(this.activeName=='questionsManager'){
+ 
+      } else {
+        this.$router.push('/home', ()=>{})
+      }
     },
     selected(command) {
       if(command="command"){

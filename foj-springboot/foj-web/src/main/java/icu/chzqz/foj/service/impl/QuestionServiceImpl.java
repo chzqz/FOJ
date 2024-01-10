@@ -68,7 +68,6 @@ public class QuestionServiceImpl implements QuestionService {
         if(questionsPageDTO.getUid()!=null&&(Integer)BaseContextUtil.getBaseContext().get("authority")!=2){
             throw new AccessDeniedException(messageProperty.permissionDenied);
         }
-        if(questionsPageDTO.getUid() ==null) questionsPageDTO.setUid((Integer) BaseContextUtil.getBaseContext().get("id"));
         PageHelper.startPage(questionsPageDTO.getPage(),questionsPageDTO.getPageSize());
         Page<Question> page = questionMapper.list(questionsPageDTO);
 
@@ -82,7 +81,8 @@ public class QuestionServiceImpl implements QuestionService {
 
             List<Tag> tags = tagMapper.selectByQId(id);
 
-            List<Integer> statuses = judgeMapper.selectStatus(questionsPageDTO.getUid(), id);
+            List<Integer> statuses = null;
+            if(questionsPageDTO.getUid()!=null) statuses = judgeMapper.selectStatus(questionsPageDTO.getUid(), id);
             Integer status;
             if(statuses==null||statuses.isEmpty()){
                 status = 0;

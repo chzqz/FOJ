@@ -1,5 +1,7 @@
 import axios from "axios";
-import ElementUI from 'element-ui';
+import { Message } from 'element-ui';
+
+let flag = false;
 
 const http= axios.create({
     //通用请求的地址前缀
@@ -22,7 +24,14 @@ http.interceptors.response.use(function (response) {
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
     if(response.data.code!=200){
-      ElementUI.Message.error(response.data.msg);
+      if(!flag){
+        flag = !flag
+        Message({
+          message: response.data.msg,
+          type: 'error',
+          onClose: ()=>{flag = !flag}
+      })
+      }
     }
     return response;
   }, function (error) {
