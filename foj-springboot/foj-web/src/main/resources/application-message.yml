@@ -10,7 +10,7 @@ foj:
     cpuTimeExceeded: 运行超时 # 运行超时
     memoryExceeded: 内存超限 # 内存超限
     emailFormatError: 邮箱格式错误 # 邮箱格式错误
-    unqualifiedPassword: 密码不合格 # 不合格的密码
+    unqualifiedPassword: 密码应是8-16位字母和数字的组合 # 不合格的密码
     emailExists: 邮箱已占用 # 邮箱已占用
     usernameExists: 用户已存在 # 用户名已存在
     passwordError: 密码错误 # 密码错误

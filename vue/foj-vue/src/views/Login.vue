@@ -9,7 +9,7 @@
             <input type="password" placeholder="密码" v-model="password"> -->
             <div style="width: 250px; ">
               <el-input
-                placeholder="请输入内容"
+                placeholder="请输入用户名"
                 v-model="username"
                 clearable>
               </el-input>
@@ -39,21 +39,21 @@
             </div> -->
             
               <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item  prop="username" style="margin: auto;"> 
-                  <el-input type="username" v-model="ruleForm.username" placeholder="用户名" autocomplete="off"></el-input>
+                <el-form-item id="username" aria-autocomplete="user"  prop="username" style="margin: auto;"> 
+                  <el-input type="username" v-model="ruleForm.username"  placeholder="用户名" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item  prop="email" style="margin: auto;"> 
                   <el-input type="email" v-model="ruleForm.email" placeholder="电子邮箱" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item  prop="pass" style="margin: auto;"> 
-                  <el-input type="password" v-model="ruleForm.pass" placeholder="密码" autocomplete="off"></el-input>
+                  <el-input type="password" autocomplete="new-password" v-model="ruleForm.pass" placeholder="密码"  ></el-input>
                 </el-form-item>
                 <el-form-item  prop="checkPass">
-                  <el-input type="password" v-model="ruleForm.checkPass" placeholder="确认密码" autocomplete="off"></el-input>
+                  <el-input type="password" autocomplete="new-password" v-model="ruleForm.checkPass" placeholder="确认密码"  ></el-input>
                 </el-form-item>
               </el-form>
             
-            <button  class="loginbutton" @click="login">注册</button> 
+            <button  class="loginbutton" @click="register('ruleForm')">注册</button> 
             <span>已有账号？<el-button type="text"  native-type="button" @click="reverseCard">去登录</el-button></span>
           </div>
         </div>
@@ -90,9 +90,9 @@ import Logo from '@/components/Logo.vue';
         }
         if (mailReg.test(value)) {
             callback()
-          } else {
-            callback(new Error('请输入正确的邮箱格式'))
-          }
+        } else {
+          callback(new Error('请输入正确的邮箱格式'))
+        }
         callback();
       }
 
@@ -129,12 +129,13 @@ import Logo from '@/components/Logo.vue';
         msg:' ',
         status: 'login',
         reverseId: '',
-        
+
         // 注册表单
         ruleForm: {
           pass: '',
           checkPass: '',
-          age: ''
+          username: '',
+          email: ''
         },
         rules: {
           pass: [
@@ -209,6 +210,30 @@ import Logo from '@/components/Logo.vue';
               }
             }, ()=>{})
         }
+      },
+
+      register(form) {
+        this.$refs[form].validate((valid) => {
+          if(valid) {
+            //数据合格
+            this.$axios.post('/regist',{
+              name: this.ruleForm.username,
+              email: this.ruleForm.email,
+              password: this.ruleForm.pass,
+            }).then((response)=>{
+              if(response.data.code===200){
+                this.$message({
+                  message: '注册成功',
+                  type: 'success'
+                });
+                this.reverseCard();
+              }
+            })
+
+          } else {
+            //数据不合格 
+          }
+        })
       },
     },
 
