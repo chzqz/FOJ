@@ -5,7 +5,7 @@
 <div class="PageHeader">
   <el-card id="card0" class="box-card" >
 <el-page-header @back="goBack" content="题目描述">
- 
+
     </el-page-header>
     <div id="Buttons">
   <el-row>
@@ -28,18 +28,18 @@
     <div id="Text">{{ questionData.data.description }}</div>
   <div id="Tip">
     <div id="TipTitle">提示:</div>
-    <span id="TipText">{{ questionData.data.tip }}</span> 
-  
+    <span id="TipText">{{ questionData.data.tip }}</span>
+
 
 
   </div>
 
   <div id="Example">
-    
-    <span v-for="(item, index) in questionData.data.testcases" :key="index"> 
+
+    <span v-for="(item, index) in questionData.data.testcases" :key="index">
       <div id="ExampleTitile">案例{{ index + 1 }}</div>
       <div><span id="inputTitile">输入：</span>{{ item.input }}</div>
-      <div><span id="outputTitile">输出：</span>{{ item.output }}</div><br/> 
+      <div><span id="outputTitile">输出：</span>{{ item.output }}</div><br/>
     </span>
   </div>
 
@@ -75,8 +75,8 @@
 </el-card>
 <el-card id="card3" class="box-card">
   <el-tabs type="border-card">
-  
-<el-tab-pane label="测试用例">  
+
+<el-tab-pane label="测试用例">
   <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
   <el-tab-pane
     :key="item.name"
@@ -94,7 +94,7 @@
 
 </el-tabs>
 
- 
+
 
 <div></div>
 </el-card>
@@ -135,7 +135,7 @@ return{
   selectedLanguage:'C/C++',
 
   tabIndex:0,
- 
+
   editableTabsValue:'1',
         editableTabs: [],
          tabIndex: 3,
@@ -149,7 +149,7 @@ computed: {
       // 映射关系
       const mapping = {
         'C/C++': 'c_cpp',
-      
+
       };
 
       // 映射处理
@@ -158,12 +158,12 @@ computed: {
   },
 methods: {
     goBack() {
-      console.log('go back');   
+      console.log('go back');
       this.$router.go(-1)
     },
-    
+
     getParams() {
-         
+
           this.questionData_id = this.$route.query.questionData_id;
           // console.log(2222, this.questionData_id);
     },
@@ -172,7 +172,7 @@ methods: {
       this.getParams();
       console.log(3333, this.questionData_id);
       let url = '/user/question/'+this.questionData_id;
-       
+
      this.$axios.get(url)
       .then(response => {
         // 从响应中获取数据
@@ -183,14 +183,14 @@ methods: {
           this.editableTabs.push({name:arr[i].id+'',input:arr[i].input,output:''})
         }
         this.tabIndex=arr.length;
-      
+
        url='/user/language/list';
 
       })
       .catch(error => {
         console.error('Error fetching question data:', error);
       })
-     
+
       url='/user/language/list';
       this.$axios.get(url)
       .then(response => {
@@ -204,9 +204,9 @@ methods: {
         console.error('Error fetching options:', error);
       })
       
-    
+
     },
-   
+
     handleTabsEdit(targetName, action) {
     console.log(1111,this.editableTabsValue);
     if (action === 'add') {
@@ -251,7 +251,7 @@ methods: {
     for (const tab of this.editableTabs) {
       newInput.push(tab.input);
     }
-   
+
     let url='/user/test';
         const params = {
           qid:this.questionData.data.id,
@@ -276,7 +276,7 @@ methods: {
     .catch(function (error) {
       console.log("错误1：" + error);
     });
-    
+
         console.log(this.editableTabs);
 },
 },
@@ -288,7 +288,7 @@ methods: {
 },
 
 
-  
+
 
 
 }
