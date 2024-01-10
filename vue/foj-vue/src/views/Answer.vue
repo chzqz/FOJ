@@ -10,7 +10,7 @@
     <div id="Buttons">
   <el-row>
 <el-button id="button_1" @click="ReturnOutput">测试</el-button>
-<el-button id="button_2">提交</el-button>
+<el-button id="button_2" @click="ReturnBoolm">提交</el-button>
 
   </el-row>
 </div>
@@ -18,6 +18,7 @@
 <div id="Card" >
 
 <el-card style="overflow: auto" id="card1" class="box-card" >
+ 
   <div>
   <span id="Title">{{ questionData.data.name }}</span>
 
@@ -84,13 +85,29 @@
         :label="'测试 '+(index+1)"
         :name="item.name"
   >
-      <div>输入： <el-input v-model="item.input" placeholder=""></el-input></div>
-      <div>输出： <el-input v-model="item.output" placeholder="" :disabled="true"></el-input></div>
+      <div>输入： <el-input  type="textarea" v-model="item.input" placeholder=""></el-input></div>
+     
       </el-tab-pane>
     </el-tabs>
 
 </el-tab-pane>
-<el-tab-pane label="测试结果"></el-tab-pane>
+<el-tab-pane label="测试结果">
+
+  <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
+  
+  <el-tab-pane
+    :key="item.name"
+    v-for="(item, index) in editableTabs"
+        :label="'测试 '+(index+1)"
+        :name="item.name"
+  >
+      <div>输入： <el-input  type="textarea" :rows="2"  v-model="item.input" placeholder="" :disabled="true"></el-input></div>
+      <div>输出： <el-input   type="textarea" v-model="item.output" placeholder="" :disabled="true"></el-input></div>
+      </el-tab-pane>
+    </el-tabs>
+
+
+</el-tab-pane>
 
 </el-tabs>
 
@@ -113,32 +130,39 @@
 import AceJavascripttest from '../components/AceJavascripttest.vue'
 import Tabs from '../components/Tabs.vue'
 import Cookies from 'js-cookie';
+import ReturnVnodes from '../components/ReturnVnodes.vue'
 export default {
 components:{
   AceJavascripttest,
   Tabs,
+  ReturnVnodes,
 },
 data() {
 return{
-  testArray:[],
 
-  editableTabsValue:3,
+  AnswerData:[],//存放返回的判断结果的相关信息
 
-  questionData:'',
+
+
+
+  questionData:'',//这个题目对应的信息
   questionData_id:'',
 
   type: [],
-  value:'',
+  value:'',//此时这个代码编辑框内显示的东西
   theme:'xcode',
 
-  options: [],
-  selectedLanguage:'C/C++',
+  options: [],//语言选中框的选项
+  selectedLanguage:'C',//当前选择的语言
 
-  tabIndex:0,
 
-  editableTabsValue:'1',
-        editableTabs: [],
+
+  editableTabsValue:'1',//当前选中的测试用例
+        editableTabs: [],//用来储存测试用例对应的input和output
          tabIndex: 3,
+         
+
+code: ''
 
 
 
@@ -148,8 +172,10 @@ computed: {
     mappedLanguage() {
       // 映射关系
       const mapping = {
-        'C/C++': 'c_cpp',
-
+        'C': 'c_cpp',
+        'C++' : 'c_cpp',
+        'Java' :'java,'
+         
       };
 
       // 映射处理
@@ -205,6 +231,8 @@ methods: {
       })
       
 
+      console.log(123,this.editableTabs);
+
     },
 
     handleTabsEdit(targetName, action) {
@@ -246,7 +274,7 @@ methods: {
   },
   ReturnOutput()
   {
-    console.log(2333,this.selectedLanguage);
+    
     var newInput = [];
     for (const tab of this.editableTabs) {
       newInput.push(tab.input);
@@ -263,22 +291,82 @@ methods: {
 
     this.$axios.post(url, params )
     .then((response) => {
-      // 处理返回的 output 值
-      const Outputs = response.data;
-      console.log(1111111,Outputs);
-      // 遍历 outputs，并将值放入 editableTabs 中
-      Outputs.forEach((Output, index) => {
-        if (index < this.editableTabs.length) {
-          this.editableTabs[index].output = Output;
-        }
-      });
+   
+
+      // 确保 editableTabs 和 response.data.data.output长度相同
+      if (response.data.data.output.length === this.editableTabs.length) {
+  for (let i = 0; i < response.data.data.output.length; i++) {
+    this.editableTabs[i].output=response.data.data.output[i]
+  }
+}
     })
     .catch(function (error) {
       console.log("错误1：" + error);
     });
+   
 
-        console.log(this.editableTabs);
 },
+async ReturnBoolm() {
+  let url = '/user/judge';
+  const params = {
+    qid: this.questionData.data.id,
+    code: this.GetValue(),
+    language: this.selectedLanguage,
+  };
+
+  try {
+    const postResponse = await this.$axios.post(url, params);
+    url = '/user/judge/' + postResponse.data.data;
+    console.log("返回的题目解答id", url);
+
+    const getResponse = await this.$axios.get(url);
+    this.AnswerData = getResponse.data; // 直接在这里设置 AnswerData
+    console.log("返回的数据", this.AnswerData);
+
+    const h = this.$createElement;
+    
+    this.$msgbox({
+      
+      message: h('ReturnVnodes', {
+    props: {
+      time: this.AnswerData.data.time,
+      memory: this.AnswerData.data.memory,
+      language: this.AnswerData.data.language,
+      code: this.AnswerData.data.code,
+      sub_time: this.AnswerData.data.sub_time
+    }
+  }),
+     
+      beforeClose: (action, instance, done) => {
+        if (action === 'confirm') {
+          instance.confirmButtonLoading = true;
+          instance.confirmButtonText = '执行中...';
+          setTimeout(() => {
+            done();
+            setTimeout(() => {
+              instance.confirmButtonLoading = false;
+            }, 300);
+          }, 3000);
+        } else {
+          done();
+        }
+      }
+    }).then(action => {
+      this.$message({
+        type: 'info',
+        message: 'action: ' + action
+      });
+    });
+    
+ 
+
+} catch (error) {
+  console.log("错误：" + error);
+}
+}
+
+
+
 },
 
   mounted() {

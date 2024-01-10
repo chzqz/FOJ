@@ -25,6 +25,8 @@ import 'brace/mode/javascript'
 import 'brace/snippets/javascript'
 import 'brace/mode/c_cpp'
 import 'brace/snippets/c_cpp'
+import 'brace/mode/java'
+import 'brace/snippets/java'
 //搜索
 import 'brace/ext/searchbox'
 //主题
@@ -80,7 +82,7 @@ export default {
   computed: {
     options() {
       return {
-        //语言
+        
         enableBasicAutocompletion: true,//启动代码补全功能
         enableSnippets: true,//启动代码段
         showPrintMargin: false,//显示打印边距
@@ -112,8 +114,8 @@ export default {
       return this.$refs.editor.editor.getValue()
       
     },
-    setValue(value) {//赋值
-      this.$refs.editor.editor.session.setValue(value)
+    setValue() {//赋值
+      this.$refs.editor.editor.session.setValue(1)
     },
     clear() {//清空
       this.$refs.editor.editor.session.setValue('')
