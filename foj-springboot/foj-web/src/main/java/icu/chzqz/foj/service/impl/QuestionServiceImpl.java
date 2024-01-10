@@ -65,9 +65,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public PageResult<QuestionsPageVO> questions(QuestionsPageDTO questionsPageDTO) throws AccessDeniedException {
-        if(questionsPageDTO.getUid()!=null&&(Integer)BaseContextUtil.getBaseContext().get("authority")!=2){
-            throw new AccessDeniedException(messageProperty.permissionDenied);
-        }
         PageHelper.startPage(questionsPageDTO.getPage(),questionsPageDTO.getPageSize());
         Page<Question> page = questionMapper.list(questionsPageDTO);
 
@@ -80,7 +77,6 @@ public class QuestionServiceImpl implements QuestionService {
             else passRate = 1.0*question.getAcCount()/question.getSubCount();
 
             List<Tag> tags = tagMapper.selectByQId(id);
-
             List<Integer> statuses = null;
             if(questionsPageDTO.getUid()!=null) statuses = judgeMapper.selectStatus(questionsPageDTO.getUid(), id);
             Integer status;

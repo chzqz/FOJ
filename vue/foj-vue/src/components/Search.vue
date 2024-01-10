@@ -6,15 +6,12 @@
           v-for="item in options"
           :key="item.value1"
           :label="item.label1"
-          :value="item.value1"
-         
-          >
-          
+          :value="item.value1">
         </el-option>
       </el-select>
     </div>
     <div id="nd2">
-      <el-select v-model="selectionOptions.value2" multiple placeholder="请选择" >
+      <el-select v-model="selectionOptions.value2" multiple multiple-limit="3" placeholder="请选择" filterable >
         <el-option
           v-for="item in options2"
           :key="item.value2"
@@ -36,6 +33,7 @@ export default {
   data() {
     return {
       options: [
+        { value1: null, label1: '全部' },
         { value1: '0', label1: '简单' },
         { value1: '1', label1: '中等' },
         { value1: '2', label1: '困难' },
@@ -70,17 +68,20 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #srh {
   display: flex;
   flex-direction: row;
 }
 #nd1 {
-  width: 10%;
+  width: 100px;
+  margin-left: 9px;
 }
 #nd2 {
-  width: 30%;
-  margin-left: 2%;
+  margin-left: 30px;
+}
+#nd2 > div {
+  width: 300px;
 }
 
 .input-box {

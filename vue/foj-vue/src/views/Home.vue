@@ -1,6 +1,6 @@
 <template>
-  <div id="ZT">
-    <el-main ><TiDan id="TD"></TiDan></el-main>
+  <div id="ZT" style="margin-top: 35px; padding-bottom: 40px; height: 830px;">
+    <el-main style="height: 780px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04); background-color: rgb(255, 255, 255);" ><TiDan id="TD"></TiDan></el-main>
   </div>
 </template>
   
