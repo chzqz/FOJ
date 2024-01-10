@@ -32,6 +32,7 @@ public class PermissionsInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if("OPTIONS".equals(request.getMethod())) return true;
         String requestURL = request.getRequestURI();
         String[] split = requestURL.split("/");
         int authority = map.getOrDefault(split[1],-1);

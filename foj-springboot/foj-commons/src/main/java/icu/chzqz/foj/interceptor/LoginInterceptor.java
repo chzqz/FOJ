@@ -25,6 +25,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie[] cookies = request.getCookies();
+        if("OPTIONS".equals(request.getMethod())) return true;
         if(cookies!=null){
 
             log.info("登录验证" );
