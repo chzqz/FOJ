@@ -24,9 +24,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("登录验证");
         Cookie[] cookies = request.getCookies();
         if(cookies!=null){
+
+            log.info("登录验证" );
             for (Cookie cookie : cookies) {
                 if("token".equals(cookie.getName())){
                     String token = cookie.getValue();

@@ -15,7 +15,7 @@ Vue.use(ElementUI)
 Vue.use(Row)
 Vue.use(Button) */
 
-// axios.defaults.withCredentials = true
+axios.defaults.withCredentials = true
 
 new Vue({
   router,
