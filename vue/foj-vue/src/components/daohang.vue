@@ -236,7 +236,15 @@ export default {
         })
       }
 
-      //end
+      //设置标题栏状态
+      var path = window.location.pathname
+      if(path=='/question'){
+        this.activeName = 'questionsManager';
+      } else if(path=='AdminManager') {
+        this.activeName = 'AdminManager';
+      }
+
+
 
   }
 

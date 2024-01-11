@@ -22,6 +22,9 @@ const routes = [
           path: 'home',
           name:'home',
           component: Home,
+          meta: {
+            title: 'Home'
+          }
         },
         {
           // 当 /user/:id/posts 匹配成功

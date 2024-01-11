@@ -2,37 +2,93 @@
   <div>
     <div id="ZT">
       <el-main>
-        <el-button id="Create" type="primary" icon="el-icon-edit" @click="createDialog()"></el-button>
+
+
+          <el-button id="Create" type="primary" icon="el-icon-edit" @click="createDialog()"  style="margin-right: 0; margin-left: 80%;"></el-button>
         <el-button type="danger" icon="el-icon-delete" circle @click="deleteDialog()"></el-button>
+
+
         <el-dialog :visible.sync="dialogTableVisible">
 
           <div>
-            <div class="NR">题目名：<span><el-input type="textarea" placeholder="请输入内容"
-                  v-model="questionData.name"></el-input></span></div>
-            <div class="NR">题目描述：<span><el-input type="textarea" placeholder="请输入内容"
-                  v-model="questionData.description"></el-input></span></div>
-            <div class="NR">提示：<span><el-input type="textarea" placeholder="请输入内容"
-                  v-model="questionData.tip"></el-input></span></div>
-            <div class="NR">最大运行时间(ms):<span><el-input type="textarea" placeholder="请输入内容"
-                  v-model="questionData.maxTime"></el-input></span></div>
-            <div class="NR">最大运行内存(MB):<span><el-input type="textarea" placeholder="请输入内容"
-                  v-model="questionData.maxMemory"></el-input></span></div>
-            <div class="NR">最大线程数：<span><el-input type="textarea" placeholder="请输入内容"
-                  v-model="questionData.maxProc"></el-input></span></div>
-            <div class="NR"> 标签id列表:
-              <el-select v-model="questionData.tags" multiple placeholder="请选择"  value-key="id">
-                <el-option v-for="item in options2" :key="item.id" :label="item.name" :value="item">
-                </el-option>
-              </el-select>
-            </div>
-            <div><el-switch v-model="value1" active-text="题目开放"> </el-switch>
-              <el-select v-model="questionData.level" placeholder="请选择" >
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-            <el-button type="primary" round @click="handleExternalConfirm()">保存</el-button>
+            <el-form ref="form" :model="questionData" label-width="80px">
+              <el-form-item label="题目名称">
+                <el-input v-model="questionData.name"></el-input>
+              </el-form-item>
+              <el-form-item label="题目描述">
+                <el-input type="textarea" v-model="questionData.description"></el-input>
+              </el-form-item>
+              <el-form-item label="提示">
+                <el-input type="textarea" v-model="questionData.tip"></el-input>
+              </el-form-item>
+              <el-form-item label="运行时间:" >
+                <el-col :span="7">
+                  <el-input 
+                    placeholder="请输入内容"
+                    suffix-icon="el-icon-time"
+                    v-model="questionData.maxTime">
+                  </el-input>
+                </el-col>
+                <el-col class="line" :span="3">运行内存:</el-col>
+                <el-col :span="7">
+                  <el-input 
+                    placeholder="请输入内容"
+                    suffix-icon="el-icon-postcard"
+                    v-model="questionData.maxMemory">
+                  </el-input>                
+                </el-col>
+                <el-col class="line" :span="3">线程数:</el-col>
+                <el-col :span="4">
+                  <el-input 
+                    placeholder="请输入内容"
+                    suffix-icon="el-icon-s-unfold"
+                    v-model="questionData.maxProc">
+                  </el-input>                
+                </el-col>
+              </el-form-item>
+              <el-form-item label="难度:">
+                <el-col :span="7">
+                  <template>
+                    <el-select v-model="questionData.level" placeholder="请选择">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </template>
+                </el-col>
+                <el-col class="line" :span="3">标签:</el-col>
+                <el-col :span="7"> 
+                  <el-select
+                    v-model="questionData.tags"
+                    multiple
+                    collapse-tags
+                    value-key="id"
+                    placeholder="请选择">
+                    <el-option
+                      v-for="item in options2"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item">
+                    </el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="2"> </el-col>
+                <el-col :span="3"> 是否公开:</el-col>
+                <el-col :span="3">
+                  <el-switch
+                    v-model="questionData.status"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-col>
+              </el-form-item>
+            </el-form>
+            <el-button type="primary" round @click="update()">保存</el-button>
           </div>
+
         </el-dialog>
         <!-- 测试案例对话框 -->
         <el-dialog
@@ -68,9 +124,20 @@
               </el-table-column>
               <el-table-column
                 label="状态"
-                width="80">
+                width="100">
                 <template slot-scope="scope">
-                  <span style="margin-left: 10px">{{ scope.row.status }}</span>
+                  <span>
+                    <template>
+                      <el-select v-model="scope.row.status" placeholder="请选择">
+                        <el-option
+                          v-for="item in levels"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                    </template>
+                  </span>
                 </template>
               </el-table-column>
               <el-table-column label="操作">
@@ -111,18 +178,16 @@
           </span>
         </el-dialog>
 
-
-
         <div class=" input-box mb20">
 
 
-          <el-table :data="tableData" style="width: 100%" size="small" height="800px" stripe
+          <el-table :data="tableData" style="width: 100%" size="small" height="800px" stripe 
             @selection-change="handleSelectionChange">
 
-            <el-table-column type="selection" width="55"></el-table-column>
+            <el-table-column type="selection" width="55" :align="align"></el-table-column>
             <el-table-column label="题目id" width="90">
               <template slot-scope="scope">
-                <span style="margin-left: 0px">{{ scope.row.id }}</span>
+                <span style="margin-left: 0px" >{{ scope.row.id }}</span>
               </template>
             </el-table-column>
             <el-table-column label="题目名" width="180">
@@ -140,9 +205,9 @@
                 <span style="margin-left: 0px">{{ (scope.row.passRate * 100).toFixed(2) }}%</span>
               </template>
             </el-table-column>
-            <el-table-column label="标签" width="200">
+            <el-table-column label="标签" width="250">
               <template slot-scope="scope">
-                <span v-for="(item, index) in scope.row.tags.slice(0, 2)" :key="index" style="margin-left: 20px;">
+                <span v-for="(item, index) in scope.row.tags.slice(0, 3)" :key="index" style="margin-left: 20px;">
                   <el-tag :color="item.color" effect="dark">
                     {{ item.name }}
                   </el-tag>
@@ -164,6 +229,15 @@
             <!-- <el-pagination layout="prev, pager, next" :total="totalItems" background
               @current-change="handleCurrentChange">
             </el-pagination> -->
+            <el-pagination
+              background
+              layout="prev, pager, next"
+              :total="1000"
+              :page-size='pageSize'
+              :current-page='currentPage'
+              @current-change = 'updatePage'
+              >
+            </el-pagination>
           </div>
 
 
@@ -183,6 +257,31 @@ import Cookies from 'js-cookie';
 export default {
   data() {
     return {
+      form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
+        },
+
+        levels:[
+          {
+          value: 0,
+          label: '停用'
+          }, 
+          {
+          value: 1,
+          label: '启用'
+          }, 
+          {
+          value: 2,
+          label: '仅作展示'
+          }, 
+        ],
       tableData: [], // 从后端获取的数据
       // totalItems: 100, // 从后端获取的总条目数
       currentPage: 1, // 当前页码
@@ -260,6 +359,7 @@ export default {
           // this.value=this.questionData.level;
           // this.value1 = this.questionData.status === 1;
           // this.tags=this.questionData.tags;
+          this.questionData.status = this.questionData.status==1
           console.log("获取的题目信息", this.questionData);
         })
         .catch((error) => {
@@ -293,7 +393,7 @@ export default {
         });
     },
 
-    async handleExternalConfirm() {
+    async update() {
       console.log("此时数据为", this.questionData);
       let url = '/setter/questions';
       const tagIds = this.questionData.tags.map((tag)=>{return tag.id});
@@ -307,7 +407,7 @@ export default {
         maxMemory: this.questionData.maxMemory,
         maxProc: this.questionData.maxProc,
         tags: tagIds, // 使用获取到的一维数组
-        status: this.questionData.status,
+        status: this.questionData.status ? 1:0,
         level: this.questionData.level
       }
       await this.$axios.put(url, params)
@@ -317,6 +417,7 @@ export default {
         });
 
       await this.QuestionList();
+      this.dialogTableVisible = false;
     },
     //   QuestionModify(url) {
 
@@ -425,6 +526,11 @@ export default {
           }
         })
       })
+    },
+
+    updatePage(page){
+      this.currentPage = page;
+      this.QuestionList();
     }
   },
   mounted() {
@@ -491,5 +597,11 @@ export default {
 ::v-deep #ZT > main > div:nth-child(4) > div{
   width:600px !important;
 }
+
+.el-main[data-v-29b06b20]{
+  background-color: #fff;
+}
+
+
 
 </style>
