@@ -88,7 +88,7 @@
 
               <!-- <p>{{type[0]}}</p> -->
               <AceJavascripttest ref="mychild" id="Acepage" :height=500 :value=value :theme=theme :readOnly=false
-                :lang="mappedLanguage"></AceJavascripttest>
+                :LA="mappedLanguage"></AceJavascripttest>
             </el-card>
 
             <!-- 测试用例卡片 -->
@@ -161,10 +161,10 @@ export default {
 
       type: [],
       value: '',//此时这个代码编辑框内显示的东西
-      theme: 'xcode',
+     
 
       options: [],//语言选中框的选项
-      selectedLanguage: 'C',//当前选择的语言
+      selectedLanguage:'C',//当前选择的语言
 
 
 
@@ -185,10 +185,11 @@ export default {
       const mapping = {
         'C': 'c_cpp',
         'C++': 'c_cpp',
-        'Java': 'java,'
+        'Java': 'java',
+        'Python' : 'python'
 
       };
-
+     console.log(1111,mapping[this.selectedLanguage])
       // 映射处理
       return mapping[this.selectedLanguage];
     },

@@ -2,7 +2,7 @@
   <div class="codeEditBox" :style="{height: height + 'px'}">
   <aceEditor ref="editor"
        :value="value"
-       :lang="options.lang"
+       :lang="LA"
        :theme="theme"
        :options="options"
        @init="initEditor"
@@ -27,6 +27,8 @@ import 'brace/mode/c_cpp'
 import 'brace/snippets/c_cpp'
 import 'brace/mode/java'
 import 'brace/snippets/java'
+import 'brace/mode/python'
+import 'brace/snippets/python'
 //搜索
 import 'brace/ext/searchbox'
 //主题
@@ -74,15 +76,16 @@ export default {
         }
       }
     },
-    lang:{
+    LA:{
         type:String,
         default:'c_cpp',
     }
   },
   computed: {
     options() {
+      console.log(333,this.LA)
       return {
-        
+        lang:this.LA,
         enableBasicAutocompletion: true,//启动代码补全功能
         enableSnippets: true,//启动代码段
         showPrintMargin: false,//显示打印边距
@@ -114,8 +117,8 @@ export default {
       return this.$refs.editor.editor.getValue()
       
     },
-    setValue() {//赋值
-      this.$refs.editor.editor.session.setValue(1)
+    setValue(value) {//赋值
+      this.$refs.editor.editor.session.setValue(value)
     },
     clear() {//清空
       this.$refs.editor.editor.session.setValue('')
@@ -145,6 +148,15 @@ export default {
          
          console.log(111+this.getValue());
       }
-  }
+  },
+  // watch: {
+  //   LA: function(newLang, oldLang) {
+  //     // 每当 LA 的值变化时，更新 aceEditor 组件的 lang 属性
+  //     this.$refs.editor.setOptions({
+  //       lang: newLang
+  //     });
+  //   }
+  // },
+  
 }
 </script>
