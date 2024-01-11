@@ -31,20 +31,87 @@
                 </el-option>
               </el-select>
             </div>
-            <div>
-              <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/"
-                :on-change="handleChange" :file-list="fileList">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-
-              </el-upload>
-            </div>
             <el-button type="primary" round @click="handleExternalConfirm()">保存</el-button>
-
           </div>
-
-
         </el-dialog>
+        <!-- 测试案例对话框 -->
+        <el-dialog
+          :title="currentTitle"
+          :visible.sync="testDialogVisible"
+          width="30%">
+          <!-- 内容: 测试案例表格 -->
+          <template>
+            <el-table
+              :data="currentTests"
+              style="width: 100%">
+              <el-table-column
+                label="案例名"
+                width="100">
+                <template slot-scope="scope">
+                  <i class="el-icon-time"></i>
+                  <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="输入"
+                width="120">
+                <template slot-scope="scope">
+                  <span style="margin-left: 10px">{{ scope.row.in }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="输出"
+                width="120">
+                <template slot-scope="scope">
+                  <span style="margin-left: 10px">{{ scope.row.out }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                label="状态"
+                width="80">
+                <template slot-scope="scope">
+                  <span style="margin-left: 10px">{{ scope.row.status }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="removeTest(scope.row.id)">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+          <!-- 内层 -->
+          <el-dialog
+            width="30%"
+            title="上传案例"
+            :visible.sync="uploadVisible"
+            append-to-body>
+            <el-upload
+              class="upload-demo"
+              action=""
+              :auto-upload='false'
+              multiple
+              :on-change="changeFiles"
+              :file-list="fileList">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+            <span slot="footer" class="dialog-footer">
+              <el-button type="primary" @click="upload()">上 传</el-button>
+            </span>
+          </el-dialog>
+          <!-- 页脚 -->
+          <span slot="footer" class="dialog-footer">
+            
+            <el-button type="primary" @click="uploadVisible = true">添 加</el-button>
+            <el-button type="primary" @click="testDialogVisible = false">确 定</el-button>
+          </span>
+        </el-dialog>
+
+
 
         <div class=" input-box mb20">
 
@@ -63,17 +130,17 @@
                 <span style="margin-left: 0px">{{ scope.row.name }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="难度" width="150">
+            <el-table-column label="难度" width="80">
               <template slot-scope="scope">
                 <span style="margin-left: 0px">{{ formatDifficulty(scope.row) }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="通过率" width="180">
+            <el-table-column label="通过率" width="80">
               <template slot-scope="scope">
                 <span style="margin-left: 0px">{{ (scope.row.passRate * 100).toFixed(2) }}%</span>
               </template>
             </el-table-column>
-            <el-table-column label="标签" width="180">
+            <el-table-column label="标签" width="200">
               <template slot-scope="scope">
                 <span v-for="(item, index) in scope.row.tags.slice(0, 2)" :key="index" style="margin-left: 20px;">
                   <el-tag :color="item.color" effect="dark">
@@ -82,21 +149,21 @@
                 </span>
               </template>
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" width="250px">
               <template slot-scope="scope">
                 <!-- 在此处定义按钮 -->
 
                 <el-button type="primary" icon="el-icon-edit" @click="openDialog(scope.row.id)">编辑</el-button>
-
+                <el-button type="primary" icon="el-icon-s-order" @click="showTestDialog(scope.row.id, scope.row.name)">测试用例</el-button>
               </template>
             </el-table-column>
             <!-- 其他列... -->
           </el-table>
           <!-- 分页器 -->
           <div class="block" style="margin-top: 15px;">
-            <el-pagination layout="prev, pager, next" :total="totalItems" background
+            <!-- <el-pagination layout="prev, pager, next" :total="totalItems" background
               @current-change="handleCurrentChange">
-            </el-pagination>
+            </el-pagination> -->
           </div>
 
 
@@ -121,12 +188,13 @@ export default {
       currentPage: 1, // 当前页码
       pageSize: 10, // 每页显示的条目数
       selectedRows: [], // 保存勾选的行数据
-
+      currentTests: [], //当前测试案例数组
       dialogTableVisible: false,
-
-
+      testDialogVisible: false,
+      currentTitle: '', //当前选中题目标题
+      currentId:null, //当前id
       questionData: [],
-
+      uploadVisible: false, //上传框显示
       value1: true,
       options: [
         { value: 0, label: '简单' },
@@ -134,7 +202,8 @@ export default {
         { value: 2, label: '困难' }
       ],
       value: '',
-
+      fileList: [],
+      uploadList: [], //真实的上传文件的列表
       options2: [],
       tags: []
 
@@ -180,11 +249,11 @@ export default {
 
 
     },
-    openDialog(ID) {
-      console.log("获取的题目id为：" + ID);
+    openDialog(ID, name) {
+      console.log("获取的题目为："+ID+':' + name);
       this.dialogTableVisible = true;
       let url = '/user/question/' + ID;
-
+      
       this.$axios.get(url)
         .then((response) => {
           this.questionData = response.data.data;
@@ -297,7 +366,66 @@ export default {
       console.log('勾选的题目id:', this.selectedRows);
     },
 
+    showTestDialog(id,name) {
+      this.currentId = id;
+      this.currentTitle = name;
+      console.log("编辑测试案例:",id);
+      this.$axios.get('/setter/testcases/qid/'+id).then((response)=>{
+        console.log('获取案例响应:',response);
+        if(response.data.code==200){
+          this.currentTests = response.data.data;
+        }
+        this.testDialogVisible = true;
+      })
+    },
+    async upload() {
+      console.log("上传文件列表", this.uploadList);
+      let fd = new FormData();
+      this.fileList = [];
+      this.uploadList.forEach(file =>{
+        fd.append('files',file.raw)
+      })
+      fd.append('qid',this.currentId);
+      const config={
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
+      }
 
+      await this.$axios.post('/setter/testcases',fd,config).then(response =>{
+        console.log('上传成功');
+      })
+
+      await this.$axios.get('/setter/testcases/qid/'+this.currentId).then((response)=>{
+        console.log('获取案例响应:',response);
+        if(response.data.code==200){
+          this.currentTests = response.data.data;
+        }
+      })
+      this.uploadVisible = false;
+      
+    },
+
+    changeFiles(file,fileList){
+      console.log('文件选中:',fileList);
+      this.uploadList = fileList
+      console.log('文件选中:',fileList);
+    },
+
+    removeTest(id){
+      console.log("删除案例:"+id);
+
+
+      this.$axios.delete('/setter/testcases',{params: {id:id}}).then(response=>{
+        console.log('删除成功');
+        this.$axios.get('/setter/testcases/qid/'+this.currentId).then((response)=>{
+          console.log('获取案例响应:',response);
+          if(response.data.code==200){
+            this.currentTests = response.data.data;
+          }
+        })
+      })
+    }
   },
   mounted() {
     this.QuestionList();
@@ -308,7 +436,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 #TD {
   margin-top: 2%;
 }
@@ -358,4 +486,10 @@ export default {
 #Create {
   margin-right: 100px;
   border-radius: 90px;
-}</style>
+}
+
+::v-deep #ZT > main > div:nth-child(4) > div{
+  width:600px !important;
+}
+
+</style>

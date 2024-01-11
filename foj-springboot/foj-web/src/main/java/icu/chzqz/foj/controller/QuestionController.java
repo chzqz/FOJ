@@ -121,7 +121,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("/setter/testcases")
-    public Result deleteTestcase(@RequestBody Long id){
+    public Result deleteTestcase( Long id){
         log.info("删除测试案例: {}", id);
         questionService.deleteTestcase(id);
         return Result.success();
