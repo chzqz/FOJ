@@ -212,7 +212,7 @@ public class QuestionServiceImpl implements QuestionService {
         Integer fileMax;
         Long cpuLimit, memoryLimit,procLimit;
         String fileName, fileOutName;
-        Map<String,String> testcases = new HashMap<>();
+        Map<String,String> testcases = new LinkedHashMap<>();
 
         String language = testDTO.getLanguage();
         compileArgs = CmdUtil.getCompileArgs(language);

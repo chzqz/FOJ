@@ -102,7 +102,9 @@ public class JudgeServiceImpl implements JudgeService {
 
         Long maxTime = 0L;
         Long maxMem = 0L;
-        for (String key : testcases.keySet()) {
+        for (Map.Entry<String, String> entry : testcases.entrySet()){
+            String key = entry.getKey();
+
             String value = testcases.get(key);
             cmd.setFiles(new File[]{new MemoryFile(key),new Collector("stdout", runDTO.getFileMax()),new Collector("stderr",runDTO.getFileMax())});
             request.setCmd(new Cmd[]{cmd});
