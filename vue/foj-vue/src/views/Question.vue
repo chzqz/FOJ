@@ -3,6 +3,7 @@
     <div id="ZT">
         <el-main >
           <el-button id="Create" type="primary" icon="el-icon-edit" @click="createDialog()"></el-button>
+          <el-button type="danger" icon="el-icon-delete" circle  @click="deleteDialog()"></el-button>
 <el-dialog  :visible.sync="dialogTableVisible">
  
   <div>
@@ -51,12 +52,11 @@
 </el-dialog>
          
             <div class=" input-box mb20">
-	<input type="text" class="input" />
-	<span class="span">搜</span>
+	
 
-  <el-table :data="tableData" style="width: 100%" size="small" height="800px" stripe>
+  <el-table :data="tableData" style="width: 100%" size="small" height="800px" stripe @selection-change="handleSelectionChange">
  
- 
+    <el-table-column type="selection" width="55"></el-table-column>
     <el-table-column label="题目id" width="90">
       <template slot-scope="scope">
         <span style="margin-left: 0px">{{ scope.row.id  }}</span>
@@ -91,7 +91,7 @@
           <!-- 在此处定义按钮 -->
         
           <el-button type="primary" icon="el-icon-edit" @click="openDialog(scope.row.id)">编辑</el-button>
-          <el-button type="primary" icon="el-icon-delete" @click="handleButton2(scope.row)">删除</el-button>
+  
         </template>
       </el-table-column>
     <!-- 其他列... -->
@@ -123,6 +123,7 @@ import Cookies from 'js-cookie';
       // totalItems: 100, // 从后端获取的总条目数
       currentPage: 1, // 当前页码
       pageSize: 10, // 每页显示的条目数
+      selectedRows: [] , // 保存勾选的行数据
 
       dialogTableVisible: false,
       
@@ -276,7 +277,26 @@ import Cookies from 'js-cookie';
           console.log("获取题目信息错误" + error);
         });
     },
+   async deleteDialog(){
+      let url='/setter/questions';
+     console.log(this.selectedRows);
+
+   await  this.$axios.delete(url,{data:this.selectedRows})
+        .then((response) => {
+        })
+        .catch((error) => {
+          console.log("错误" + error);
+        });
     
+     await   this.QuestionList()
+
+    },
+    handleSelectionChange(val) {
+      // 将勾选行的题目id存储到selectedRows中
+      this.selectedRows = val.map(row => row.id);
+      // 在这里，this.selectedRows 将包含勾选的题目id
+      console.log('勾选的题目id:', this.selectedRows);
+    },
     
 
   },
