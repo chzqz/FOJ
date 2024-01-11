@@ -20,9 +20,12 @@ public class QuestionVO {
     String tip;
     Long maxTime;
     Long maxMemory;
+    Long maxProc;
     List<Testcase> testcases;
     Integer uid;
     Double passRate;
     List<Tag> tags;
     Integer level;
+    Integer status;
+
 }

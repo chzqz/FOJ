@@ -348,6 +348,7 @@
 | --`├─tip`       | text     |          |        | 提示             |
 | --`├─maxTime`  | int      |          |        | 最大运行时间(ms) |
 | --`├─maxMemory` | int      |          |        | 最大运行内存(MB) |
+| --`├─maxProc` | int | | | 最大线程数 |
 | --`├─testcases` | object[] | | | 测试案例 |
 | ----`├─input`   | string   |          |        | 输入样例         |
 | ----`├─output`  | string   |          |        | 输出样例         |

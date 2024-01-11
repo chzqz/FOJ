@@ -31,10 +31,10 @@ CREATE TABLE IF NOT EXISTS questions(
 	ac_count INT  COMMENT '通过次数',
 	sub_count INT  COMMENT '提交次数',
 	tip TEXT COMMENT '提示',
-	max_time INT  COMMENT '最大运行时间(ms)',
-	max_memory INT  COMMENT '最大运行内存(MB)',
-	max_proc INT  COMMENT '最大线程数',
-	uid BIGINT COMMENT '出题人id',
+	max_time BIGINT  COMMENT '最大运行时间(ms)',
+	max_memory BIGINT  COMMENT '最大运行内存(MB)',
+	max_proc BIGINT  COMMENT '最大线程数',
+	uid INT COMMENT '出题人id',
 	`status` INT  COMMENT '题目状态',
 	`level` INT  COMMENT '题目难度'
 );

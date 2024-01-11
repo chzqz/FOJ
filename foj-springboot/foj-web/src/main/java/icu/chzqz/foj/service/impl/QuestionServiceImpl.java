@@ -132,7 +132,7 @@ public class QuestionServiceImpl implements QuestionService {
         }
         List<Tag> tags = tagMapper.selectByQId(id);
 
-        QuestionVO questionVO = new QuestionVO(id,question.getName(),question.getDescription(),question.getTip(),question.getMaxTime(),question.getMaxMemory(),testcases,question.getUid(),passRate,tags,question.getLevel());
+        QuestionVO questionVO = new QuestionVO(id,question.getName(),question.getDescription(),question.getTip(),question.getMaxTime(),question.getMaxMemory(),question.getMaxProc(),testcases,question.getUid(),passRate,tags,question.getLevel(),question.getStatus());
         return questionVO;
     }
 

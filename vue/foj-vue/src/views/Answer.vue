@@ -25,7 +25,6 @@
 
             <div>
               <span id="Title">{{ questionData.data.name }}</span>
-
             </div>
             <div id="Tag">
               <span v-for="(item, index) in questionData.data.tags" :key="index"> 
@@ -34,35 +33,45 @@
                 </el-tag> 
               </span>
             </div>
-            <div id="Text">{{ questionData.data.description }}</div>
-            <div id="Tip">
-              <div id="TipTitle">提示:</div>
-              <span id="TipText">{{ questionData.data.tip }}</span>
-
-
-
+            <div id="Text">
+              <p v-html="questionData.data.description" style="white-space:pre-wrap"></p>
             </div>
 
+            <el-divider></el-divider>
             <div id="Example">
-
               <span v-for="(item, index) in questionData.data.testcases" :key="index">
-                <div id="ExampleTitile">案例{{ index + 1 }}</div>
-                <div><span id="inputTitile">输入：</span>{{ item.input }}</div>
-                <div><span id="outputTitile">输出：</span>{{ item.output }}</div><br />
+                <div id="ExampleTitile">案例{{ index + 1 }}:</div>
+                <div style="margin-left: 20px;">
+                  <div>
+                    <span id="inputTitile">输入
+                      <pre><p v-html="item.input" style="line-height: 26px; font-weight: bold;  background-color:rgb(245, 245, 245); border-radius: 10px; padding: 10px;"></p></pre>
+                    </span>
+                  </div>
+                  <div>
+                    <span id="outputTitile">输出</span>
+                    <pre><p v-html="item.output" style="line-height: 26px; font-weight: bold;  background-color:rgb(245, 245, 245); border-radius: 10px; padding: 10px;"></p></pre>
+                  </div>
+                </div>
               </span>
             </div>
-
-            <div id="Max">
-              <span>
+            
+            <div id="Tip">
+              <div id="TipTitle">提示:</div>
+              <span id="TipText"></span>
+              <pre><p v-html="questionData.data.tip" style="line-height: 26px; font-weight: bold;  background-color:rgb(245, 245, 245); border-radius: 10px; padding: 10px;"></p></pre>
+            </div>
+            <el-divider></el-divider>
+            <div id="Max" style="margin-top: 50px;">
+              <div>
                 <span class="MaxTitile">最大运行时间：</span>
                 {{ (questionData.data.maxTime / 1000000).toFixed(2) }}
                 <span>ms</span>
-              </span>
-
-              <span id="set"> <span class="MaxTitile">最大运行空间：</span>
+              </div>
+              
+              <div> <span class="MaxTitile">最大运行空间：</span>
                 {{ (questionData.data.maxMemory / 1000000).toFixed(2) }}
                 <span>MB</span>
-              </span>
+              </div>
             </div>
           </el-card>
           <div>
@@ -510,13 +519,11 @@ el-card {
 
 }
 
-#set {
-  margin-left: 90px;
-}
 
 .MaxTitile {
   font-size: 15px;
   font-weight: 560;
+  line-height: 30px;
 }
 
 #Acepage {
