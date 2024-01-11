@@ -93,7 +93,8 @@ export default {
         enableLiveAutocompletion: true,//启用实时自动完成
         readOnly: this.readOnly,//只读
         showInvisibles:true,
-        tooltipFollowsMouse:true,
+        tooltipFollowsMouse:true ,
+        
       }
     }
   },

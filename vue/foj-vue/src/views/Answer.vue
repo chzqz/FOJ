@@ -116,14 +116,24 @@
                     </el-tab-pane>
                   </el-tabs>
 
-
                 </el-tab-pane>
 
               </el-tabs>
-
-
-
-              <div></div>
+              <div>
+                <!-- 对话框 -->
+                <el-dialog
+                  title="提交结果"
+                  :visible.sync="resultVisible"
+                  width="30%"
+                  :before-close="handleClose">
+                  <div>
+                    <return-vnodes :result="AnswerData" :question="questionData" :lang="mappedLanguage"></return-vnodes>
+                  </div>
+                  <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="resultVisible = false">确 定</el-button>
+                  </span>
+                </el-dialog>
+              </div>
             </el-card>
           </div>
         </div>
@@ -152,8 +162,7 @@ export default {
       AnswerData: [],//存放返回的判断结果的相关信息
 
       inputSize: { minRows: 2 },
-
-
+      resultVisible: false, // 结果弹框是否显示
       questionData: '',//这个题目对应的信息
       questionData_id: '',
 
@@ -313,6 +322,7 @@ export default {
 
 
     },
+    //提交代码
     async ReturnBoolm() {
       let url = '/user/judge';
       const params = {
@@ -320,7 +330,6 @@ export default {
         code: this.GetValue(),
         language: this.selectedLanguage,
       };
-
       try {
         const postResponse = await this.$axios.post(url, params);
         url = '/user/judge/' + postResponse.data.data;
@@ -329,51 +338,39 @@ export default {
         const getResponse = await this.$axios.get(url);
         this.AnswerData = getResponse.data; // 直接在这里设置 AnswerData
         console.log("返回的数据", this.AnswerData);
+        this.resultVisible = true;
+        
+        // const h = this.$createElement;
 
-        const h = this.$createElement;
+        // this.$msgbox({
+        //   title: '结果',
+        //   customClass: 'resultBox',
+        //   message: h('ReturnVnodes', {
+        //     props: this.AnswerData.data
+        //   }),
 
-        this.$msgbox({
-
-          message: h('ReturnVnodes', {
-            props: {
-              time: this.AnswerData.data.time,
-              memory: this.AnswerData.data.memory,
-              language: this.AnswerData.data.language,
-              code: this.AnswerData.data.code,
-              sub_time: this.AnswerData.data.sub_time
-            }
-          }),
-
-          beforeClose: (action, instance, done) => {
-            if (action === 'confirm') {
-              instance.confirmButtonLoading = true;
-              instance.confirmButtonText = '执行中...';
-              setTimeout(() => {
-                done();
-                setTimeout(() => {
-                  instance.confirmButtonLoading = false;
-                }, 300);
-              }, 3000);
-            } else {
-              done();
-            }
-          }
-        }).then(action => {
-          this.$message({
-            type: 'info',
-            message: 'action: ' + action
-          });
-        });
+        //   // beforeClose: (action, instance, done) => {
+        //   //   // if (action === 'confirm') {
+        //   //   //   instance.confirmButtonLoading = true;
+        //   //   //   instance.confirmButtonText = '执行中...';
+        //   //   //   setTimeout(() => {
+        //   //   //     done();
+        //   //   //     setTimeout(() => {
+        //   //   //       instance.confirmButtonLoading = false;
+        //   //   //     }, 300);
+        //   //   //   }, 3000);
+        //   //   // } else {
+        //   //   //   done();
+        //   //   // }
+        //   //   done();
+        //   // }
+        // })
 
 
-
-      } catch (error) {
-        console.log("错误：" + error);
-      }
+        } catch (error) {
+          console.log("错误：" + error);
+        }
     }
-
-
-
   },
 
   mounted() {
@@ -381,15 +378,12 @@ export default {
     this.Pagecreate()
 
   },
-
-
-
-
-
 }
 </script>
 
+
 <style scoped>
+
 /* 使用深度作用选择器，限制样式仅作用于 .PageHeader 组件内部 */
 /* .a /deep/ .PageHeader {
   /* background-color:rgb(253, 253, 253); */
@@ -646,6 +640,15 @@ el-card {
   overflow: auto;
 }
 
+::v-deep #card3 > div > div:nth-child(2) > div > div{
+  width: 800px !important;
+  border-radius: 24px;
+  height: auto;
+}
+
+::v-deep .el-dialog__header{
+  border-bottom: 2px solid #d8d8d8;
+}
 
 /* 去掉tabs标签栏下的下划线 */
 /* 去掉tabs标签栏下的下划线 */
