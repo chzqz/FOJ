@@ -126,7 +126,12 @@ public class QuestionController {
         questionService.deleteTestcase(id);
         return Result.success();
     }
-
+    @PutMapping("/setter/testcases")
+    public Result modifyTestcase(@RequestBody TestcaseDTO testcaseDTO){
+        log.info("更新测试案例: {}", testcaseDTO);
+        questionService.modifyTestcase(testcaseDTO.getId(),testcaseDTO.getStatus());
+        return Result.success();
+    }
     @GetMapping("/setter/testcases/{id}")
     public Result<TestcaseVO> getTestcase(@PathVariable Long id) throws IOException, RequestFailException {
         log.info("获取测试案例: {}", id);

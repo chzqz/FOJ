@@ -1,10 +1,7 @@
 package icu.chzqz.foj.mapper;
 
 import icu.chzqz.foj.entity.Testcase;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
 import java.util.List;
@@ -30,4 +27,7 @@ public interface TestcaseMapper {
 
     @Select("select * from testcases where q_id = #{qid}")
     List<Testcase> list(Long qid);
+
+    @Update("update testcases set status = #{status} where id=#{id}")
+    void update(Long id, Integer status);
 }

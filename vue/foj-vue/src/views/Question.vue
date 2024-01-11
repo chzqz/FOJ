@@ -124,11 +124,11 @@
               </el-table-column>
               <el-table-column
                 label="状态"
-                width="100">
+                width="140">
                 <template slot-scope="scope">
                   <span>
                     <template>
-                      <el-select v-model="scope.row.status" placeholder="请选择">
+                      <el-select v-model="scope.row.status" @change="updateTest(scope.row.id,scope.row.status)" placeholder="请选择">
                         <el-option
                           v-for="item in levels"
                           :key="item.value"
@@ -531,8 +531,13 @@ export default {
     updatePage(page){
       this.currentPage = page;
       this.QuestionList();
+    },
+
+    updateTest(id, status){
+      this.$axios.put('/setter/testcases',{'id':id,'status':status})
     }
   },
+
   mounted() {
     this.QuestionList();
     this.TabsList();

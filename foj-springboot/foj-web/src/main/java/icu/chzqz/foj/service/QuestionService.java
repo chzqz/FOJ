@@ -97,4 +97,6 @@ public interface QuestionService {
      * @return
      */
     List<TestcaseVO> list(Long qid) throws RequestFailException, IOException;
+
+    void modifyTestcase(Long id, Integer status);
 }

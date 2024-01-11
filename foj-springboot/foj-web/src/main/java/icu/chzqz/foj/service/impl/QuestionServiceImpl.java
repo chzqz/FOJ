@@ -349,6 +349,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public void modifyTestcase(Long id, Integer status) {
+        testcaseMapper.update(id,status);
+    }
+
+    @Override
     public List<TestcaseVO> list(Long qid) throws RequestFailException, IOException {
         List<Testcase> list = testcaseMapper.list(qid);
         List<TestcaseVO> result = new ArrayList<>();
