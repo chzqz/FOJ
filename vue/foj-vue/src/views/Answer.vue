@@ -28,7 +28,7 @@
             </div>
             <div id="Tag">
               <span v-for="(item, index) in questionData.data.tags" :key="index"> 
-                <el-tag :color="item.color" effect="dark" style="margin-right: 10px; border: 0;">
+                <el-tag :color="item.color" effect="dark" style="margin-right: 10px; border: 0; box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">
                   {{ item.name }}
                 </el-tag> 
               </span>
@@ -41,7 +41,7 @@
             <div id="Example">
               <span v-for="(item, index) in questionData.data.testcases" :key="index">
                 <div id="ExampleTitile">案例{{ index + 1 }}:</div>
-                <div style="margin-left: 20px;">
+                <div style="padding-left: 20px; margin-top: 15px; border-left: 2px solid #DCDFE6;">
                   <div>
                     <span id="inputTitile">输入
                       <pre><p v-html="item.input" style="line-height: 26px; font-weight: bold;  background-color:rgb(245, 245, 245); border-radius: 10px; padding: 10px;"></p></pre>
@@ -61,20 +61,20 @@
               <pre><p v-html="questionData.data.tip" style="line-height: 26px; font-weight: bold;  background-color:rgb(245, 245, 245); border-radius: 10px; padding: 10px;"></p></pre>
             </div>
             <el-divider></el-divider>
-            <div id="Max" style="margin-top: 50px;">
+            <div id="Max" style="margin-top: 20px;">
               <div>
                 <span class="MaxTitile">最大运行时间：</span>
-                {{ (questionData.data.maxTime / 1000000).toFixed(2) }}
+                <span v-html="(questionData.data.maxTime / 1000000).toFixed(2)" style="line-height: 26px; font-weight: bold;  background-color:rgb(245, 245, 245); border-radius: 3px; padding: 3px;"></span>
                 <span>ms</span>
               </div>
               
               <div> <span class="MaxTitile">最大运行空间：</span>
-                {{ (questionData.data.maxMemory / 1000000).toFixed(2) }}
+                <span v-html="(questionData.data.maxMemory / 1000000).toFixed(2)" style="line-height: 26px; font-weight: bold;  background-color:rgb(245, 245, 245); border-radius: 3px; padding: 3px;"></span>
                 <span>MB</span>
               </div>
             </div>
           </el-card>
-          <div>
+          <div style="float: right; width: 70%;">
 
             <!-- 代码块卡片 -->
             <el-card id="card2" class="box-card">
@@ -99,21 +99,19 @@
                   <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
                     <el-tab-pane :key="item.name" v-for="(item, index) in editableTabs" :label="'测试 ' + (index + 1)"
                       :name="item.name">
-                      <div>输入： <el-input type="textarea" v-model="item.input" placeholder=""></el-input></div>
+                      <div>输入： <el-input type="textarea" v-model="item.input" placeholder="" :autosize=inputSize resize="none"></el-input></div>
 
                     </el-tab-pane>
                   </el-tabs>
 
                 </el-tab-pane>
                 <el-tab-pane label="测试结果">
-
-                  <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
-
+                  <el-tabs v-model="editableTabsValue" type="card"  @edit="handleTabsEdit">
                     <el-tab-pane :key="item.name" v-for="(item, index) in editableTabs" :label="'测试 ' + (index + 1)"
                       :name="item.name">
                       <div>输入： <el-input type="textarea" :rows="2" v-model="item.input" placeholder=""
-                          :disabled="true"></el-input></div>
-                      <div>输出： <el-input type="textarea" v-model="item.output" placeholder="" :disabled="true"></el-input>
+                          :disabled="true" :autosize=inputSize  resize="none"></el-input></div>
+                      <div>输出： <el-input type="textarea" v-model="item.output" placeholder="" :disabled="true" :autosize=inputSize  resize="none"></el-input>
                       </div>
                     </el-tab-pane>
                   </el-tabs>
@@ -153,7 +151,7 @@ export default {
 
       AnswerData: [],//存放返回的判断结果的相关信息
 
-
+      inputSize: { minRows: 2 },
 
 
       questionData: '',//这个题目对应的信息
@@ -398,8 +396,9 @@ export default {
 
 .a {
   /* width:1440px; */
-  width: 100%;
+  width: 99%;
   height: 100%;
+  margin: auto;
 
 }
 
@@ -416,7 +415,7 @@ export default {
 }
 
 #PB {
-  display: flex;
+  /* display: flex; */
 
 
   width: 100%;
@@ -424,44 +423,47 @@ export default {
 }
 
 #Card {
-
   display: flex;
   align-items: center;
 }
 
 #card0 {
   display: flex;
-  width: 99%;
+  width: 100%;
   height: 60px;
-  margin-left: 12px;
+  /* margin-left: 12px; */
   margin-top: 10px;
   border-radius: 20px;
+  
 }
 
 #card1 {
   width: 800px;
   height: 800px;
-  margin-left: 12px;
+  /* margin-left: 12px; */
   margin-top: 10px;
+  overflow: auto;
   border-radius: 20px;
+  float: left;
+  width: 29.7%;
 }
 
 #card2 {
-  width: 1090px;
+  width: 100%;
   height: 465px;
   margin-left: 5px;
   margin-top: 5px;
   border-radius: 20px;
   overflow: hidden;
-  padding: 3px;
 }
 
 #card3 {
-  width: 1090px;
+  width: 100%;
   height: 320px;
   margin-top: 5px;
   margin-left: 5px;
   border-radius: 20px;
+
 }
 
 #Tabs {
@@ -619,6 +621,32 @@ el-card {
   margin-left: 825px;
 }
 
+::v-deep #card3 > div > div.el-tabs.el-tabs--top.el-tabs--border-card{
+  border: 0;
+  box-shadow: none;
+}
+
+::v-deep #pane-12 > div > div > textarea {
+  height: 160px;
+}
+
+::v-deep .el-tag{
+  height: 26px;
+  line-height: 26px;
+}
+::v-deep #card3 > div{
+  padding: 0%;
+}
+
+::v-deep #pane-12 > div > div > textarea{
+  background-color: rgb(245,247,250);
+}
+
+#card3 > div > div.el-tabs.el-tabs--top.el-tabs--border-card{
+  overflow: auto;
+}
+
+
 /* 去掉tabs标签栏下的下划线 */
 /* 去掉tabs标签栏下的下划线 */
 /* #ChangePageButton{
@@ -634,4 +662,5 @@ el-card {
         background-color: #f7f4f4;
         border: none;
 
-      } */</style>
+      } */
+</style>
