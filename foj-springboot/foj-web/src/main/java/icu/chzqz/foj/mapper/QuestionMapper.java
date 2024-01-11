@@ -24,4 +24,6 @@ public interface QuestionMapper {
     void deleteTagsByQids(List<Long> ids);
 
     void deleteByIds(List<Long> ids);
+
+    void addTags(Long qid, Integer[] tags);
 }

@@ -7,6 +7,12 @@
         insert into questions (name, description, upload_time, modify_time, ac_count, sub_count, tip, max_time, max_memory, max_proc, uid, status, level)
         VALUES (#{name},#{description},#{uploadTime},#{modifyTime},#{acCount},#{subCount},#{tip},#{maxTime},#{maxMemory},#{maxProc},#{uid},#{status},#{level})
     </insert>
+    <insert id="addTags">
+        insert into questions_tag (t_id, q_id) VALUES
+        <foreach collection="tags" item="tid" separator="," >
+            (#{tid},#{qid})
+        </foreach>
+    </insert>
     <update id="update">
         update questions
         <set>

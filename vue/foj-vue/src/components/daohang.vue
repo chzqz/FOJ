@@ -184,12 +184,10 @@ export default {
   },
   methods: {
     selectTab(tab, event) {
-      
-      console.log('123');
       if(this.activeName=='AdminManager'){
 
       } else if(this.activeName=='questionsManager'){
- 
+        this.$router.push('/question',()=>{})
       } else {
         this.$router.push('/home', ()=>{})
       }

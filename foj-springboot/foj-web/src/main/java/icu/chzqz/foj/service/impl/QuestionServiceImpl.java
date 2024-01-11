@@ -274,6 +274,9 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void modifyQuestion(QuestionDTO questionDTO) {
         Question question = new Question(questionDTO.getId(),questionDTO.getName(),questionDTO.getDescription(),null,LocalDateTime.now(),null,null,questionDTO.getTip(),questionDTO.getMaxTime(),questionDTO.getMaxMemory(),questionDTO.getMaxProc(),null,questionDTO.getStatus(),questionDTO.getLevel());
+        Integer[] tags = questionDTO.getTags();
+        questionMapper.deleteTagsByQids(Collections.singletonList(questionDTO.getId()));
+        if(tags!=null && tags.length!=0) questionMapper.addTags(questionDTO.getId(),tags);
         questionMapper.update(question);
     }
 
