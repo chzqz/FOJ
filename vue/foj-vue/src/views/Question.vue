@@ -232,7 +232,7 @@
             <el-pagination
               background
               layout="prev, pager, next"
-              :total="1000"
+              :total="currentTotal"
               :page-size='pageSize'
               :current-page='currentPage'
               @current-change = 'updatePage'
@@ -283,7 +283,7 @@ export default {
           }, 
         ],
       tableData: [], // 从后端获取的数据
-      // totalItems: 100, // 从后端获取的总条目数
+      currentTotal: 0, // 从后端获取的总条目数
       currentPage: 1, // 当前页码
       pageSize: 10, // 每页显示的条目数
       selectedRows: [], // 保存勾选的行数据
@@ -384,6 +384,7 @@ export default {
         .then(response => {
           // 从响应中获取数据
           this.tableData = response.data.data.data;
+          this.currentTotal = response.data.data.total;
           console.log("获得的题目列表为" + response.data.data.data);
           // 如果后端提供了总条目数，你可能需要更新总条目数
           // this.totalItems = response.data.data.total;

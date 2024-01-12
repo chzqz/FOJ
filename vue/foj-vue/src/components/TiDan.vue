@@ -64,6 +64,7 @@
 <script>
 import Cookies from 'js-cookie';
 import Search from './Search.vue';
+import qs from 'qs'
 export default {
   data() {
     return {
@@ -108,22 +109,26 @@ export default {
       let url = '/user/questions/list';
 
       const params = {
-        uid: Cookies.get('id'),
         id: '', // 题目id，根据你的需求传递
         name: '', // 题目名，根据你的需求传递
         level: this.selectionOptions.value1, // 使用选择框的值作为搜索条件
-
+        name: this.selectionOptions.value3,
         tags: this.selectionOptions.value2, // 使用选择框的值作为搜索条件
         page: this.currentPage,
         pageSize: this.pageSize,
       };
-
+      console.log('tags',params.tags);
       // 发送HTTP GET请求
-      this.$axios.get(url, { params })
+      this.$axios.get(url, { 
+          params,
+          paramsSerializer: function (params) {
+            return qs.stringify(params, { indices: false })
+          } 
+      })
         .then(response => {
           // 从响应中获取数据
           this.tableData = response.data.data.data;
-
+          this.totalItems = response.data.data.total
           // 如果后端提供了总条目数，你可能需要更新总条目数
           // this.totalItems = response.data.data.total;
         })
@@ -140,7 +145,7 @@ export default {
         case 0:
           return '简单';
         case 1:
-          return '普通';
+          return '中等';
         case 2:
           return '困难';
         default:

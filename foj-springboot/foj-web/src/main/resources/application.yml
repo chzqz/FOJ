@@ -9,7 +9,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/foj
     username: root
-    password: 123456
+    password: 1234
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       initial-size: 5
@@ -29,19 +29,20 @@ pagehelper:
   params: count=countSql # POJO或者Map中发现了countSql属性，就会作为count参数使用
 foj:
   judge-server: 192.168.1.129:5050
-  resource-server: 192.168.1.129:80
+  resource-server: localhost:8080
   language:
     - C
     - C++
     - Java
+    - Python
   default:
     max-time: 10000000000
     max-memory: 104857600
     max-stack: 2
     proc-limit: 50
     file-max: 10240
-    avatar-path: D:/avatar/
-    testcase-path: D:/testcases/
+    avatar-path: D:/avatar/ #本地头像路径
+    testcase-path: D:/testcases/ #本地测试案例路径
   jwt:
     key: chzqzchzqzchzqzchzqzchzqzchzqzchzqzchzqzchzqzchzqz
     effective-time: 30758400000

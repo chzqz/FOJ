@@ -11,19 +11,19 @@
       </el-select>
     </div>
     <div id="nd2">
-      <el-select v-model="selectionOptions.value2" multiple multiple-limit="3" placeholder="请选择" filterable >
+      <el-select v-model="selectionOptions.value2" multiple multiple-limit=3 placeholder="请选择" filterable @change="dfhange1"  value-key="id">
         <el-option
-          v-for="item in options2"
-          :key="item.value2"
-          :label="item.label2"
-          :value="item.value2">
+          v-for="item in tags"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
         </el-option>
       </el-select>
     </div>
     <div class=" input-box mb20">
-	<input type="text" class="input" />
-	<span class="span">搜</span>
-</div>
+      <input type="text" class="input" v-model="selectionOptions.value3"/>
+      <el-button icon="el-icon-search" circle @click="dfhange1"></el-button>
+    </div>
 
   </div>
 </template>
@@ -38,32 +38,31 @@ export default {
         { value1: '1', label1: '中等' },
         { value1: '2', label1: '困难' },
       ],
-      options2: [
-        { value2: '0', label2: '困难' },
-        { value2: '1', label2: '困难' },
-        { value2: '2', label2: '困难1' },
-        { value2: '3', label2: '困难' },
-      ],
+      tags: [],
       value1: '',
       value2: [],
       input: '',
       selectionOptions:{
         value1: '',
         value2: [],
+        value3:null,
         // 添加其他需要的参数
       }
     };
   },
   methods: {
     dfhange1(){
-       console.log("gtygtygytygt"+this.selectionOptions)
+       console.log("gtygtygytygt",this.selectionOptions)
       this.$emit("fromchild",this.selectionOptions);
     },
-    toFather(){
-       
-      },
+
     
 
+  },
+  mounted(){
+    this.$axios.get('/user/tags/list').then(response=>{
+      this.tags = response.data.data
+    })
   }
 };
 </script>
