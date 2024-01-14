@@ -1,6 +1,7 @@
 package icu.chzqz.foj.interceptor;
 
 import icu.chzqz.foj.entity.exception.AccessDeniedException;
+import icu.chzqz.foj.handler.GlobalExceptionHandler;
 import icu.chzqz.foj.properties.MessageProperty;
 import icu.chzqz.foj.util.BaseContextUtil;
 import icu.chzqz.foj.util.JWTUtil;
@@ -22,29 +23,37 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Autowired
     MessageProperty messageProperty;
 
+    @Autowired
+    GlobalExceptionHandler globalExceptionHandler;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Cookie[] cookies = request.getCookies();
-        if("OPTIONS".equals(request.getMethod())) return true;
-        if(cookies!=null){
+        try {
+            Cookie[] cookies = request.getCookies();
+//        if("OPTIONS".equals(request.getMethod())) return true;
+            if(cookies!=null){
 
-            log.info("登录验证" );
-            for (Cookie cookie : cookies) {
-                if("token".equals(cookie.getName())){
-                    String token = cookie.getValue();
-                    try {
-                        Map claims = JWTUtil.parseToken(token);
-                        log.info("jwt解析: {}",claims);
-                        BaseContextUtil.setBaseContext(claims);
-                        return true;
-                    }
-                    catch (Exception e){
-                        throw new AccessDeniedException(messageProperty.loginExpired);
+                log.info("登录验证" );
+                for (Cookie cookie : cookies) {
+                    if("token".equals(cookie.getName())){
+                        String token = cookie.getValue();
+                        try {
+                            Map claims = JWTUtil.parseToken(token);
+                            log.info("jwt解析: {}",claims);
+                            BaseContextUtil.setBaseContext(claims);
+                            return true;
+                        }
+                        catch (Exception e){
+                            throw new AccessDeniedException(messageProperty.loginExpired);
+                        }
                     }
                 }
             }
+            throw new AccessDeniedException(messageProperty.notLogin);
+        }catch (Exception e){
+            globalExceptionHandler.allExceptionHandler(e);
         }
-        throw new AccessDeniedException(messageProperty.notLogin);
+        return false;
     }
 
     @Override

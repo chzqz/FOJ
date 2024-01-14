@@ -25,14 +25,17 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/regist")
                 .excludePathPatterns("/user/questions/list")
                 .excludePathPatterns("/user/question/*")
-                .excludePathPatterns("/user/language/list");
+                .excludePathPatterns("/user/language/list")
+                .excludePathPatterns("/user/tags/list");
+
         registry.addInterceptor(permissionsInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/login")
                 .excludePathPatterns("/regist")
                 .excludePathPatterns("/user/questions/list")
                 .excludePathPatterns("/user/question/*")
-                .excludePathPatterns("/user/language/list");
+                .excludePathPatterns("/user/language/list")
+                .excludePathPatterns("/user/tags/list");
     }
 
 //    /**

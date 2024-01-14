@@ -24,6 +24,7 @@ http.interceptors.response.use(function (response) {
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
     if(response.data.code!=200){
+      console.log('错误',response);
       if(!flag){
         flag = !flag
         Message({
