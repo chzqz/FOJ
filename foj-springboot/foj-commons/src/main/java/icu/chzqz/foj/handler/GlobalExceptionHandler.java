@@ -19,10 +19,7 @@ public class GlobalExceptionHandler {
     MessageProperty messageProperty;
 
 
-    public Result allExceptionHandler(Exception e){
-        log.info("拦截器或过滤器异常: {}", e.toString());
-        return Result.error(400,e.getMessage());
-    }
+
 
     @ExceptionHandler(AccessDeniedException.class)
     public Result accessDeniedException(AccessDeniedException e){
@@ -51,4 +48,5 @@ public class GlobalExceptionHandler {
         e.printStackTrace();
         return Result.error(520,e.getMessage());
     }
+
 }

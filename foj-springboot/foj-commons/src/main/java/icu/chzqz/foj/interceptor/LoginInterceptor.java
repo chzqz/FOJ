@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +26,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Autowired
     GlobalExceptionHandler globalExceptionHandler;
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -51,9 +53,8 @@ public class LoginInterceptor implements HandlerInterceptor {
             }
             throw new AccessDeniedException(messageProperty.notLogin);
         }catch (Exception e){
-            globalExceptionHandler.allExceptionHandler(e);
+            throw new AccessDeniedException(messageProperty.notLogin);
         }
-        return false;
     }
 
     @Override

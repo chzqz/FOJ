@@ -1,14 +1,18 @@
 package icu.chzqz.foj.filter;
 
 
+import icu.chzqz.foj.entity.exception.AccessDeniedException;
 import icu.chzqz.foj.handler.GlobalExceptionHandler;
+import icu.chzqz.foj.properties.MessageProperty;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
@@ -19,6 +23,10 @@ public class CorsFilter implements Filter {
 
     @Autowired
     GlobalExceptionHandler globalExceptionHandler;
+    @Autowired
+    MessageProperty messageProperty;
+    @Autowired
+    HandlerExceptionResolver handlerExceptionResolver;
 
     //销毁时候调用的方法
     @Override
@@ -41,7 +49,7 @@ public class CorsFilter implements Filter {
             response.setHeader("Access-Control-Allow-Credentials", "true");
             chain.doFilter(req, res);
         }catch (Exception e){
-            globalExceptionHandler.allExceptionHandler(e);
+            handlerExceptionResolver.resolveException((HttpServletRequest) req, (HttpServletResponse) res,null,new AccessDeniedException(messageProperty.notLogin));
         }
     }
 
